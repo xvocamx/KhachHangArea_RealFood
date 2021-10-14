@@ -48,6 +48,13 @@ public class DangNhap extends AppCompatActivity {
                 onClickDangNhap();
             }
         });
+        tvQuenMatKhau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DangNhap.this,QuenMatKhau.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void onClickDangNhap() {

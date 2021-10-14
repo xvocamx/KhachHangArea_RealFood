@@ -21,19 +21,14 @@
     <EditText
         android:id="@+id/edtPassword"
         style="@style/edittext"
+        android:inputType="textPassword"
         android:drawableLeft="@drawable/ic_lock"
         android:hint="@string/password" />
 
     <Button
         android:id="@+id/btnDangNhap"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_margin="20dp"
-        android:background="@drawable/custom_button"
-        android:text="@string/dangnhap"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16dp" />
+        style="@style/button"
+        android:text="@string/dangnhap" />
 
     <TextView
         android:id="@+id/tvQuenMatKhau"

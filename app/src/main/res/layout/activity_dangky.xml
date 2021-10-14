@@ -7,9 +7,9 @@
     tools:context=".DangKy">
 
     <TextView
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="@string/dangky"
         android:textSize="30dp" />
@@ -55,14 +55,9 @@
 
     <Button
         android:id="@+id/btnDangKy"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_margin="20dp"
-        android:background="@drawable/custom_button"
-        android:text="@string/dangky"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16dp" />
+        style="@style/button"
+        android:text="@string/dangky" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
