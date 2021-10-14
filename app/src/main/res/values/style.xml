@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="edittext" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:background">@drawable/custom_edittext</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:drawablePadding">12dp</item>
+    </style>
+</resources>
+

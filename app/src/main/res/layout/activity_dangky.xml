@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"/>
+        <TextView
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:text="@string/dangky"
+            android:textColor="@color/black"
+            android:textSize="25dp" />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/edtName"
+        style="@style/edittext"
+        android:drawableLeft="@drawable/ic_person"
+        android:hint="@string/ten" />
+
+    <EditText
+        android:id="@+id/edtEmail"
+        style="@style/edittext"
+        android:drawableLeft="@drawable/ic_email"
+        android:hint="@string/email" />
+
+    <EditText
+        android:id="@+id/edtPhone"
+        style="@style/edittext"
+        android:drawableLeft="@drawable/ic_phone"
+        android:hint="@string/sdt" />
+
+    <EditText
+        android:id="@+id/edtAddress"
+        style="@style/edittext"
+        android:drawableLeft="@drawable/ic_location"
+        android:hint="@string/diachi" />
+
+    <EditText
+        android:id="@+id/edtPassword"
+        style="@style/edittext"
+        android:drawableLeft="@drawable/ic_lock"
+        android:hint="@string/mk" />
+
+    <EditText
+        android:id="@+id/edtConfirmPassword"
+        style="@style/edittext"
+        android:drawableLeft="@drawable/ic_lock"
+        android:hint="@string/cofirm_mk" />
+
+    <Button
+        android:id="@+id/btnDangKy"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/dangky"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/bandataotaikhoanroi"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tvDangNhap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dangnhap"
+            android:textColor="@color/orange"
+            android:textSize="14dp" />
+    </LinearLayout>
+</LinearLayout>
