@@ -19,8 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class DangNhap extends AppCompatActivity {
     private EditText edtEmail, edtPassword;
-    private TextView tvDangKy;
     private Button btnDangNhap;
+    private TextView tvQuenMatKhau, tvDangKy;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -53,7 +53,6 @@ public class DangNhap extends AppCompatActivity {
     private void onClickDangNhap() {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
-        progressDialog = new ProgressDialog(this);
 
         if (email.isEmpty()) {
             edtEmail.setError("Vui lòng nhập email");
@@ -64,6 +63,7 @@ public class DangNhap extends AppCompatActivity {
         } else if (password.length() < 6) {
             edtPassword.setError("Độ dài password từ 6 đến 100");
         } else {
+            progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Vui lòng đợi trong khi đăng nhập ...");
             progressDialog.setTitle("Đăng nhập");
             progressDialog.setCanceledOnTouchOutside(false);
@@ -73,14 +73,15 @@ public class DangNhap extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
                                 progressDialog.dismiss();
+                                Toast.makeText(DangNhap.this, "Đăng nhập thành công", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(DangNhap.this, Home.class);
                                 startActivity(intent);
-                                Toast.makeText(DangNhap.this, "Đăng nhập thành công", Toast.LENGTH_LONG).show();
                             } else {
+                                // If sign in fails, display a message to the user.
                                 progressDialog.dismiss();
-                                Toast.makeText(DangNhap.this, "Đăng nhập không thành công", Toast.LENGTH_LONG).show();
-
+                                Toast.makeText(DangNhap.this, "Tài khoản hoặc mật khẩu sai", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -90,9 +91,10 @@ public class DangNhap extends AppCompatActivity {
     }
 
     private void setControl() {
-        tvDangKy = findViewById(R.id.tvDangKy);
-        btnDangNhap = findViewById(R.id.btnDangNhap);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
+        btnDangNhap = findViewById(R.id.btnDangNhap);
+        tvDangKy = findViewById(R.id.tvDangKy);
+        tvQuenMatKhau = findViewById(R.id.tvQuenMatKhau);
     }
 }

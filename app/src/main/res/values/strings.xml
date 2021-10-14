@@ -1,21 +1,14 @@
 <resources>
     <string name="app_name">KhachHangArea_RealFood</string>
-    <string name="dangky">Đăng ký</string>
-    <string name="bancotaikhoanchua">Bạn có tài khoản chưa ?</string>
-    <string name="mk">Mật khẩu</string>
-    <string name="tk">Tài khoản</string>
-    <string name="dangnhap">Đăng nhập</string>
-    <string name="quenmatkhau">Quên mật khẩu?</string>
     <string name="email">Email</string>
-    <string name="ten">Tên</string>
-    <string name="phone">Phone</string>
+    <string name="password">Password</string>
+    <string name="dangnhap">Đăng nhập</string>
+    <string name="quenmatkhau">Quên mật khẩu</string>
+    <string name="bancotaikhoanchua">Bạn có tài khoản chưa ?</string>
+    <string name="dangky">Đăng ký</string>
+    <string name="hoten">Họ tên</string>
     <string name="sdt">Số điện thoại</string>
     <string name="diachi">Địa chỉ</string>
-    <string name="cofirm_mk">Nhập lại mật khẩu</string>
-    <string name="bandataotaikhoanroi">Bạn đã tạo tài khoản rồi ?</string>
-    <array name="category">
-        <item>Pizza</item>
-        <item>Coffee</item>
-        <item>Humburger</item>
-    </array>
+    <string name="nhaplaimatkhau">Nhập lại nhập khẩu</string>
+    <string name="bandacotaikhoanroi">Bạn đã có tài khoản rồi ?</string>
 </resources>
