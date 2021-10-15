@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class QuenMatKhau extends AppCompatActivity {
     private Button btnGui;
     private EditText edtEmail;
-    private ImageButton ibBack;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -27,19 +26,13 @@ public class QuenMatKhau extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quenmatkhau);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAuth = FirebaseAuth.getInstance();
         setControl();
         setEvent();
     }
 
     private void setEvent() {
-        ibBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(QuenMatKhau.this,DangNhap.class);
-                startActivity(intent);
-            }
-        });
         btnGui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +75,5 @@ public class QuenMatKhau extends AppCompatActivity {
     private void setControl() {
         btnGui = findViewById(R.id.btnGui);
         edtEmail = findViewById(R.id.edtEmail);
-        ibBack = findViewById(R.id.ibBack);
     }
 }

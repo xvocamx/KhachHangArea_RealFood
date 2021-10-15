@@ -29,6 +29,7 @@ public class DangKy extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dangky);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAuth = FirebaseAuth.getInstance();
         setControl();
         setEvent();
@@ -91,7 +92,7 @@ public class DangKy extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 progressDialog.dismiss();
-                                Toast.makeText(DangKy.this, "Đăng ký thành công", Toast.LENGTH_LONG).show();
+                                Toast.makeText(DangKy.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(DangKy.this, Home.class);
                                 startActivity(intent);
                                 finishAffinity();

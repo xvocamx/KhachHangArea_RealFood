@@ -29,6 +29,7 @@ public class DangNhap extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dangnhap);
+        this.getSupportActionBar().hide();
         mAuth = FirebaseAuth.getInstance();
         setControl();
         setEvent();
@@ -51,7 +52,7 @@ public class DangNhap extends AppCompatActivity {
         tvQuenMatKhau.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DangNhap.this,QuenMatKhau.class);
+                Intent intent = new Intent(DangNhap.this, QuenMatKhau.class);
                 startActivity(intent);
             }
         });
@@ -82,7 +83,7 @@ public class DangNhap extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 progressDialog.dismiss();
-                                Toast.makeText(DangNhap.this, "Đăng nhập thành công", Toast.LENGTH_LONG).show();
+                                Toast.makeText(DangNhap.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(DangNhap.this, Home.class);
                                 startActivity(intent);
                             } else {

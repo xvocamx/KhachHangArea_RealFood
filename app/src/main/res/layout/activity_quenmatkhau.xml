@@ -6,23 +6,6 @@
     android:orientation="vertical"
     tools:context=".QuenMatKhau">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/ibBack"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/white"
-            android:src="@drawable/ic_back" />
-
-        <TextView
-            style="@style/textviewback"
-            android:text="@string/quenmatkhau" />
-    </LinearLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

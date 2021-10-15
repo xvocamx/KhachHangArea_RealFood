@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">KhachHangArea_RealFood</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="password">Mật khẩu</string>
     <string name="dangnhap">Đăng nhập</string>
     <string name="quenmatkhau">Quên mật khẩu</string>
     <string name="bancotaikhoanchua">Bạn có tài khoản chưa ?</string>
@@ -12,4 +12,23 @@
     <string name="nhaplaimatkhau">Nhập lại nhập khẩu</string>
     <string name="bandacotaikhoanroi">Bạn đã có tài khoản rồi ?</string>
     <string name="gui">Gửi</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="thongtincanhan">Thông tin cá nhân</string>
+    <string name="xem_l_ch_s_mua_h_ng">Xem lịch sử mua hàng</string>
+    <string name="donmua">Đơn mua</string>
+    <string name="s_a">Sửa</string>
+    <string name="danggiao">Đang giao</string>
+    <string name="choxacnhan">Chờ xác nhận</string>
+    <string name="cholayhang">Chờ lấy hàng</string>
+    <string name="danhgia">Đánh giá</string>
+    <string name="doimatkhau">Đổi mật khẩu</string>
+    <string name="doimatkhaumoi">Đổi mật khẩu mới</string>
+    <string name="gioithieu">Giới thiệu</string>
+    <string name="ri_ng_t">Riêng tư</string>
+    <string name="d_ch_v_v_ch_ch_s_ch">Dịch vụ và chích sách</string>
+    <string name="tr_gi_p">Trợ giúp</string>
+    <string name="ConfirmNewPassword">Nhập lại mật khẩu mới</string>
+    <string name="NewPassword">Nhập mật khẩu mới</string>
+    <string name="luu">Lưu</string>
 </resources>
