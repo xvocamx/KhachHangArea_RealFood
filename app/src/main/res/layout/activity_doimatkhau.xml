@@ -7,18 +7,22 @@
     tools:context=".DoiMatKhau">
 
     <EditText
+        android:id="@+id/edtPassword"
         style="@style/edittext"
         android:hint="@string/password" />
 
     <EditText
+        android:id="@+id/edtNewPassword"
         style="@style/edittext"
         android:hint="@string/NewPassword" />
 
     <EditText
+        android:id="@+id/edtConfirmNewPassword"
         style="@style/edittext"
         android:hint="@string/ConfirmNewPassword" />
 
     <Button
+        android:id="@+id/btnLuu"
         style="@style/button"
         android:text="@string/luu"/>
 

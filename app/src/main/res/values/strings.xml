@@ -31,4 +31,12 @@
     <string name="ConfirmNewPassword">Nhập lại mật khẩu mới</string>
     <string name="NewPassword">Nhập mật khẩu mới</string>
     <string name="luu">Lưu</string>
+    <string name="ratings">ratings)</string>
+
+    <array name="category">
+        <item>Pizaa</item>
+        <item>Trà sữa</item>
+        <item>Coffee</item>
+        <item>Bánh mì</item>
+    </array>
 </resources>
