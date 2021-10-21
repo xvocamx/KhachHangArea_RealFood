@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,9 +34,12 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
     private Activity context;
     private int resource;
     private ArrayList<SanPham> arrayList;
+    private ClickItemFoodListener delegation;
     private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
+    public void setDelegation(ClickItemFoodListener delegation) {
+        this.delegation = delegation;
+    }
 
     public SanPhamAdapter(Activity context, int resource, ArrayList<SanPham> arrayList) {
         this.context = context;
@@ -54,8 +58,10 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull SanPhamAdapter.MyViewHolder holder, int position) {
         SanPham sanPham = arrayList.get(position);
+        if (sanPham == null) {
+            return;
+        }
         holder.tvTenSanPham.setText(sanPham.getTenSanPham());
-        
         holder.tvGia.setText(sanPham.getGia());
         Float rating = Float.valueOf(sanPham.getRating());
         holder.tvRatings.setText(rating.toString());
@@ -68,6 +74,18 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                         .into(holder.ivSanPham);
             }
         });
+
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(delegation !=null){
+                    delegation.getInformationFood(sanPham);
+                }
+                else {
+                    Toast.makeText(context, "You must set delegation before", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
 
     @Override
@@ -80,20 +98,42 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         return arrayList.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTenSanPham;
         TextView tvLoaiSanPham;
         TextView tvRatings;
         TextView tvGia;
         ImageView ivSanPham;
+        View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTenSanPham = itemView.findViewById(R.id.tvTenSanPham);
+            tvTenSanPham.setOnClickListener(this);
+
             tvLoaiSanPham = itemView.findViewById(R.id.tvLoaiSanPham);
+            tvLoaiSanPham.setOnClickListener(this);
+
             tvRatings = itemView.findViewById(R.id.tvRating);
+            tvRatings.setOnClickListener(this);
+
             tvGia = itemView.findViewById(R.id.tvGia);
+            tvGia.setOnClickListener(this);
+
             ivSanPham = itemView.findViewById(R.id.ivFood);
+            ivSanPham.setOnClickListener(this);
         }
+
+
+        @Override
+        public void onClick(View v) {
+            if (onClickListener != null) {
+                onClickListener.onClick(v);
+            }
+        }
+    }
+
+    public interface ClickItemFoodListener {
+        void getInformationFood(SanPham sanPham);
     }
 }

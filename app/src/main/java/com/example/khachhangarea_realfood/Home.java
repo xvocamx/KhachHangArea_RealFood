@@ -19,7 +19,6 @@ public class Home extends AppCompatActivity {
     FrameLayout frameLayout;
     BottomBar bottomBar;
     public static Fragment fragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -8,21 +8,33 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/Theme.KhachHangArea_RealFood">
+        <activity android:name=".DonMua"></activity>
+        <activity
+            android:name=".BaoCaoShop"
+            android:label="Báo cáo cửa hàng này"
+            android:parentActivityName=".ChiTietCuaHang" />
+        <activity
+            android:name=".ChiTietCuaHang"
+            android:label="Chi tiết cửa hàng"
+            android:parentActivityName=".Home" />
+        <activity
+            android:name=".ChiTietSanPham"
+            android:label="Chi tiết sản phẩm"
+            android:parentActivityName=".Home" />
         <activity
             android:name=".DoiMatKhau"
             android:label="@string/doimatkhau"
-            android:parentActivityName=".Home"></activity>
+            android:parentActivityName=".Home" />
         <activity
             android:name=".QuenMatKhau"
             android:label="@string/quenmatkhau"
-            android:parentActivityName=".DangNhap"></activity>
+            android:parentActivityName=".DangNhap" />
         <activity android:name=".Home" />
         <activity
             android:name=".DangKy"
             android:label="@string/dangky"
-            android:parentActivityName=".DangNhap"></activity>
+            android:parentActivityName=".DangNhap" />
         <activity android:name=".DangNhap">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

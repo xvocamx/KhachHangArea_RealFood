@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.khachhangarea_realfood.DangNhap;
 import com.example.khachhangarea_realfood.DoiMatKhau;
 import com.example.khachhangarea_realfood.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
@@ -33,6 +36,7 @@ public class SettingFragment extends Fragment {
 
     private View mView;
     private TextView tvDoiMatKhau;
+    private Button btnDangXuat;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,10 +62,20 @@ public class SettingFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        btnDangXuat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), DangNhap.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private void setControl() {
         tvDoiMatKhau = mView.findViewById(R.id.tvDoiMatKhauMoi);
+        btnDangXuat = mView.findViewById(R.id.btnDangXuat);
     }
 
 

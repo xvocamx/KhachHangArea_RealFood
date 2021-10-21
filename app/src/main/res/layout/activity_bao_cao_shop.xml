@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:orientation="vertical"
+    tools:context=".BaoCaoShop">
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_button_dangxuat"
+        android:hint="  Lý do báo cáo"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/h_nh_nh_d_ng_b_o_c_o" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+    <Button
+        android:layout_marginTop="20dp"
+        style="@style/button"
+        android:text="Báo cáo"
+        />
+</LinearLayout>

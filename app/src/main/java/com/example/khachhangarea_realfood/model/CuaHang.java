@@ -7,18 +7,19 @@ public class CuaHang {
     String ThongTinChiTiet;
     String SoCMND;
     String SoDienThoai;
-    String  Avatar ;
+    String Avatar;
     String WallPaper;
     Float Rating;
     String Email;
     String TrangThai;
-    String  CMND_MatTruoc ;
+    String CMND_MatTruoc;
     String CMND_MatSau;
+    String DiaChi;
 
     public CuaHang() {
     }
 
-    public CuaHang(String IDCuaHang, String tenCuaHang, String chuSoHuu, String thongTinChiTiet, String soCMND, String soDienThoai, String avatar, String wallPaper, Float rating, String email, String trangThai, String CMND_MatTruoc, String CMND_MatSau) {
+    public CuaHang(String IDCuaHang, String tenCuaHang, String chuSoHuu, String thongTinChiTiet, String soCMND, String soDienThoai, String avatar, String wallPaper, Float rating, String email, String trangThai, String CMND_MatTruoc, String CMND_MatSau, String diaChi) {
         this.IDCuaHang = IDCuaHang;
         this.TenCuaHang = tenCuaHang;
         this.ChuSoHuu = chuSoHuu;
@@ -29,9 +30,10 @@ public class CuaHang {
         this.WallPaper = wallPaper;
         this.Rating = rating;
         this.Email = email;
-        this.TrangThai = trangThai;
+        TrangThai = trangThai;
         this.CMND_MatTruoc = CMND_MatTruoc;
         this.CMND_MatSau = CMND_MatSau;
+        DiaChi = diaChi;
     }
 
     public String getIDCuaHang() {
@@ -138,6 +140,14 @@ public class CuaHang {
         this.CMND_MatSau = CMND_MatSau;
     }
 
+    public String getDiaChi() {
+        return DiaChi;
+    }
+
+    public void setDiaChi(String diaChi) {
+        DiaChi = diaChi;
+    }
+
     @Override
     public String toString() {
         return "CuaHang{" +
@@ -154,6 +164,7 @@ public class CuaHang {
                 ", TrangThai='" + TrangThai + '\'' +
                 ", CMND_MatTruoc='" + CMND_MatTruoc + '\'' +
                 ", CMND_MatSau='" + CMND_MatSau + '\'' +
+                ", DiaChi='" + DiaChi + '\'' +
                 '}';
     }
 }

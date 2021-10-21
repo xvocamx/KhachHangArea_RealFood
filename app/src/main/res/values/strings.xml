@@ -32,6 +32,10 @@
     <string name="NewPassword">Nhập mật khẩu mới</string>
     <string name="luu">Lưu</string>
     <string name="ratings">ratings)</string>
+    <string name="xem_shop">Xem Shop</string>
+    <string name="yeuthich">Yêu thích</string>
+    <string name="nh_gi">Đánh giá:</string>
+    <string name="h_nh_nh_d_ng_b_o_c_o">Hình ảnh dùng để báo cáo</string>
 
     <array name="category">
         <item>Pizaa</item>
