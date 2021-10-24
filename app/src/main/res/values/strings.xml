@@ -36,11 +36,30 @@
     <string name="yeuthich">Yêu thích</string>
     <string name="nh_gi">Đánh giá:</string>
     <string name="h_nh_nh_d_ng_b_o_c_o">Hình ảnh dùng để báo cáo</string>
+    <string name="ghichu">Ghi chú</string>
+    <string name="them_ghi_chu">Thêm ghi chú</string>
+    <string name="m_khuy_n_m_i">Mã khuyến mãi</string>
+    <string name="vnd">VNĐ</string>
+    <string name="t_ng_ph">Tổng phụ</string>
+    <string name="chi_ph_v_n_chuy_n">Chi phí vận chuyển</string>
+    <string name="ma_giam_gia">Mã giảm giá</string>
+    <string name="tong_tien">Tổng tiền</string>
+    <string name="thanh_toan">Thanh toán</string>
 
     <array name="category">
         <item>Pizaa</item>
         <item>Trà sữa</item>
         <item>Coffee</item>
         <item>Bánh mì</item>
+    </array>
+
+    <array name="lydo">
+        <item>Chọn lý do</item>
+        <item>Hình ảnh thức ăn không giống trên app</item>
+        <item>Shop bán thiếu</item>
+        <item>Shop bán hàng mất vệ sinh</item>
+        <item>Shop bán hàng không đúng quy đinh</item>
+        <item>Shop giao hàng quá lâu</item>
+        <item>Khác</item>
     </array>
 </resources>

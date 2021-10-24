@@ -12,13 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
 
 import com.example.khachhangarea_realfood.ChiTietCuaHang;
 import com.example.khachhangarea_realfood.ChiTietSanPham;
+import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.TrangThaiCuaHang;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.DanhMucAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
@@ -44,14 +47,15 @@ public class HomeFragment extends Fragment {
     private SanPhamAdapter sanPhamAdapter;
     private CuaHangAdapter cuaHangAdapter;
     private DanhMucAdapter danhMucAdapter;
-    private ArrayList<SanPham> sanPhamSaleFoods,sanPhamPopularFoods;
+    private ArrayList<SanPham> sanPhamSaleFoods, sanPhamPopularFoods;
     private ArrayList<CuaHang> cuaHangs;
     private ArrayList<DanhMuc> danhMucs;
     private DatabaseReference mDatabase;
-    private LinearLayoutManager linearLayoutManagerSaleFood,linearLayoutManagerPopularShop,linearLayoutManagerPopularFood,linearLayoutManagerDanhMuc;
-    private RecyclerView rcvFoodSale, rcvPopularShop, rcvPopularFood,rcvDanhMuc;
+    private LinearLayoutManager linearLayoutManagerSaleFood, linearLayoutManagerPopularShop, linearLayoutManagerPopularFood, linearLayoutManagerDanhMuc;
+    private RecyclerView rcvFoodSale, rcvPopularShop, rcvPopularFood, rcvDanhMuc;
     private Spinner spCategory;
     private SearchView svFood;
+    private ImageView ivMyOrder;
     CuaHang cuaHang;
 
     public HomeFragment() {
@@ -81,8 +85,8 @@ public class HomeFragment extends Fragment {
         sanPhamPopularFoods = new ArrayList<>();
         danhMucs = new ArrayList<>();
         sanPhamAdapter = new SanPhamAdapter(getActivity(), R.layout.list_item_food, sanPhamSaleFoods);
-        cuaHangAdapter = new CuaHangAdapter(getActivity(),R.layout.list_item_shop,cuaHangs);
-        danhMucAdapter = new DanhMucAdapter(getActivity(),R.layout.list_item_danhmuc,danhMucs);
+        cuaHangAdapter = new CuaHangAdapter(getActivity(), R.layout.list_item_shop, cuaHangs);
+        danhMucAdapter = new DanhMucAdapter(getActivity(), R.layout.list_item_danhmuc, danhMucs);
         setControl();
         setEvent();
         return mView;
@@ -121,7 +125,7 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(getContext(), ChiTietSanPham.class);
                 Gson gson = new Gson();
                 String data = gson.toJson(sanPham);
-                intent.putExtra("dataSanPham",data);
+                intent.putExtra("dataSanPham", data);
                 getActivity().startActivity(intent);
             }
         });
@@ -131,21 +135,31 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(getContext(), ChiTietCuaHang.class);
                 Gson gson = new Gson();
                 String data = gson.toJson(cuaHang);
-                intent.putExtra("dataCuaHang",data);
+                intent.putExtra("dataCuaHang", data);
+                getActivity().startActivity(intent);
+            }
+        });
+        ivMyOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), GioHang.class);
                 getActivity().startActivity(intent);
             }
         });
 
-
     }
-    public void getDanhMuc(){
+
+    public void getDanhMuc() {
         ArrayList<CuaHang> cuaHangs = new ArrayList<>();
         mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cuaHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     cuaHang = dataSnapshot.getValue(CuaHang.class);
-                    cuaHangs.add(cuaHang);
+                    if (cuaHang.getTrangThaiCuaHang() != TrangThaiCuaHang.ChuaKichHoat) {
+                        cuaHangs.add(cuaHang);
+                    }
                 }
                 for (CuaHang cuaHang : cuaHangs) {
                     mDatabase.child("DanhMuc").child(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
@@ -173,49 +187,37 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
     public void getFoodSale() {
-        ArrayList<CuaHang> cuaHangs = new ArrayList<>();
-        mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("SanPham").limitToFirst(4).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    SanPham sanPham = postSnapshot.getValue(SanPham.class);
+                    sanPhamSaleFoods.add(sanPham);
+                    sanPhamAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getPopularShop() {
+        mDatabase.child("CuaHang").limitToFirst(4).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cuaHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     cuaHang = dataSnapshot.getValue(CuaHang.class);
-                    cuaHangs.add(cuaHang);
-                }
-                for (CuaHang cuaHang : cuaHangs) {
-                    mDatabase.child("SanPham").child(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                SanPham sanPham = postSnapshot.getValue(SanPham.class);
-                                sanPhamSaleFoods.add(sanPham);
-                                sanPhamAdapter.notifyDataSetChanged();
-                            }
-                        }
+                    if (cuaHang.getTrangThaiCuaHang() != TrangThaiCuaHang.ChuaKichHoat) {
+                        cuaHangs.add(cuaHang);
+                        cuaHangAdapter.notifyDataSetChanged();
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-    public void getPopularShop(){
-        mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    cuaHang = dataSnapshot.getValue(CuaHang.class);
-                    cuaHangs.add(cuaHang);
-                    cuaHangAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -225,33 +227,16 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
     public void getPopularFood() {
-        ArrayList<CuaHang> cuaHangs = new ArrayList<>();
-        mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("SanPham").limitToFirst(4).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    cuaHang = dataSnapshot.getValue(CuaHang.class);
-                    cuaHangs.add(cuaHang);
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    SanPham sanPham = postSnapshot.getValue(SanPham.class);
+                    sanPhamPopularFoods.add(sanPham);
+                    sanPhamAdapter.notifyDataSetChanged();
                 }
-                for (CuaHang cuaHang : cuaHangs) {
-                    mDatabase.child("SanPham").child(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                SanPham sanPham = postSnapshot.getValue(SanPham.class);
-                                sanPhamPopularFoods.add(sanPham);
-                                sanPhamAdapter.notifyDataSetChanged();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-
             }
 
             @Override
@@ -260,10 +245,6 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-
-
-
 
     private void setControl() {
         rcvFoodSale = mView.findViewById(R.id.rcvFoodSale);
@@ -272,6 +253,6 @@ public class HomeFragment extends Fragment {
         rcvDanhMuc = mView.findViewById(R.id.rcvDanhMuc);
         spCategory = mView.findViewById(R.id.spCategory);
         svFood = mView.findViewById(R.id.searchViewFood);
-
+        ivMyOrder = mView.findViewById(R.id.ivMyOrder);
     }
 }

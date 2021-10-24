@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.khachhangarea_realfood.DangNhap;
 import com.example.khachhangarea_realfood.DoiMatKhau;
+import com.example.khachhangarea_realfood.DonMua;
 import com.example.khachhangarea_realfood.R;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -23,6 +25,10 @@ import org.w3c.dom.Text;
  * create an instance of this fragment.
  */
 public class SettingFragment extends Fragment {
+    private View mView;
+    private TextView tvDoiMatKhau;
+    private Button btnDangXuat;
+    private LinearLayout lnDonMua;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -34,9 +40,7 @@ public class SettingFragment extends Fragment {
         return fragment;
     }
 
-    private View mView;
-    private TextView tvDoiMatKhau;
-    private Button btnDangXuat;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,11 +75,19 @@ public class SettingFragment extends Fragment {
 
             }
         });
+        lnDonMua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DonMua.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setControl() {
         tvDoiMatKhau = mView.findViewById(R.id.tvDoiMatKhauMoi);
         btnDangXuat = mView.findViewById(R.id.btnDangXuat);
+        lnDonMua = mView.findViewById(R.id.lnDonMua);
     }
 
 

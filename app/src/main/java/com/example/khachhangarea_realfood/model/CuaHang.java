@@ -1,5 +1,7 @@
 package com.example.khachhangarea_realfood.model;
 
+import com.example.khachhangarea_realfood.TrangThaiCuaHang;
+
 public class CuaHang {
     String IDCuaHang;
     String TenCuaHang;
@@ -11,30 +13,36 @@ public class CuaHang {
     String WallPaper;
     Float Rating;
     String Email;
-    String TrangThai;
-    String CMND_MatTruoc;
-    String CMND_MatSau;
+    TrangThaiCuaHang trangThaiCuaHang;
     String DiaChi;
+
+    public String getDiaChi() {
+        return DiaChi;
+    }
+
+    public void setDiaChi(String diaChi) {
+        DiaChi = diaChi;
+    }
+
+    public CuaHang(String IDCuaHang, String tenCuaHang, String chuSoHuu, String thongTinChiTiet, String soCMND, String soDienThoai, String avatar, String wallPaper, Float rating, String email, TrangThaiCuaHang trangThaiCuaHang, String diaChi) {
+        this.IDCuaHang = IDCuaHang;
+        TenCuaHang = tenCuaHang;
+        ChuSoHuu = chuSoHuu;
+        ThongTinChiTiet = thongTinChiTiet;
+        SoCMND = soCMND;
+        SoDienThoai = soDienThoai;
+        Avatar = avatar;
+        WallPaper = wallPaper;
+        Rating = rating;
+        Email = email;
+        this.trangThaiCuaHang = trangThaiCuaHang;
+        DiaChi = diaChi;
+    }
 
     public CuaHang() {
     }
 
-    public CuaHang(String IDCuaHang, String tenCuaHang, String chuSoHuu, String thongTinChiTiet, String soCMND, String soDienThoai, String avatar, String wallPaper, Float rating, String email, String trangThai, String CMND_MatTruoc, String CMND_MatSau, String diaChi) {
-        this.IDCuaHang = IDCuaHang;
-        this.TenCuaHang = tenCuaHang;
-        this.ChuSoHuu = chuSoHuu;
-        this.ThongTinChiTiet = thongTinChiTiet;
-        this.SoCMND = soCMND;
-        this.SoDienThoai = soDienThoai;
-        this.Avatar = avatar;
-        this.WallPaper = wallPaper;
-        this.Rating = rating;
-        this.Email = email;
-        TrangThai = trangThai;
-        this.CMND_MatTruoc = CMND_MatTruoc;
-        this.CMND_MatSau = CMND_MatSau;
-        DiaChi = diaChi;
-    }
+
 
     public String getIDCuaHang() {
         return IDCuaHang;
@@ -116,55 +124,11 @@ public class CuaHang {
         Email = email;
     }
 
-    public String getTrangThai() {
-        return TrangThai;
+    public TrangThaiCuaHang getTrangThaiCuaHang() {
+        return trangThaiCuaHang;
     }
 
-    public void setTrangThai(String trangThai) {
-        TrangThai = trangThai;
-    }
-
-    public String getCMND_MatTruoc() {
-        return CMND_MatTruoc;
-    }
-
-    public void setCMND_MatTruoc(String CMND_MatTruoc) {
-        this.CMND_MatTruoc = CMND_MatTruoc;
-    }
-
-    public String getCMND_MatSau() {
-        return CMND_MatSau;
-    }
-
-    public void setCMND_MatSau(String CMND_MatSau) {
-        this.CMND_MatSau = CMND_MatSau;
-    }
-
-    public String getDiaChi() {
-        return DiaChi;
-    }
-
-    public void setDiaChi(String diaChi) {
-        DiaChi = diaChi;
-    }
-
-    @Override
-    public String toString() {
-        return "CuaHang{" +
-                "IDCuaHang='" + IDCuaHang + '\'' +
-                ", TenCuaHang='" + TenCuaHang + '\'' +
-                ", ChuSoHuu='" + ChuSoHuu + '\'' +
-                ", ThongTinChiTiet='" + ThongTinChiTiet + '\'' +
-                ", SoCMND='" + SoCMND + '\'' +
-                ", SoDienThoai='" + SoDienThoai + '\'' +
-                ", Avatar='" + Avatar + '\'' +
-                ", WallPaper='" + WallPaper + '\'' +
-                ", Rating=" + Rating +
-                ", Email='" + Email + '\'' +
-                ", TrangThai='" + TrangThai + '\'' +
-                ", CMND_MatTruoc='" + CMND_MatTruoc + '\'' +
-                ", CMND_MatSau='" + CMND_MatSau + '\'' +
-                ", DiaChi='" + DiaChi + '\'' +
-                '}';
+    public void setTrangThaiCuaHang(TrangThaiCuaHang trangThaiCuaHang) {
+        this.trangThaiCuaHang = trangThaiCuaHang;
     }
 }

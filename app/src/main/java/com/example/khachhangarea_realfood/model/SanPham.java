@@ -10,9 +10,11 @@ public class SanPham {
     public SanPham() {
     }
 
+
+
     public SanPham(String IDSanPham, String tenSanPham, String IDLoai, String IDDanhMuc, String gia, String chiTietSanPham, String IDCuaHang, Float rating, ArrayList<String> images) {
         this.IDSanPham = IDSanPham;
-        this.TenSanPham = tenSanPham;
+        TenSanPham = tenSanPham;
         this.IDLoai = IDLoai;
         this.IDDanhMuc = IDDanhMuc;
         this.Gia = gia;
@@ -93,6 +95,7 @@ public class SanPham {
     public void setImages(ArrayList<String> images) {
         this.images = images;
     }
+
 
     @Override
     public String toString() {

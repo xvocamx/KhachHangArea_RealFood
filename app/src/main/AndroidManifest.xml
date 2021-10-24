@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.khachhangarea_realfood">
 
     <application
@@ -8,8 +9,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.KhachHangArea_RealFood">
-        <activity android:name=".DonMua"></activity>
+        android:theme="@style/Theme.KhachHangArea_RealFood"
+        tools:replace="android:theme">
+        <activity
+            android:name=".GioHang"
+            android:label="Danh sách giỏ hàng"
+            android:parentActivityName=".ChiTietSanPham"></activity>
+        <activity android:name=".DonMua" />
         <activity
             android:name=".BaoCaoShop"
             android:label="Báo cáo cửa hàng này"

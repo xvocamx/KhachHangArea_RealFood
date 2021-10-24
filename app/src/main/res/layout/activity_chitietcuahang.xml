@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="193dp"
         android:layout_marginTop="10dp"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:src="@drawable/logo_pizza" />
 
     <TextView
@@ -142,7 +142,8 @@
                 android:padding="5dp"
                 android:text="@string/yeuthich"
                 android:textAllCaps="false"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                />
 
 
             <ImageView

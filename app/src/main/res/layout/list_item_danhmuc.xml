@@ -6,13 +6,26 @@
     app:cardCornerRadius="12dp"
     android:layout_margin="5dp"
     android:orientation="vertical">
-
-    <TextView
+    <LinearLayout
         android:background="@color/orange"
-        android:gravity="center"
-        android:id="@+id/tvTenDanhMuc"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/white"
-        android:text="Trà sữa"/>
+        android:orientation="vertical">
+        <ImageView
+            android:layout_margin="5dp"
+            android:src="@drawable/user"
+            android:scaleType="fitXY"
+            android:layout_gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:background="@color/orange"
+            android:gravity="center"
+            android:id="@+id/tvTenDanhMuc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:text="Trà sữa"/>
+    </LinearLayout>
+
 </androidx.cardview.widget.CardView>

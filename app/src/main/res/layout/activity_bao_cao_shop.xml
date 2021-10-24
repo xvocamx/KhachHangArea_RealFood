@@ -9,16 +9,19 @@
     tools:context=".BaoCaoShop">
 
     <Spinner
+        android:background="@drawable/custom_spinner"
+        android:entries="@array/lydo"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="31dp"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="20dp"
+        android:padding="10dp"
         android:background="@drawable/custom_button_dangxuat"
-        android:hint="  Lý do báo cáo"
+        android:hint="Lý do báo cáo"
         android:textSize="15dp" />
 
     <TextView

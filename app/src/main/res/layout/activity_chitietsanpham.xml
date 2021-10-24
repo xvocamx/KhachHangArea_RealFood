@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,6 +21,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -99,77 +101,102 @@
                     android:textSize="13dp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnYeuThich"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/custom_button_dangxuat"
-                    android:drawableLeft="@drawable/ic_favorite_pink"
-                    android:drawablePadding="5dp"
-                    android:padding="5dp"
-                    android:text="@string/yeuthich"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black" />
-
-
-                <ImageView
-                    android:id="@+id/ivComment"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="3dp"
-                    android:src="@drawable/ic_chat" />
-            </LinearLayout>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnYeuThich"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:background="@drawable/custom_button_dangxuat"
+                android:drawableLeft="@drawable/ic_favorite_pink"
+                android:drawablePadding="5dp"
+                android:padding="5dp"
+                android:text="@string/yeuthich"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+
+            <ImageView
+                android:id="@+id/ivComment"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_chat" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivShop"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/custom_button_dangxuat"
+            android:padding="3dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/logo_pizza" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="13dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ivShop"
-                android:layout_width="70dp"
-                android:layout_height="60dp"
-                android:background="@drawable/custom_button_dangxuat"
-                android:padding="3dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/logo_pizza" />
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvTenCuaHang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:orientation="vertical">
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:text="Pizza Food"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
 
-                <TextView
-                    android:id="@+id/tvTenCuaHang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="Pizza Food"
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
+            <TextView
+                android:id="@+id/tvAddressShop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:drawableLeft="@drawable/ic_location_green"
+                android:text="23 Nguyễn Du, TP.HCM"
+                android:textColor="@color/black"
+                android:textSize="11dp" />
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnXemShop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:background="@drawable/custom_button_dangxuat"
-                    android:drawableLeft="@drawable/ic_store"
-                    android:drawablePadding="5dp"
-                    android:padding="5dp"
-                    android:text="@string/xem_shop"
-                    android:textColor="@color/black" />
-            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnXemShop"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:background="@drawable/custom_button_dangxuat"
+                android:drawableLeft="@drawable/ic_store"
+                android:drawablePadding="5dp"
+                android:padding="5dp"
+                android:text="@string/xem_shop"
+                android:textColor="@color/black" />
+
 
         </LinearLayout>
 
@@ -203,46 +230,26 @@ leo malesuada" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginRight="10dp"
             android:text="Số lượng"
             android:textColor="@color/black" />
 
-        <Button
-            android:layout_width="52dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/custom_button"
-            android:text="+"
-            android:textColor="@color/white" />
 
-        <EditText
-            android:layout_width="52dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/custom_edittext_orange"
-            android:gravity="center"
-            android:text="1"
-            android:textColor="@color/orange" />
-
-        <Button
-            android:layout_width="52dp"
-            android:layout_height="30dp"
-            android:background="@drawable/custom_button"
-            android:text="-"
-            android:textColor="@color/white" />
+        <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+            android:id="@+id/btnSoLuong"
+            android:layout_width="150dp"
+            app:initialNumber="1"
+            android:layout_height="wrap_content"
+            app:backGroundColor="@color/orange"
+            app:backgroundDrawable="@drawable/custom_button"
+            app:textSize="8dp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnDatHang"
-        android:layout_width="96dp"
-        android:layout_height="45dp"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:background="@drawable/custom_button"
-        android:text="Dặt hàng"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
+        style="@style/button"
+        android:text="Đặt hàng"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -251,6 +258,11 @@ leo malesuada" />
         android:text="Đánh giá sản phẩm"
         android:textColor="@color/black"
         android:textSize="20dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvComent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>
