@@ -12,15 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import com.example.khachhangarea_realfood.ChiTietCuaHang;
 import com.example.khachhangarea_realfood.ChiTietSanPham;
 import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.SearchViewSanPham;
 import com.example.khachhangarea_realfood.TrangThaiCuaHang;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.DanhMucAdapter;
@@ -55,7 +59,9 @@ public class HomeFragment extends Fragment {
     private RecyclerView rcvFoodSale, rcvPopularShop, rcvPopularFood, rcvDanhMuc;
     private Spinner spCategory;
     private SearchView svFood;
+    private Button btnTimKiem;
     private ImageView ivMyOrder;
+    private ProgressBar pbLoad;
     CuaHang cuaHang;
 
     public HomeFragment() {
@@ -137,6 +143,7 @@ public class HomeFragment extends Fragment {
                 String data = gson.toJson(cuaHang);
                 intent.putExtra("dataCuaHang", data);
                 getActivity().startActivity(intent);
+                Toast.makeText(getContext(), cuaHang.getIDCuaHang()+"", Toast.LENGTH_SHORT).show();
             }
         });
         ivMyOrder.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +154,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        btnTimKiem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SearchViewSanPham.class);
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
     public void getDanhMuc() {
@@ -170,6 +184,7 @@ public class HomeFragment extends Fragment {
                                 danhMucs.add(danhMuc);
                                 danhMucAdapter.notifyDataSetChanged();
                             }
+                            pbLoad.setVisibility(View.GONE);
                         }
 
                         @Override
@@ -178,7 +193,6 @@ public class HomeFragment extends Fragment {
                         }
                     });
                 }
-
             }
 
             @Override
@@ -217,7 +231,6 @@ public class HomeFragment extends Fragment {
                         cuaHangs.add(cuaHang);
                         cuaHangAdapter.notifyDataSetChanged();
                     }
-
                 }
             }
 
@@ -227,6 +240,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 
     public void getPopularFood() {
         mDatabase.child("SanPham").limitToFirst(4).addValueEventListener(new ValueEventListener() {
@@ -246,6 +260,8 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
+
     private void setControl() {
         rcvFoodSale = mView.findViewById(R.id.rcvFoodSale);
         rcvPopularFood = mView.findViewById(R.id.rcvPopularFood);
@@ -254,5 +270,8 @@ public class HomeFragment extends Fragment {
         spCategory = mView.findViewById(R.id.spCategory);
         svFood = mView.findViewById(R.id.searchViewFood);
         ivMyOrder = mView.findViewById(R.id.ivMyOrder);
+        pbLoad = mView.findViewById(R.id.pbLoad);
+        svFood = mView.findViewById(R.id.searchViewFood);
+        btnTimKiem = mView.findViewById(R.id.btnTimKiem);
     }
 }

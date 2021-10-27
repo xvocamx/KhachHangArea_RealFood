@@ -1,15 +1,16 @@
 package com.example.khachhangarea_realfood.model;
 
 public class DonHangInfo {
-    String IDInfo,IDDonHang,IDSanPham,soLuong,donGia,maGiamGia;
+    String IDInfo, IDDonHang, soLuong, donGia, maGiamGia;
+    SanPham sanPham;
 
-    public DonHangInfo(String IDInfo, String IDDonHang, String IDSanPham, String soLuong, String donGia, String maGiamGia) {
+    public DonHangInfo(String IDInfo, String IDDonHang, String soLuong, String donGia, String maGiamGia, SanPham sanPham) {
         this.IDInfo = IDInfo;
         this.IDDonHang = IDDonHang;
-        this.IDSanPham = IDSanPham;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.maGiamGia = maGiamGia;
+        this.sanPham = sanPham;
     }
 
     public DonHangInfo() {
@@ -29,14 +30,6 @@ public class DonHangInfo {
 
     public void setIDDonHang(String IDDonHang) {
         this.IDDonHang = IDDonHang;
-    }
-
-    public String getIDSanPham() {
-        return IDSanPham;
-    }
-
-    public void setIDSanPham(String IDSanPham) {
-        this.IDSanPham = IDSanPham;
     }
 
     public String getSoLuong() {
@@ -61,5 +54,13 @@ public class DonHangInfo {
 
     public void setMaGiamGia(String maGiamGia) {
         this.maGiamGia = maGiamGia;
+    }
+
+    public SanPham getSanPham() {
+        return sanPham;
+    }
+
+    public void setSanPham(SanPham sanPham) {
+        this.sanPham = sanPham;
     }
 }

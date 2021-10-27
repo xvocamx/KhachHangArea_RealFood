@@ -18,6 +18,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/pizza" />
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,6 +37,13 @@
                 android:text="Pizza Tom Pho Mai"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Pizza" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -239,17 +247,17 @@ leo malesuada" />
         <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
             android:id="@+id/btnSoLuong"
             android:layout_width="150dp"
-            app:initialNumber="1"
             android:layout_height="wrap_content"
             app:backGroundColor="@color/orange"
             app:backgroundDrawable="@drawable/custom_button"
+            app:initialNumber="1"
             app:textSize="8dp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnDatHang"
         style="@style/button"
-        android:text="Đặt hàng"/>
+        android:text="Thêm vào giỏ hàng" />
 
     <TextView
         android:layout_width="wrap_content"

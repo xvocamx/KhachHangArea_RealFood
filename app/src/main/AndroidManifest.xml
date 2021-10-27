@@ -11,10 +11,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KhachHangArea_RealFood"
         tools:replace="android:theme">
+        <activity android:name=".YeuThich"></activity>
+        <activity
+            android:name=".SearchViewSanPham"
+            android:label="Danh sách sản phẩm"
+            android:parentActivityName=".Home" />
+        <activity
+            android:name=".SuaThongTin"
+            android:label="Thông tin cá nhận"
+            android:parentActivityName=".Home" />
         <activity
             android:name=".GioHang"
-            android:label="Danh sách giỏ hàng"
-            android:parentActivityName=".ChiTietSanPham"></activity>
+            android:label="Giỏ hàng"
+            android:parentActivityName=".ChiTietSanPham" />
         <activity android:name=".DonMua" />
         <activity
             android:name=".BaoCaoShop"
@@ -48,6 +57,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.com.vansuita.pickimage.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/picker_provider_paths" />
+        </provider>
     </application>
 
 </manifest>

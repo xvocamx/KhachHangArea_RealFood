@@ -45,6 +45,7 @@
     <string name="ma_giam_gia">Mã giảm giá</string>
     <string name="tong_tien">Tổng tiền</string>
     <string name="thanh_toan">Thanh toán</string>
+    <string name="tencuahang">Pizza Food</string>
 
     <array name="category">
         <item>Pizaa</item>

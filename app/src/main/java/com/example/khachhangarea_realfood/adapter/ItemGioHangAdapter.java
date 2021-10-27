@@ -50,7 +50,7 @@ public class ItemGioHangAdapter extends RecyclerView.Adapter<ItemGioHangAdapter.
         if (donHangInfo == null) {
             return;
         }
-        holder.btnSoLuong.setNumber(donHangInfo.getSoLuong());
+        holder.btnSoLuong.setNumber(donHangInfo.getSoLuong()+"");
         mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

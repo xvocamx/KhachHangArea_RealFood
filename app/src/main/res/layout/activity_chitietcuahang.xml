@@ -8,24 +8,64 @@
     android:orientation="vertical"
     tools:context=".ChiTietCuaHang">
 
-    <ImageView
-        android:id="@+id/ivShop"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="193dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/logo_pizza" />
+        android:layout_height="256dp"
+        android:layout_marginTop="5dp">
 
-    <TextView
-        android:id="@+id/tvTenCuaHang"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/ivWallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
+
+        <ProgressBar
+            android:id="@+id/pbLoadChiTietCuaHang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:text="Pizza Food"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        android:layout_marginTop="-120dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/civAvatar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="#852F28"
+                app:civ_border_width="2dp" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvTenCuaHang"
+            style="@style/Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/tencuahang"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/black" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -142,8 +182,7 @@
                 android:padding="5dp"
                 android:text="@string/yeuthich"
                 android:textAllCaps="false"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/black" />
 
 
             <ImageView
@@ -227,9 +266,9 @@ leo malesuada" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_paper"

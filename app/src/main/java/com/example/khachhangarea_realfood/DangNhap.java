@@ -33,6 +33,11 @@ public class DangNhap extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setControl();
         setEvent();
+        if(mAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), Home.class);
+            edtEmail.setText(mAuth.getCurrentUser().getEmail());
+            startActivity(intent);
+        }
     }
 
     private void setEvent() {

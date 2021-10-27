@@ -88,6 +88,7 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
             }
         };
 
+
     }
 
     @Override
@@ -126,6 +127,7 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
                 onClickListener.onClick(v);
             }
         }
+
     }
     public interface ClickItemShopListener {
         void getInformationShop(CuaHang cuaHang);

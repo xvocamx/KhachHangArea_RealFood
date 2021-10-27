@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -30,14 +31,18 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChiTietCuaHang extends AppCompatActivity {
     private TabLayout mTabLayout;
     private ViewPager2 mViewPager;
     private ViewPaperAdapter viewPaperAdapter;
     private TextView tvTenCuaHang, tvEmail, tvDiaChi, tvPhone, tvMota;
     private Button btnYeuThich;
-    private ImageView ivShop;
+    private ImageView ivWallPaper;
+    private CircleImageView civAvatar;
     private CuaHang cuaHang;
+    private ProgressBar pbLoadChiTietCuaHang;
     private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
     @Override
@@ -91,14 +96,28 @@ public class ChiTietCuaHang extends AppCompatActivity {
                 public void onSuccess(Uri uri) {
                     Glide.with(getApplicationContext())
                             .load(uri)
-                            .into(ivShop);
+                            .into(civAvatar);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d("",e.getMessage());
+                    Log.d("", e.getMessage());
                 }
             });
+            storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("WallPaper").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(getApplicationContext())
+                            .load(uri)
+                            .into(ivWallPaper);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("", e.getMessage());
+                }
+            });
+            pbLoadChiTietCuaHang.setVisibility(View.GONE);
         }
     }
 
@@ -134,7 +153,9 @@ public class ChiTietCuaHang extends AppCompatActivity {
         tvPhone = findViewById(R.id.tvPhone);
         tvDiaChi = findViewById(R.id.tvDiaChi);
         tvMota = findViewById(R.id.tvMoTa);
-        ivShop = findViewById(R.id.ivShop);
+        civAvatar = findViewById(R.id.civAvatar);
+        ivWallPaper = findViewById(R.id.ivWallpaper);
         btnYeuThich = findViewById(R.id.btnYeuThich);
+        pbLoadChiTietCuaHang = findViewById(R.id.pbLoadChiTietCuaHang);
     }
 }

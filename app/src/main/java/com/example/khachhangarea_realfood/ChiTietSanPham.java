@@ -10,10 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
@@ -43,6 +46,7 @@ public class ChiTietSanPham extends AppCompatActivity {
     private ImageView ivFood, ivShop;
     private SanPham sanPham;
     private CuaHang cuaHang;
+    private ProgressBar pbLoadChiTietSanPham;
     private Button btnXemShop, btnDatHang;
     private ElegantNumberButton btnSoLuong;
     private ArrayList<CuaHang> cuaHangs = new ArrayList<>();
@@ -87,10 +91,9 @@ public class ChiTietSanPham extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        cuaHang = dataSnapshot.getValue(CuaHang.class);
+                        CuaHang cuaHang = dataSnapshot.getValue(CuaHang.class);
                         cuaHangs.add(cuaHang);
-                        String idCuaHang = sanPham.getIDCuaHang();
-                        if (idCuaHang.equals(cuaHang.getIDCuaHang())) {
+                        if (sanPham.getIDCuaHang().equals(cuaHang.getIDCuaHang())) {
                             tvTenCuaHang.setText(cuaHang.getTenCuaHang());
                             tvAddressShop.setText(cuaHang.getDiaChi());
                             storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -106,9 +109,21 @@ public class ChiTietSanPham extends AppCompatActivity {
                                     Log.d("", e.getMessage());
                                 }
                             });
+                            btnXemShop.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(ChiTietSanPham.this, ChiTietCuaHang.class);
+                                    Gson gson = new Gson();
+                                    String data = gson.toJson(cuaHang);
+                                    intent.putExtra("dataCuaHang", data);
+                                    startActivity(intent);
+                                    Toast.makeText(ChiTietSanPham.this, cuaHang.getIDCuaHang() + "", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
 
                     }
+
                 }
 
                 @Override
@@ -121,16 +136,7 @@ public class ChiTietSanPham extends AppCompatActivity {
     }
 
     private void setEvent() {
-        btnXemShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ChiTietSanPham.this, ChiTietCuaHang.class);
-                Gson gson = new Gson();
-                String data = gson.toJson(cuaHang);
-                intent.putExtra("dataCuaHang", data);
-                startActivity(intent);
-            }
-        });
+
         btnDatHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,12 +148,19 @@ public class ChiTietSanPham extends AppCompatActivity {
     private void addGioHang() {
         String soLuong = btnSoLuong.getNumber();
         UUID uuid = UUID.randomUUID();
-        String IDInfo = "MD_"+uuid.toString() ;
-        String IDSanPham = sanPham.getIDSanPham();
+        String IDInfo = "MD_" + uuid.toString();
         String donGia = sanPham.getGia();
-        DonHangInfo donHangInfo = new DonHangInfo(IDInfo,"",IDSanPham,soLuong,donGia,null);
-        mDatabase.child("DonHangInfo").child(user.getUid()).child(IDInfo).setValue(donHangInfo);
+        DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", soLuong, donGia, null, sanPham);
+        mDatabase.child("DonHangInfo").child(user.getUid()).child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Intent intent = new Intent(ChiTietSanPham.this, GioHang.class);
+                startActivity(intent);
+                Toast.makeText(ChiTietSanPham.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     private void setControl() {
         tvNameFood = findViewById(R.id.tvTenSanPham);

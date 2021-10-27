@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class KhachHang {
     String IDKhachHang, tenKhachHang, diaChi, soDienThoai, khuVuc, email, trangThai, avatar;
-
     public KhachHang() {
     }
 

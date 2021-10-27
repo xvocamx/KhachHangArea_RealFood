@@ -7,22 +7,16 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="Trung"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:src="@drawable/ic_camera" />
@@ -53,6 +47,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvSua"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/s_a"
@@ -291,16 +286,17 @@
                 style="@style/textviewinformation"
                 android:drawableLeft="@drawable/ic_document"
                 android:text="@string/d_ch_v_v_ch_ch_s_ch" />
+
             <Button
                 android:id="@+id/btnDangXuat"
-                android:layout_margin="30dp"
-                android:text="Đăng xuất"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:background="@drawable/custom_button_dangxuat"
-                android:textAllCaps="false"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"/>
+                android:layout_height="50dp"
+                android:layout_margin="30dp"
+                android:background="@drawable/custom_button_dangxuat"
+                android:text="Đăng xuất"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
         </LinearLayout>
     </ScrollView>
 
