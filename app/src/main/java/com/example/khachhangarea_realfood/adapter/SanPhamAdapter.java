@@ -107,8 +107,8 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                 mDatabase.child("DonHangInfo").child(auth.getUid()).child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Intent intent = new Intent(context, GioHang.class);
-                        context.startActivity(intent);
+//                        Intent intent = new Intent(context, GioHang.class);
+//                        context.startActivity(intent);
                         Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                     }
                 });

@@ -176,12 +176,13 @@
                 android:layout_height="35dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/custom_button_dangxuat"
+                android:background="@drawable/button_yeuthich_selected"
                 android:drawableLeft="@drawable/ic_favorite_pink"
                 android:drawablePadding="5dp"
                 android:padding="5dp"
                 android:text="@string/yeuthich"
                 android:textAllCaps="false"
+                android:clickable="true"
                 android:textColor="@color/black" />
 
 

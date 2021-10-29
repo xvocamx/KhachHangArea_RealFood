@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.SearchManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
@@ -26,6 +28,7 @@ public class SearchViewSanPham extends AppCompatActivity {
     private ArrayList<SanPham> sanPhams;
     private DatabaseReference mDatabase;
     private LinearLayoutManager linearLayoutManager;
+    private ProgressBar pbLoadTimKiemSanPham;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class SearchViewSanPham extends AppCompatActivity {
                     sanPhams.add(sanPham);
                     sanPhamAdapter.notifyDataSetChanged();
                 }
+                pbLoadTimKiemSanPham.setVisibility(View.GONE);
             }
 
             @Override
@@ -84,6 +88,7 @@ public class SearchViewSanPham extends AppCompatActivity {
     private void setControl() {
         rcvSanPham = findViewById(R.id.rcvSanPham);
         searchView = findViewById(R.id.searchViewFood);
+        pbLoadTimKiemSanPham = findViewById(R.id.pbLoadTimKiemSanPham);
     }
 
     @Override

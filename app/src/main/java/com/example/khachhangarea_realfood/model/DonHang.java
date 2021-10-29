@@ -3,12 +3,13 @@ package com.example.khachhangarea_realfood.model;
 import java.util.ArrayList;
 
 public class DonHang {
-    String IDDonHang,IDKhachHang,IDShipper,diaChi,soDienThoai,trangThai,ghiChu,tongTien;
+    String IDDonHang,IDKhachHang,IDShipper,diaChi,soDienThoai,trangThai,ghiChu;
+    int tongTien;
 
     public DonHang() {
     }
 
-    public DonHang(String IDDonHang, String IDKhachHang, String IDShipper, String diaChi, String soDienThoai, String trangThai, String ghiChu, String tongTien) {
+    public DonHang(String IDDonHang, String IDKhachHang, String IDShipper, String diaChi, String soDienThoai, String trangThai, String ghiChu, int tongTien) {
         this.IDDonHang = IDDonHang;
         this.IDKhachHang = IDKhachHang;
         this.IDShipper = IDShipper;
@@ -75,11 +76,11 @@ public class DonHang {
         this.ghiChu = ghiChu;
     }
 
-    public String getTongTien() {
+    public int getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(String tongTien) {
+    public void setTongTien(int tongTien) {
         this.tongTien = tongTien;
     }
 }

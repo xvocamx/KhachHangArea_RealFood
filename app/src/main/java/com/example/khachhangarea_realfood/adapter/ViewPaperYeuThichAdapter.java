@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.khachhangarea_realfood.fragment.YeuThichFoodFragment;
+import com.example.khachhangarea_realfood.fragment.YeuThichShopFragment;
+
 public class ViewPaperYeuThichAdapter extends FragmentStateAdapter {
 
     public ViewPaperYeuThichAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -14,11 +17,18 @@ public class ViewPaperYeuThichAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return null;
+        switch (position){
+            case 0:
+                return new YeuThichFoodFragment();
+            case 1:
+                return new YeuThichShopFragment();
+            default:
+                return new YeuThichFoodFragment();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return 2;
     }
 }

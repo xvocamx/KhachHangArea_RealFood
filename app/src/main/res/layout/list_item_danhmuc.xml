@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <ImageView
+            android:id="@+id/ivDanhMuc"
             android:layout_margin="5dp"
             android:src="@drawable/user"
             android:scaleType="fitXY"

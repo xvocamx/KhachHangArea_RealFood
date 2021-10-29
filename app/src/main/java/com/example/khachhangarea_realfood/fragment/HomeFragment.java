@@ -28,9 +28,11 @@ import com.example.khachhangarea_realfood.SearchViewSanPham;
 import com.example.khachhangarea_realfood.TrangThaiCuaHang;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.DanhMucAdapter;
+import com.example.khachhangarea_realfood.adapter.LoaiSanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DanhMuc;
+import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,15 +52,13 @@ public class HomeFragment extends Fragment {
     private View mView;
     private SanPhamAdapter sanPhamAdapter;
     private CuaHangAdapter cuaHangAdapter;
-    private DanhMucAdapter danhMucAdapter;
+    private LoaiSanPhamAdapter loaiSanPhamAdapter;
     private ArrayList<SanPham> sanPhamSaleFoods, sanPhamPopularFoods;
     private ArrayList<CuaHang> cuaHangs;
-    private ArrayList<DanhMuc> danhMucs;
+    private ArrayList<LoaiSanPham> loaiSanPhams;
     private DatabaseReference mDatabase;
-    private LinearLayoutManager linearLayoutManagerSaleFood, linearLayoutManagerPopularShop, linearLayoutManagerPopularFood, linearLayoutManagerDanhMuc;
-    private RecyclerView rcvFoodSale, rcvPopularShop, rcvPopularFood, rcvDanhMuc;
-    private Spinner spCategory;
-    private SearchView svFood;
+    private LinearLayoutManager linearLayoutManagerSaleFood, linearLayoutManagerPopularShop, linearLayoutManagerPopularFood, linearLayoutManagerLoai;
+    private RecyclerView rcvFoodSale, rcvPopularShop, rcvPopularFood, rcvLoai;
     private Button btnTimKiem;
     private ImageView ivMyOrder;
     private ProgressBar pbLoad;
@@ -89,10 +89,10 @@ public class HomeFragment extends Fragment {
         cuaHangs = new ArrayList<>();
         sanPhamSaleFoods = new ArrayList<>();
         sanPhamPopularFoods = new ArrayList<>();
-        danhMucs = new ArrayList<>();
+        loaiSanPhams = new ArrayList<>();
         sanPhamAdapter = new SanPhamAdapter(getActivity(), R.layout.list_item_food, sanPhamSaleFoods);
         cuaHangAdapter = new CuaHangAdapter(getActivity(), R.layout.list_item_shop, cuaHangs);
-        danhMucAdapter = new DanhMucAdapter(getActivity(), R.layout.list_item_danhmuc, danhMucs);
+        loaiSanPhamAdapter = new LoaiSanPhamAdapter(getActivity(), R.layout.list_item_loaisanpham, loaiSanPhams);
         setControl();
         setEvent();
         return mView;
@@ -119,11 +119,11 @@ public class HomeFragment extends Fragment {
         rcvPopularFood.setAdapter(sanPhamAdapter);
         getPopularFood();
         //Danh muc
-        linearLayoutManagerDanhMuc = new LinearLayoutManager(getActivity());
-        linearLayoutManagerDanhMuc.setOrientation(RecyclerView.HORIZONTAL);
-        rcvDanhMuc.setLayoutManager(linearLayoutManagerDanhMuc);
-        rcvDanhMuc.setAdapter(danhMucAdapter);
-        getDanhMuc();
+        linearLayoutManagerLoai = new LinearLayoutManager(getActivity());
+        linearLayoutManagerLoai.setOrientation(RecyclerView.HORIZONTAL);
+        rcvLoai.setLayoutManager(linearLayoutManagerLoai);
+        rcvLoai.setAdapter(loaiSanPhamAdapter);
+        getLoai();
 
         sanPhamAdapter.setDelegation(new SanPhamAdapter.ClickItemFoodListener() {
             @Override
@@ -146,6 +146,13 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(), cuaHang.getIDCuaHang()+"", Toast.LENGTH_SHORT).show();
             }
         });
+//        loaiSanPhamAdapter.setDelegation(new LoaiSanPhamAdapter.ClickItemLoai() {
+//            @Override
+//            public void getLoai(LoaiSanPham loaiSanPham) {
+//                Intent intent = new Intent(getContext(),LoaiSanPham.class);
+//                getActivity().startActivity(intent);
+//            }
+//        });
         ivMyOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,36 +170,17 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void getDanhMuc() {
-        ArrayList<CuaHang> cuaHangs = new ArrayList<>();
-        mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
+    public void getLoai() {
+        mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                cuaHangs.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    cuaHang = dataSnapshot.getValue(CuaHang.class);
-                    if (cuaHang.getTrangThaiCuaHang() != TrangThaiCuaHang.ChuaKichHoat) {
-                        cuaHangs.add(cuaHang);
-                    }
+                loaiSanPhams.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    LoaiSanPham loaiSanPham = dataSnapshot.getValue(LoaiSanPham.class);
+                    loaiSanPhams.add(loaiSanPham);
+                    loaiSanPhamAdapter.notifyDataSetChanged();
                 }
-                for (CuaHang cuaHang : cuaHangs) {
-                    mDatabase.child("DanhMuc").child(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                DanhMuc danhMuc = postSnapshot.getValue(DanhMuc.class);
-                                danhMucs.add(danhMuc);
-                                danhMucAdapter.notifyDataSetChanged();
-                            }
-                            pbLoad.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
+                pbLoad.setVisibility(View.GONE);
             }
 
             @Override
@@ -266,12 +254,9 @@ public class HomeFragment extends Fragment {
         rcvFoodSale = mView.findViewById(R.id.rcvFoodSale);
         rcvPopularFood = mView.findViewById(R.id.rcvPopularFood);
         rcvPopularShop = mView.findViewById(R.id.rcvPopularShop);
-        rcvDanhMuc = mView.findViewById(R.id.rcvDanhMuc);
-        spCategory = mView.findViewById(R.id.spCategory);
-        svFood = mView.findViewById(R.id.searchViewFood);
+        rcvLoai = mView.findViewById(R.id.rcvLoai);
         ivMyOrder = mView.findViewById(R.id.ivMyOrder);
         pbLoad = mView.findViewById(R.id.pbLoad);
-        svFood = mView.findViewById(R.id.searchViewFood);
         btnTimKiem = mView.findViewById(R.id.btnTimKiem);
     }
 }

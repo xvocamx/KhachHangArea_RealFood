@@ -42,32 +42,22 @@
 
             </LinearLayout>
 
-            <Spinner
-                android:id="@+id/spCategory"
-                android:layout_width="match_parent"
-                android:layout_height="31dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:background="@drawable/custom_spinner"
-                android:entries="@array/category" />
 
             <SearchView
-                android:visibility="gone"
                 android:id="@+id/searchViewFood"
                 android:layout_width="match_parent"
                 android:layout_height="57dp"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/custom_sreachview"
                 android:iconifiedByDefault="false"
                 android:queryBackground="@null"
                 android:queryHint="Search Food" />
 
             <Button
-                android:layout_marginTop="10dp"
                 android:background="@drawable/custom_button"
                 android:id="@+id/btnTimKiem"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"/>
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcvDanhMuc"
+                    android:id="@+id/rcvLoai"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </FrameLayout>
@@ -165,6 +155,7 @@
                     android:textSize="20dp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="21dp"

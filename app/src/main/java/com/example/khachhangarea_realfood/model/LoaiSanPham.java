@@ -1,22 +1,31 @@
 package com.example.khachhangarea_realfood.model;
 
 public class LoaiSanPham {
-    String IDLoai, tenLoai;
+    String iDLoai, sTT, tenLoai;
 
-    public LoaiSanPham(String IDLoai, String tenLoai) {
-        this.IDLoai = IDLoai;
+    public LoaiSanPham(String iDLoai, String sTT, String tenLoai) {
+        this.iDLoai = iDLoai;
+        this.sTT = sTT;
         this.tenLoai = tenLoai;
     }
 
     public LoaiSanPham() {
     }
 
-    public String getIDLoai() {
-        return IDLoai;
+    public String getiDLoai() {
+        return iDLoai;
     }
 
-    public void setIDLoai(String IDLoai) {
-        this.IDLoai = IDLoai;
+    public void setiDLoai(String iDLoai) {
+        this.iDLoai = iDLoai;
+    }
+
+    public String getsTT() {
+        return sTT;
+    }
+
+    public void setsTT(String sTT) {
+        this.sTT = sTT;
     }
 
     public String getTenLoai() {
@@ -25,13 +34,5 @@ public class LoaiSanPham {
 
     public void setTenLoai(String tenLoai) {
         this.tenLoai = tenLoai;
-    }
-
-    @Override
-    public String toString() {
-        return "LoaiSanPham{" +
-                "IDLoai='" + IDLoai + '\'' +
-                ", tenLoai='" + tenLoai + '\'' +
-                '}';
     }
 }

@@ -210,9 +210,6 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
         SparseBooleanArray sparse = booleanArray;
         for (int i = 0; i < sparse.size(); i++) {
             if (sparse.valueAt(i)) {
-                Log.d("position of key",""+sparse.indexOfKey(i));
-                Log.d("position ",""+position);
-
                 if (sparse.keyAt(i)==position)
                 {
                     holder.ckbSanPham.setChecked(true);

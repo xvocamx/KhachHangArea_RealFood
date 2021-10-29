@@ -5,11 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,6 +30,7 @@ import com.example.khachhangarea_realfood.adapter.ItemGioHangAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
+import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class GioHang extends AppCompatActivity {
     private LinearLayout lnGhiChu;
@@ -45,9 +53,9 @@ public class GioHang extends AppCompatActivity {
     private DonHangInfo donHangInfo;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private TextView tvTongPhu, tvChiPhiVanChuyen, tvTongTien;
+    private TextView tvTongPhu, tvChiPhiVanChuyen, tvTongTien, tvNoiDung, tvTien;
     private ProgressBar pbLoadGioHang;
-    private Button btnThanhToan;
+    private Button btnThanhToan, btnXacNhan, btnHuy;
     private KAlertDialog kAlertDialog;
     int tong = 0;
 
@@ -72,7 +80,6 @@ public class GioHang extends AppCompatActivity {
                     DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
                     donHangInfos.add(donHangInfo);
                 }
-                SparseBooleanArray array = gioHangAdapter.getBooleanArray();
                 gioHangAdapter.notifyDataSetChanged();
                 pbLoadGioHang.setVisibility(View.GONE);
             }
@@ -102,13 +109,6 @@ public class GioHang extends AppCompatActivity {
                 }
             }
         });
-        btnThanhToan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
 
         gioHangAdapter.setCheckBoxListener(new GioHangAdapter.CheckBoxListener() {
             @Override
@@ -117,32 +117,102 @@ public class GioHang extends AppCompatActivity {
                 SparseBooleanArray sparse = gioHangAdapter.getBooleanArray();
                 for (int i = 0; i < sparse.size(); i++) {
                     if (sparse.valueAt(i)) {
-                        DonHangInfo donHang = donHangInfos.get(sparse.keyAt(i));
-                        tong += Integer.parseInt(donHang.getDonGia()) * Integer.parseInt(donHang.getSoLuong());
+                        DonHangInfo donHangInfo = donHangInfos.get(sparse.keyAt(i));
+                        tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong());
                     }
+
                 }
                 tvTongPhu.setText(tong + "");
-                int phiVanChuyen = 30000;
-                tvChiPhiVanChuyen.setText(phiVanChuyen + "");
-                int tongTien = tong + phiVanChuyen;
-                tvTongTien.setText(tongTien + "");
+                if (tong == 0) {
+
+                    tvChiPhiVanChuyen.setText(0 + "");
+                    tvTongTien.setText(0 + "");
+                }
+                else {
+                    int phiVanChuyen = 30000;
+                    tvChiPhiVanChuyen.setText(phiVanChuyen + "");
+                    int tongTien = tong + phiVanChuyen;
+                    tvTongTien.setText(tongTien + "");
+                    btnThanhToan.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int tien = tongTien;
+                            openThanhToan(Gravity.CENTER, tien);
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
+    private void openThanhToan(int gravity, int tien) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_thanhtoan);
+
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = gravity;
+        window.setAttributes(windowAttributes);
+
+
+        dialog.setCancelable(false);
+
+        btnXacNhan = dialog.findViewById(R.id.btnXacNhan);
+        btnHuy = dialog.findViewById(R.id.btnHuy);
+        tvNoiDung = dialog.findViewById(R.id.tvNoiDung);
+        tvTien = dialog.findViewById(R.id.tvTien);
+        String noiDung = "Chuyển tiền đến số tài khoản\n" + "1212425256\n" + "Dat\n" + "Ngân hàng: " + "Ngân hàng Thương mại TNHH MTV Đại Dương";
+        tvNoiDung.setText(noiDung);
+        tvTien.setText(tien + "");
+
+
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnXacNhan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String IDDonHang = "DH_" + UUID.randomUUID().toString();
+                String ghiChu = edtGhiChu.getText().toString();
+                mDatabase.child("KhachHang").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        KhachHang khachHang = snapshot.getValue(KhachHang.class);
+                        DonHang donHang = new DonHang(IDDonHang, auth.getUid(), null, khachHang.getDiaChi(), khachHang.getSoDienThoai(), "Chờ xác nhận", ghiChu, tien);
+                        mDatabase.child("DonHang").child(auth.getUid()).child(IDDonHang).setValue(donHang);
+                        SparseBooleanArray sparse = gioHangAdapter.getBooleanArray();
+                        for (int i = 0; i < sparse.size(); i++) {
+                            if (sparse.valueAt(i)) {
+                                DonHangInfo donHangInfo = donHangInfos.get(sparse.keyAt(i));
+                                donHangInfo.setIDDonHang(IDDonHang);
+                                mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).setValue(donHangInfo);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
             }
         });
-        btnThanhToan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                kAlertDialog = new KAlertDialog(GioHang.this, KAlertDialog.NORMAL_TYPE)
-                        .setTitleText("Thông báo")
-                        .setTitleText("Chuyển tiền đến số tài khoản\n" +
-                                "4551002489377\n" +
-                                "NGUYEN VAN A\n" +
-                                "Ngân hàng: Vietcombank\n" + "Số tiền: " + tong + " VNĐ")
-                        .setConfirmText("Xác nhận")
-                        .setCancelText("Hủy");
-                kAlertDialog.show();
-            }
-        });
+
+        dialog.show();
     }
 
     private void setControl() {
@@ -154,5 +224,6 @@ public class GioHang extends AppCompatActivity {
         tvTongTien = findViewById(R.id.tvTongTien);
         pbLoadGioHang = findViewById(R.id.pbLoadGioHang);
         btnThanhToan = findViewById(R.id.btnThanhToan);
+
     }
 }

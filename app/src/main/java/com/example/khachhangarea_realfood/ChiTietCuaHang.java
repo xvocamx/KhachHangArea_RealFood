@@ -1,6 +1,7 @@
 package com.example.khachhangarea_realfood;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.viewpager2.widget.ViewPager2;
@@ -23,10 +24,17 @@ import com.bumptech.glide.Glide;
 import com.example.khachhangarea_realfood.adapter.ViewPaperAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.SanPham;
+import com.example.khachhangarea_realfood.model.YeuThich;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -44,6 +52,8 @@ public class ChiTietCuaHang extends AppCompatActivity {
     private CuaHang cuaHang;
     private ProgressBar pbLoadChiTietCuaHang;
     private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +127,22 @@ public class ChiTietCuaHang extends AppCompatActivity {
                     Log.d("", e.getMessage());
                 }
             });
+//            mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+//                        YeuThich yeuThich = dataSnapshot.getValue(YeuThich.class);
+//                        if(yeuThich.getCuaHang().getIDCuaHang().equals(cuaHang.getIDCuaHang())){
+//                            btnYeuThich.setSelected(true);
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
             pbLoadChiTietCuaHang.setVisibility(View.GONE);
         }
     }
@@ -138,9 +164,24 @@ public class ChiTietCuaHang extends AppCompatActivity {
             }
         }).attach();
         btnYeuThich.setOnClickListener(new View.OnClickListener() {
+            int check = 1;
             @Override
             public void onClick(View v) {
+                if(check == 1){
+                    btnYeuThich.setSelected(true);
+                    check = 0;
+                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).setValue(cuaHang);
+                }
+                else {
+                    btnYeuThich.setSelected(false);
+                    check = 1;
+                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 
+                        }
+                    });
+                }
             }
         });
     }
