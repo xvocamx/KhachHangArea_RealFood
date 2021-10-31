@@ -2,6 +2,7 @@ package com.example.khachhangarea_realfood;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ public class DanhSachLoai extends AppCompatActivity {
     private SanPhamAdapter sanPhamAdapter;
     private DatabaseReference mDatabase;
     private LinearLayoutManager linearLayoutManager;
+    private GridLayoutManager gridLayoutManager;
     private ProgressBar pbLoadLoai;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +75,10 @@ public class DanhSachLoai extends AppCompatActivity {
     }
 
     private void setEvent() {
+        gridLayoutManager = new GridLayoutManager(this,2);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        rcvLoai.setLayoutManager(linearLayoutManager);
+        rcvLoai.setLayoutManager(gridLayoutManager);
         rcvLoai.setAdapter(sanPhamAdapter);
         LoadItemLoai();
 

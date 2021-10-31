@@ -36,7 +36,7 @@
                 android:layout_height="100dp"
                 android:layout_marginRight="10dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/pizza" />
+                 />
             <ProgressBar
                 android:id="@+id/pbLoadItemGioHang"
                 android:layout_gravity="center"
@@ -103,12 +103,13 @@
             <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
                 android:id="@+id/btnSoLuong"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="30sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 app:backGroundColor="@color/orange"
                 app:backgroundDrawable="@drawable/custom_button"
-                app:textSize="7dp" />
+                app:textSize="7dp"
+                android:minHeight="20dp"/>
 
             <EditText
                 android:id="@+id/edtMaGiamGia"

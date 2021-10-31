@@ -19,7 +19,7 @@
         android:layout_height="60dp"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
-        app:bb_activeTabColor="@color/orange"
-        app:bb_inActiveTabColor="#B3B1B1"
+        app:bb_activeTabColor="#93242A"
+        app:bb_inActiveTabColor="#D8D7D7"
         app:bb_tabXmlResource="@xml/bottombar_tabs" />
 </LinearLayout>

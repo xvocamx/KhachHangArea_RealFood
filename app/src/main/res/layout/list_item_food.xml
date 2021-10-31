@@ -14,7 +14,7 @@
         android:layout_height="193dp"
         android:layout_margin="2dp"
         android:scaleType="fitXY"
-        android:src="@drawable/pizza" />
+         />
 
     <LinearLayout
         android:layout_width="match_parent"
