@@ -108,7 +108,7 @@
                 android:layout_marginBottom="10dp"
                 app:backGroundColor="@color/orange"
                 app:backgroundDrawable="@drawable/custom_button"
-                app:textSize="8dp" />
+                app:textSize="7dp" />
 
             <EditText
                 android:id="@+id/edtMaGiamGia"

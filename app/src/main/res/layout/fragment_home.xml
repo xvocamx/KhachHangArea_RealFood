@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <ScrollView
@@ -24,18 +25,27 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:text="Good morning"
+                    android:layout_marginRight="20dp"
                     android:textColor="@color/black"
                     android:textSize="20dp" />
+
                 <FrameLayout
+                    android:layout_marginRight="20dp"
+
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_gravity="right"
+
+                    <ru.nikartm.support.ImageBadgeView
                         android:id="@+id/ivMyOrder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        app:ibv_badgePadding="7dp"
+                        app:ibv_badgeTextSize="10dp"
+                        app:ibv_badgeTextColor="#ffffff"
+                        app:ibv_visibleBadge="false"
+                        app:ibv_badgeLimitValue="true"
                         android:src="@drawable/ic_shopping_cart" />
                 </FrameLayout>
 
@@ -57,12 +67,13 @@
             <Button
                 android:background="@drawable/custom_button"
                 android:id="@+id/btnTimKiem"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:textAllCaps="false"
                 android:text="Tìm kiếm"/>
 
             <FrameLayout

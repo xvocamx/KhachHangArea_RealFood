@@ -52,19 +52,12 @@
                 style="@style/button"
                 android:text="@string/dangnhap" />
 
-            <TextView
-                android:id="@+id/tvQuenMatKhau"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="20dp"
-                android:text="@string/quenmatkhau"
-                android:textSize="16dp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -85,6 +78,13 @@
                     android:textColor="@color/orange"
                     android:textSize="14dp" />
             </LinearLayout>
+            <TextView
+                android:id="@+id/tvQuenMatKhau"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/quenmatkhau"
+                android:textSize="15dp" />
         </LinearLayout>
     </ScrollView>
 

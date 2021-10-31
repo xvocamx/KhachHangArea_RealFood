@@ -34,6 +34,7 @@ import com.example.khachhangarea_realfood.adapter.LoaiSanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DanhMuc;
+import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
@@ -46,6 +47,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+
+import ru.nikartm.support.ImageBadgeView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,7 +67,7 @@ public class HomeFragment extends Fragment {
     private LinearLayoutManager linearLayoutManagerSaleFood, linearLayoutManagerPopularShop, linearLayoutManagerPopularFood, linearLayoutManagerLoai;
     private RecyclerView rcvFoodSale, rcvPopularShop, rcvPopularFood, rcvLoai;
     private Button btnTimKiem;
-    private ImageView ivMyOrder;
+    private ImageBadgeView ivMyOrder;
     private ProgressBar pbLoad;
     private TextView tvGood;
     CuaHang cuaHang;
@@ -180,7 +183,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 KhachHang khachHang = snapshot.getValue(KhachHang.class);
-                tvGood.setText("Good morning "+khachHang.getTenKhachHang());
+                tvGood.setText("Chào buổi sáng , "+khachHang.getTenKhachHang()+" !");
             }
 
             @Override
@@ -188,6 +191,18 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        mDatabase.child("DonHangInfo").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ivMyOrder.setBadgeValue((int) snapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
     }
 

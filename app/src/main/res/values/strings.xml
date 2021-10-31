@@ -3,7 +3,7 @@
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
     <string name="dangnhap">Đăng nhập</string>
-    <string name="quenmatkhau">Quên mật khẩu</string>
+    <string name="quenmatkhau">Quên mật khẩu?</string>
     <string name="bancotaikhoanchua">Bạn có tài khoản chưa ?</string>
     <string name="dangky">Đăng ký</string>
     <string name="hoten">Họ tên</string>
