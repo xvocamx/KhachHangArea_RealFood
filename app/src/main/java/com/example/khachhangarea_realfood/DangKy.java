@@ -12,10 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.khachhangarea_realfood.model.KhachHang;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class DangKy extends AppCompatActivity {
     private EditText edtName, edtEmail, edtPhone, edtAddress, edtPassword, edtConfirmPassword;
@@ -24,6 +27,7 @@ public class DangKy extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,13 +88,14 @@ public class DangKy extends AppCompatActivity {
             progressDialog.setTitle("Đăng ký");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
-
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
+                                KhachHang khachHang = new KhachHang(mAuth.getUid(),name,address,phone,"",email,"",null);
+                                mDatabase.child("KhachHang").child(mAuth.getUid()).setValue(khachHang);
                                 progressDialog.dismiss();
                                 Toast.makeText(DangKy.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(DangKy.this, Home.class);
@@ -103,6 +108,7 @@ public class DangKy extends AppCompatActivity {
                             }
                         }
                     });
+
         }
     }
 

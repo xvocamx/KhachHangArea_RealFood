@@ -28,7 +28,6 @@ public class SearchViewSanPham extends AppCompatActivity {
     private SanPhamAdapter sanPhamAdapter;
     private ArrayList<SanPham> sanPhams;
     private DatabaseReference mDatabase;
-    private LinearLayoutManager linearLayoutManager;
     private GridLayoutManager gridLayoutManager;
     private ProgressBar pbLoadTimKiemSanPham;
 
@@ -45,8 +44,6 @@ public class SearchViewSanPham extends AppCompatActivity {
 
     private void setEvent() {
         gridLayoutManager = new GridLayoutManager(this,2);
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvSanPham.setLayoutManager(gridLayoutManager);
         rcvSanPham.setAdapter(sanPhamAdapter);
         LoadSanPham();

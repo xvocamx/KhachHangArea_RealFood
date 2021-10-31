@@ -48,4 +48,6 @@ dependencies {
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
     implementation 'com.github.TutorialsAndroid:KAlertDialog:v14.0.19'
     implementation 'com.github.jrvansuita:PickImage:+'
+    implementation 'io.github.nikartm:image-support:2.0.0'
+
 }
