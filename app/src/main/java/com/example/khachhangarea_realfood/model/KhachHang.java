@@ -1,11 +1,9 @@
 package com.example.khachhangarea_realfood.model;
 
-import java.util.ArrayList;
 
 public class KhachHang {
     String IDKhachHang, tenKhachHang, diaChi, soDienThoai, khuVuc, email, trangThai, avatar;
-    public KhachHang() {
-    }
+
 
     public KhachHang(String IDKhachHang, String tenKhachHang, String diaChi, String soDienThoai, String khuVuc, String email, String trangThai, String avatar) {
         this.IDKhachHang = IDKhachHang;
@@ -16,6 +14,8 @@ public class KhachHang {
         this.email = email;
         this.trangThai = trangThai;
         this.avatar = avatar;
+    }
+    public KhachHang() {
     }
 
     public String getIDKhachHang() {

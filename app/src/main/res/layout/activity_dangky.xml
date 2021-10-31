@@ -6,79 +6,92 @@
     android:orientation="vertical"
     tools:context=".DangKy">
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="@string/dangky"
-        android:textSize="30dp" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edtName"
-        style="@style/edittext"
-        android:drawableLeft="@drawable/ic_person"
-        android:hint="@string/hoten" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edtEmail"
-        style="@style/edittext"
-        android:drawableLeft="@drawable/ic_email"
-        android:hint="@string/email" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/dangky"
+                android:textSize="30dp" />
 
-    <EditText
-        android:id="@+id/edtPhone"
-        style="@style/edittext"
-        android:drawableLeft="@drawable/ic_phone"
-        android:hint="@string/sdt"
-        android:inputType="phone" />
+            <EditText
+                android:id="@+id/edtName"
+                style="@style/edittext"
+                android:drawableLeft="@drawable/ic_person"
+                android:hint="@string/hoten" />
 
-    <EditText
-        android:id="@+id/edtAddress"
-        style="@style/edittext"
-        android:drawableLeft="@drawable/ic_location"
-        android:hint="@string/diachi" />
+            <EditText
+                android:id="@+id/edtEmail"
+                style="@style/edittext"
+                android:drawableLeft="@drawable/ic_email"
+                android:hint="@string/email" />
 
-    <EditText
-        android:id="@+id/edtPassword"
-        style="@style/edittext"
-        android:drawableLeft="@drawable/ic_lock"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
+            <EditText
+                android:id="@+id/edtPhone"
+                style="@style/edittext"
+                android:drawableLeft="@drawable/ic_phone"
+                android:hint="@string/sdt"
+                android:inputType="phone" />
 
-    <EditText
-        android:id="@+id/edtConfirmPassword"
-        style="@style/edittext"
-        android:drawableLeft="@drawable/ic_lock"
-        android:hint="@string/nhaplaimatkhau"
-        android:inputType="textPassword" />
+            <EditText
+                android:id="@+id/edtAddress"
+                style="@style/edittext"
+                android:drawableLeft="@drawable/ic_location"
+                android:hint="@string/diachi" />
 
-    <Button
-        android:id="@+id/btnDangKy"
-        style="@style/button"
-        android:text="@string/dangky" />
+            <EditText
+                android:id="@+id/edtPassword"
+                style="@style/edittext"
+                android:drawableLeft="@drawable/ic_lock"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+            <EditText
+                android:id="@+id/edtConfirmPassword"
+                style="@style/edittext"
+                android:drawableLeft="@drawable/ic_lock"
+                android:hint="@string/nhaplaimatkhau"
+                android:inputType="textPassword" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="3dp"
-            android:text="@string/bandacotaikhoanroi"
-            android:textSize="14dp" />
+            <Button
+                android:id="@+id/btnDangKy"
+                style="@style/button"
+                android:text="@string/dangky" />
 
-        <TextView
-            android:id="@+id/tvDangNhap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
-            android:text="@string/dangnhap"
-            android:textColor="@color/orange"
-            android:textSize="14dp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:text="@string/bandacotaikhoanroi"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/tvDangNhap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:text="@string/dangnhap"
+                    android:textColor="@color/orange"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

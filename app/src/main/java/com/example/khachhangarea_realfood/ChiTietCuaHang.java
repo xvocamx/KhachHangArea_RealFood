@@ -39,6 +39,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
+import java.util.UUID;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChiTietCuaHang extends AppCompatActivity {
@@ -127,22 +129,22 @@ public class ChiTietCuaHang extends AppCompatActivity {
                     Log.d("", e.getMessage());
                 }
             });
-//            mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-//                        YeuThich yeuThich = dataSnapshot.getValue(YeuThich.class);
-//                        if(yeuThich.getCuaHang().getIDCuaHang().equals(cuaHang.getIDCuaHang())){
-//                            btnYeuThich.setSelected(true);
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
+            mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        YeuThich yeuThich = dataSnapshot.getValue(YeuThich.class);
+                        if (yeuThich.getCuaHang().getIDCuaHang().equals(cuaHang.getIDCuaHang())) {
+                            btnYeuThich.setSelected(true);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             pbLoadChiTietCuaHang.setVisibility(View.GONE);
         }
     }
@@ -165,19 +167,35 @@ public class ChiTietCuaHang extends AppCompatActivity {
         }).attach();
         btnYeuThich.setOnClickListener(new View.OnClickListener() {
             int check = 1;
+            String IDYeuThich = "Love_" + UUID.randomUUID().toString();
+            YeuThich yeuThich = new YeuThich(IDYeuThich, cuaHang, null);
             @Override
             public void onClick(View v) {
-                if(check == 1){
+                if (check == 1 && !btnYeuThich.isSelected()) {
                     btnYeuThich.setSelected(true);
                     check = 0;
-                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).setValue(cuaHang);
-                }
-                else {
+                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(yeuThich.getIDYeuThich()).setValue(yeuThich);
+                } else {
                     btnYeuThich.setSelected(false);
                     check = 1;
-                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
+                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                YeuThich yeuThich = dataSnapshot.getValue(YeuThich.class);
+                                if (yeuThich.getCuaHang().getIDCuaHang().equals(cuaHang.getIDCuaHang())) {
+                                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(yeuThich.getCuaHang().getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
+                                        @Override
+                                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
                         }
                     });

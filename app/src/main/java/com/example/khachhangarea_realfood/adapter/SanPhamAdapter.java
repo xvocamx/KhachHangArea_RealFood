@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +23,7 @@ import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
+import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,7 +64,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = context.getLayoutInflater();
-        LinearLayout view = (LinearLayout) layoutInflater.inflate(viewType, parent, false);
+        CardView view = (CardView) layoutInflater.inflate(viewType, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -76,7 +78,22 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         holder.tvGia.setText(sanPham.getGia());
         Float rating = Float.valueOf(sanPham.getRating());
         holder.tvRatings.setText(rating.toString());
-        holder.tvLoaiSanPham.setText(sanPham.getIDLoai());
+        mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    LoaiSanPham loaiSanPham = dataSnapshot.getValue(LoaiSanPham.class);
+                    if(loaiSanPham.getiDLoai().equals(sanPham.getIDLoai())){
+                        holder.tvLoaiSanPham.setText(loaiSanPham.getTenLoai());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+
+            }
+        });
         storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(0)).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
@@ -107,8 +124,6 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                 mDatabase.child("DonHangInfo").child(auth.getUid()).child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-//                        Intent intent = new Intent(context, GioHang.class);
-//                        context.startActivity(intent);
                         Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                     }
                 });

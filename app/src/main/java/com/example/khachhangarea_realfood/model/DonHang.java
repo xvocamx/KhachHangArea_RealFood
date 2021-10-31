@@ -1,23 +1,30 @@
 package com.example.khachhangarea_realfood.model;
 
+import com.example.khachhangarea_realfood.TrangThaiDonHang;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DonHang {
-    String IDDonHang,IDKhachHang,IDShipper,diaChi,soDienThoai,trangThai,ghiChu;
-    int tongTien;
+    String  IDDonHang , IDKhachHang , IDShipper , diaChi, soDienThoai, ghiChu_KhachHang, ghiChu_Shipper;
+    double tongTien;
+    Date ngayTao;
+    TrangThaiDonHang trangThai;
 
     public DonHang() {
     }
 
-    public DonHang(String IDDonHang, String IDKhachHang, String IDShipper, String diaChi, String soDienThoai, String trangThai, String ghiChu, int tongTien) {
+    public DonHang(String IDDonHang, String IDKhachHang, String IDShipper, String diaChi, String soDienThoai, String ghiChu_KhachHang, String ghiChu_Shipper, double tongTien, Date ngayTao, TrangThaiDonHang trangThai) {
         this.IDDonHang = IDDonHang;
         this.IDKhachHang = IDKhachHang;
         this.IDShipper = IDShipper;
         this.diaChi = diaChi;
         this.soDienThoai = soDienThoai;
-        this.trangThai = trangThai;
-        this.ghiChu = ghiChu;
+        this.ghiChu_KhachHang = ghiChu_KhachHang;
+        this.ghiChu_Shipper = ghiChu_Shipper;
         this.tongTien = tongTien;
+        this.ngayTao = ngayTao;
+        this.trangThai = trangThai;
     }
 
     public String getIDDonHang() {
@@ -60,27 +67,43 @@ public class DonHang {
         this.soDienThoai = soDienThoai;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public String getGhiChu_KhachHang() {
+        return ghiChu_KhachHang;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setGhiChu_KhachHang(String ghiChu_KhachHang) {
+        this.ghiChu_KhachHang = ghiChu_KhachHang;
     }
 
-    public String getGhiChu() {
-        return ghiChu;
+    public String getGhiChu_Shipper() {
+        return ghiChu_Shipper;
     }
 
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
+    public void setGhiChu_Shipper(String ghiChu_Shipper) {
+        this.ghiChu_Shipper = ghiChu_Shipper;
     }
 
-    public int getTongTien() {
+    public double getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(int tongTien) {
+    public void setTongTien(double tongTien) {
         this.tongTien = tongTien;
+    }
+
+    public Date getNgayTao() {
+        return ngayTao;
+    }
+
+    public void setNgayTao(Date ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+
+    public TrangThaiDonHang getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(TrangThaiDonHang trangThai) {
+        this.trangThai = trangThai;
     }
 }

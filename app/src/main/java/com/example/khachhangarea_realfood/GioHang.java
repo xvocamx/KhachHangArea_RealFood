@@ -41,6 +41,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 public class GioHang extends AppCompatActivity {
@@ -136,7 +138,7 @@ public class GioHang extends AppCompatActivity {
                     btnThanhToan.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            int tien = tongTien;
+                            double tien = tongTien;
                             openThanhToan(Gravity.CENTER, tien);
                         }
                     });
@@ -146,7 +148,7 @@ public class GioHang extends AppCompatActivity {
 
     }
 
-    private void openThanhToan(int gravity, int tien) {
+    private void openThanhToan(int gravity, double tien) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_thanhtoan);
@@ -186,11 +188,12 @@ public class GioHang extends AppCompatActivity {
             public void onClick(View v) {
                 String IDDonHang = "DH_" + UUID.randomUUID().toString();
                 String ghiChu = edtGhiChu.getText().toString();
+                Date currentTime = Calendar.getInstance().getTime();
                 mDatabase.child("KhachHang").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         KhachHang khachHang = snapshot.getValue(KhachHang.class);
-                        DonHang donHang = new DonHang(IDDonHang, auth.getUid(), null, khachHang.getDiaChi(), khachHang.getSoDienThoai(), "Chờ xác nhận", ghiChu, tien);
+                        DonHang donHang = new DonHang(IDDonHang,auth.getUid(),null,khachHang.getDiaChi(),khachHang.getSoDienThoai(),ghiChu,null,tien,currentTime,TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien);
                         mDatabase.child("DonHang").child(auth.getUid()).child(IDDonHang).setValue(donHang);
                         SparseBooleanArray sparse = gioHangAdapter.getBooleanArray();
                         for (int i = 0; i < sparse.size(); i++) {

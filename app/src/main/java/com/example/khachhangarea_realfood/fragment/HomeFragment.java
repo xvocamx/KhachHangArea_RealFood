@@ -17,11 +17,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.khachhangarea_realfood.ChiTietCuaHang;
 import com.example.khachhangarea_realfood.ChiTietSanPham;
+import com.example.khachhangarea_realfood.DanhSachLoai;
 import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.SearchViewSanPham;
@@ -32,8 +34,10 @@ import com.example.khachhangarea_realfood.adapter.LoaiSanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DanhMuc;
+import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,7 +66,9 @@ public class HomeFragment extends Fragment {
     private Button btnTimKiem;
     private ImageView ivMyOrder;
     private ProgressBar pbLoad;
+    private TextView tvGood;
     CuaHang cuaHang;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -90,7 +96,7 @@ public class HomeFragment extends Fragment {
         sanPhamSaleFoods = new ArrayList<>();
         sanPhamPopularFoods = new ArrayList<>();
         loaiSanPhams = new ArrayList<>();
-        sanPhamAdapter = new SanPhamAdapter(getActivity(), R.layout.list_item_food, sanPhamSaleFoods);
+        sanPhamAdapter = new SanPhamAdapter(getActivity(), R.layout.list_item_food_1, sanPhamSaleFoods);
         cuaHangAdapter = new CuaHangAdapter(getActivity(), R.layout.list_item_shop, cuaHangs);
         loaiSanPhamAdapter = new LoaiSanPhamAdapter(getActivity(), R.layout.list_item_loaisanpham, loaiSanPhams);
         setControl();
@@ -114,7 +120,7 @@ public class HomeFragment extends Fragment {
         getPopularShop();
         //Popular Food
         linearLayoutManagerPopularFood = new LinearLayoutManager(getActivity());
-        linearLayoutManagerPopularFood.setOrientation(RecyclerView.VERTICAL);
+        linearLayoutManagerPopularFood.setOrientation(RecyclerView.HORIZONTAL);
         rcvPopularFood.setLayoutManager(linearLayoutManagerPopularFood);
         rcvPopularFood.setAdapter(sanPhamAdapter);
         getPopularFood();
@@ -143,16 +149,18 @@ public class HomeFragment extends Fragment {
                 String data = gson.toJson(cuaHang);
                 intent.putExtra("dataCuaHang", data);
                 getActivity().startActivity(intent);
-                Toast.makeText(getContext(), cuaHang.getIDCuaHang()+"", Toast.LENGTH_SHORT).show();
             }
         });
-//        loaiSanPhamAdapter.setDelegation(new LoaiSanPhamAdapter.ClickItemLoai() {
-//            @Override
-//            public void getLoai(LoaiSanPham loaiSanPham) {
-//                Intent intent = new Intent(getContext(),LoaiSanPham.class);
-//                getActivity().startActivity(intent);
-//            }
-//        });
+        loaiSanPhamAdapter.setDelegation(new LoaiSanPhamAdapter.ClickItemLoai() {
+            @Override
+            public void getLoai(LoaiSanPham loaiSanPham) {
+                Intent intent = new Intent(getContext(), DanhSachLoai.class);
+                Gson gson = new Gson();
+                String data = gson.toJson(loaiSanPham);
+                intent.putExtra("dataLoai", data);
+                getActivity().startActivity(intent);
+            }
+        });
         ivMyOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +176,19 @@ public class HomeFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
+        mDatabase.child("KhachHang").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                KhachHang khachHang = snapshot.getValue(KhachHang.class);
+                tvGood.setText("Good morning "+khachHang.getTenKhachHang());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     public void getLoai() {
@@ -175,7 +196,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 loaiSanPhams.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     LoaiSanPham loaiSanPham = dataSnapshot.getValue(LoaiSanPham.class);
                     loaiSanPhams.add(loaiSanPham);
                     loaiSanPhamAdapter.notifyDataSetChanged();
@@ -229,7 +250,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-
     public void getPopularFood() {
         mDatabase.child("SanPham").limitToFirst(4).addValueEventListener(new ValueEventListener() {
             @Override
@@ -248,8 +268,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-
-
     private void setControl() {
         rcvFoodSale = mView.findViewById(R.id.rcvFoodSale);
         rcvPopularFood = mView.findViewById(R.id.rcvPopularFood);
@@ -258,5 +276,6 @@ public class HomeFragment extends Fragment {
         ivMyOrder = mView.findViewById(R.id.ivMyOrder);
         pbLoad = mView.findViewById(R.id.pbLoad);
         btnTimKiem = mView.findViewById(R.id.btnTimKiem);
+        tvGood = mView.findViewById(R.id.tvGood);
     }
 }
