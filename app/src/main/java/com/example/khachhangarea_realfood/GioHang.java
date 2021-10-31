@@ -80,7 +80,9 @@ public class GioHang extends AppCompatActivity {
                 donHangInfos.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
-                    donHangInfos.add(donHangInfo);
+                    if(donHangInfo.getIDDonHang().isEmpty()){
+                        donHangInfos.add(donHangInfo);
+                    }
                 }
                 gioHangAdapter.notifyDataSetChanged();
                 pbLoadGioHang.setVisibility(View.GONE);
@@ -125,24 +127,28 @@ public class GioHang extends AppCompatActivity {
 
                 }
                 tvTongPhu.setText(tong + "");
+                int tongTien = tong;
                 if (tong == 0) {
-
                     tvChiPhiVanChuyen.setText(0 + "");
                     tvTongTien.setText(0 + "");
                 }
                 else {
                     int phiVanChuyen = 30000;
                     tvChiPhiVanChuyen.setText(phiVanChuyen + "");
-                    int tongTien = tong + phiVanChuyen;
+                    tongTien = tong + phiVanChuyen;
                     tvTongTien.setText(tongTien + "");
-                    btnThanhToan.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            double tien = tongTien;
+
+                }
+                btnThanhToan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        double tien = tong + 30000;
+                        if(tong != 0){
                             openThanhToan(Gravity.CENTER, tien);
                         }
-                    });
-                }
+
+                    }
+                });
             }
         });
 
@@ -202,8 +208,9 @@ public class GioHang extends AppCompatActivity {
                                 donHangInfo.setIDDonHang(IDDonHang);
                                 mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).setValue(donHangInfo);
                             }
-
                         }
+                        Intent intent = new Intent(GioHang.this,Home.class);
+                        startActivity(intent);
                     }
 
                     @Override

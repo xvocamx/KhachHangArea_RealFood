@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
     private ProgressBar pbLoad;
     private TextView tvGood;
     CuaHang cuaHang;
+    private SearchView searchView;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public HomeFragment() {
@@ -176,6 +177,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SearchViewSanPham.class);
+                String data = searchView.getQuery().toString();
+                intent.putExtra("dataTimKiem", data);
                 getActivity().startActivity(intent);
             }
         });
@@ -202,6 +205,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
 
 
     }
@@ -292,5 +296,6 @@ public class HomeFragment extends Fragment {
         pbLoad = mView.findViewById(R.id.pbLoad);
         btnTimKiem = mView.findViewById(R.id.btnTimKiem);
         tvGood = mView.findViewById(R.id.tvGood);
+        searchView = mView.findViewById(R.id.searchViewFood);
     }
 }

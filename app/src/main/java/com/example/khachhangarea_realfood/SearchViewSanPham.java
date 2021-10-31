@@ -7,18 +7,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
+import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -39,6 +42,7 @@ public class SearchViewSanPham extends AppCompatActivity {
         sanPhams = new ArrayList<>();
         sanPhamAdapter = new SanPhamAdapter(this,R.layout.list_item_food_1,sanPhams);
         setControl();
+
         setEvent();
     }
 
@@ -48,9 +52,8 @@ public class SearchViewSanPham extends AppCompatActivity {
         rcvSanPham.setAdapter(sanPhamAdapter);
         LoadSanPham();
 
-//        SearchManager searchManager = (SearchManager) getSystemService(this.SEARCH_SERVICE);
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -67,13 +70,21 @@ public class SearchViewSanPham extends AppCompatActivity {
     }
 
     private void LoadSanPham(){
+
         mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     SanPham sanPham = dataSnapshot.getValue(SanPham.class);
                     sanPhams.add(sanPham);
+
                     sanPhamAdapter.notifyDataSetChanged();
+                }
+                if (getIntent() != null && getIntent().getExtras() != null) {
+                    Intent intent = getIntent();
+                    String data = intent.getStringExtra("dataTimKiem");
+                    searchView.setQuery(data,true);
+                    sanPhamAdapter.getFilter().filter(data);
                 }
                 pbLoadTimKiemSanPham.setVisibility(View.GONE);
             }

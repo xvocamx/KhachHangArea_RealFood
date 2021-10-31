@@ -53,6 +53,7 @@
         android:textSize="17dp" />
 
     <Spinner
+        android:visibility="gone"
         android:id="@+id/spKhuVuc"
         android:layout_width="match_parent"
         android:layout_height="50dp"

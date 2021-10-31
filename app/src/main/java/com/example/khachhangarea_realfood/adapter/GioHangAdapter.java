@@ -173,7 +173,6 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
 
                     kAlertDialog.show();
                 } else {
-
                     donHangInfo.setSoLuong(String.valueOf(newValue));
                     mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -182,7 +181,6 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                         }
                     });
                 }
-                Toast.makeText(context, booleanArray.size()+"", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -206,7 +204,6 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
     }
 
     private void LoadChecked(int position, MyViewHolder holder) {
-
         SparseBooleanArray sparse = booleanArray;
         for (int i = 0; i < sparse.size(); i++) {
             if (sparse.valueAt(i)) {

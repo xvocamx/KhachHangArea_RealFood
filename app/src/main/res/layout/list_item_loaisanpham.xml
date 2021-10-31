@@ -16,8 +16,8 @@
         <ImageView
             android:layout_marginLeft="7dp"
             android:id="@+id/ivLoai"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             />
