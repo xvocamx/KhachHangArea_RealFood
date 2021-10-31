@@ -36,7 +36,7 @@ public class SearchViewSanPham extends AppCompatActivity {
         setContentView(R.layout.activity_search_view_san_pham);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         sanPhams = new ArrayList<>();
-        sanPhamAdapter = new SanPhamAdapter(this,R.layout.list_item_food,sanPhams);
+        sanPhamAdapter = new SanPhamAdapter(this,R.layout.list_item_food_1,sanPhams);
         setControl();
         setEvent();
     }

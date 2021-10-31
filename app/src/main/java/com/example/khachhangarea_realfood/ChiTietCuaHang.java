@@ -183,14 +183,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 YeuThich yeuThich = dataSnapshot.getValue(YeuThich.class);
-                                if (yeuThich.getCuaHang().getIDCuaHang().equals(cuaHang.getIDCuaHang())) {
-                                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(yeuThich.getCuaHang().getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
-                                        @Override
-                                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 
-                                        }
-                                    });
-                                }
                             }
                         }
 

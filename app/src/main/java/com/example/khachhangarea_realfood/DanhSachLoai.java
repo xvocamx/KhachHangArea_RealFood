@@ -37,7 +37,7 @@ public class DanhSachLoai extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loai_san_pham);
         sanPhams = new ArrayList<>();
-        sanPhamAdapter = new SanPhamAdapter(this,R.layout.list_item_food,sanPhams);
+        sanPhamAdapter = new SanPhamAdapter(this,R.layout.list_item_food_1,sanPhams);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         setControl();
         if (getIntent() != null && getIntent().getExtras() != null) {
