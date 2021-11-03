@@ -49,5 +49,5 @@ dependencies {
     implementation 'com.github.TutorialsAndroid:KAlertDialog:v14.0.19'
     implementation 'com.github.jrvansuita:PickImage:+'
     implementation 'io.github.nikartm:image-support:2.0.0'
-
+    implementation "io.github.zagori:bottomnavbar:1.0.3"
 }

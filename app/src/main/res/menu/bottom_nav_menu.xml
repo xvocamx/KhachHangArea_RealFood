@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/tab_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/trang_chu"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/tab_favorite"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/yeu_thich"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/tab_giohang"
+        android:title="Giỏ hàng" />
+
+    <item
+        android:id="@+id/tab_notification"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/thong_bao"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/tab_setting"
+        android:icon="@drawable/ic_setting"
+        android:title="@string/cai_dat"
+        app:showAsAction="always" />
+</menu>

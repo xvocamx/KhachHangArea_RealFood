@@ -119,7 +119,7 @@
             android:gravity="end"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnYeuThich"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
@@ -193,7 +193,7 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnXemShop"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
@@ -251,7 +251,7 @@ leo malesuada" />
             app:backGroundColor="@color/orange"
             app:backgroundDrawable="@drawable/custom_button"
             app:initialNumber="1"
-            app:textSize="8dp" />
+            app:textSize="5dp" />
     </LinearLayout>
 
     <Button

@@ -129,22 +129,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
                     Log.d("", e.getMessage());
                 }
             });
-            mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        YeuThich yeuThich = dataSnapshot.getValue(YeuThich.class);
-                        if (yeuThich.getCuaHang().getIDCuaHang().equals(cuaHang.getIDCuaHang())) {
-                            btnYeuThich.setSelected(true);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+            
             pbLoadChiTietCuaHang.setVisibility(View.GONE);
         }
     }
@@ -167,31 +152,24 @@ public class ChiTietCuaHang extends AppCompatActivity {
         }).attach();
         btnYeuThich.setOnClickListener(new View.OnClickListener() {
             int check = 1;
-            String IDYeuThich = "Love_" + UUID.randomUUID().toString();
-            YeuThich yeuThich = new YeuThich(IDYeuThich, cuaHang, null);
+
             @Override
             public void onClick(View v) {
                 if (check == 1 && !btnYeuThich.isSelected()) {
                     btnYeuThich.setSelected(true);
                     check = 0;
-                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(yeuThich.getIDYeuThich()).setValue(yeuThich);
+                    mDatabase.child("YeuThich").child(auth.getUid()).child(cuaHang.getIDCuaHang()).setValue(cuaHang);
+
                 } else {
                     btnYeuThich.setSelected(false);
                     check = 1;
-                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
+                    mDatabase.child("YeuThich").child(auth.getUid()).child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                YeuThich yeuThich = dataSnapshot.getValue(YeuThich.class);
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 
                         }
                     });
+
                 }
             }
         });

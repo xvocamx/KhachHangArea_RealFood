@@ -90,7 +90,7 @@
                     android:layout_weight="1"
                     android:gravity="end">
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:layout_marginRight="10dp"
                         android:id="@+id/btnXoaSanPham"
                         android:layout_width="20dp"
@@ -103,12 +103,12 @@
             <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
                 android:id="@+id/btnSoLuong"
                 android:layout_width="match_parent"
-                android:layout_height="30sp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 app:backGroundColor="@color/orange"
                 app:backgroundDrawable="@drawable/custom_button"
-                app:textSize="7dp"
+                app:textSize="6dp"
                 android:minHeight="20dp"/>
 
             <EditText
@@ -142,7 +142,7 @@
             android:textSize="17dp"
             android:textStyle="bold" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnXemShop"
             android:layout_width="wrap_content"
             android:layout_height="35dp"

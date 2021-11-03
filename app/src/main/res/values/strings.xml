@@ -46,6 +46,10 @@
     <string name="tong_tien">Tổng tiền</string>
     <string name="thanh_toan">Thanh toán</string>
     <string name="tencuahang">Pizza Food</string>
+    <string name="trang_chu">Trang chủ</string>
+    <string name="yeu_thich">Yêu thích</string>
+    <string name="thong_bao">Thông báo</string>
+    <string name="cai_dat">Cài đặt</string>
 
     <array name="category">
         <item>Pizaa</item>
