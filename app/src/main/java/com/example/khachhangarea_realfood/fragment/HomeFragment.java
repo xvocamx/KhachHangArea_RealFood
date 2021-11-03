@@ -138,7 +138,7 @@ public class HomeFragment extends Fragment {
         sanPhamAdapter.setDelegation(new SanPhamAdapter.ClickItemFoodListener() {
             @Override
             public void getInformationFood(SanPham sanPham) {
-                Intent intent = new Intent(getContext(), ChiTietSanPham.class);
+                Intent intent = new Intent(getActivity(), ChiTietSanPham.class);
                 Gson gson = new Gson();
                 String data = gson.toJson(sanPham);
                 intent.putExtra("dataSanPham", data);
@@ -148,7 +148,7 @@ public class HomeFragment extends Fragment {
         cuaHangAdapter.setDelegation(new CuaHangAdapter.ClickItemShopListener() {
             @Override
             public void getInformationShop(CuaHang cuaHang) {
-                Intent intent = new Intent(getContext(), ChiTietCuaHang.class);
+                Intent intent = new Intent(getActivity(), ChiTietCuaHang.class);
                 Gson gson = new Gson();
                 String data = gson.toJson(cuaHang);
                 intent.putExtra("dataCuaHang", data);
@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
         loaiSanPhamAdapter.setDelegation(new LoaiSanPhamAdapter.ClickItemLoai() {
             @Override
             public void getLoai(LoaiSanPham loaiSanPham) {
-                Intent intent = new Intent(getContext(), DanhSachLoai.class);
+                Intent intent = new Intent(getActivity(), DanhSachLoai.class);
                 Gson gson = new Gson();
                 String data = gson.toJson(loaiSanPham);
                 intent.putExtra("dataLoai", data);
@@ -168,7 +168,7 @@ public class HomeFragment extends Fragment {
         ivMyOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), GioHang.class);
+                Intent intent = new Intent(getActivity(), GioHang.class);
                 getActivity().startActivity(intent);
             }
         });
@@ -176,7 +176,7 @@ public class HomeFragment extends Fragment {
         btnTimKiem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), SearchViewSanPham.class);
+                Intent intent = new Intent(getActivity(), SearchViewSanPham.class);
                 String data = searchView.getQuery().toString();
                 intent.putExtra("dataTimKiem", data);
                 getActivity().startActivity(intent);

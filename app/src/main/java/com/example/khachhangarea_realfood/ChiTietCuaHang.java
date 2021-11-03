@@ -129,7 +129,22 @@ public class ChiTietCuaHang extends AppCompatActivity {
                     Log.d("", e.getMessage());
                 }
             });
-            
+            mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        CuaHang cuaHangAll =dataSnapshot.getValue(CuaHang.class);
+                        if(cuaHangAll.getIDCuaHang().equals(cuaHang.getIDCuaHang())){
+                            btnYeuThich.setSelected(true);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull  DatabaseError error) {
+
+                }
+            });
             pbLoadChiTietCuaHang.setVisibility(View.GONE);
         }
     }
@@ -152,18 +167,17 @@ public class ChiTietCuaHang extends AppCompatActivity {
         }).attach();
         btnYeuThich.setOnClickListener(new View.OnClickListener() {
             int check = 1;
-
             @Override
             public void onClick(View v) {
                 if (check == 1 && !btnYeuThich.isSelected()) {
                     btnYeuThich.setSelected(true);
                     check = 0;
-                    mDatabase.child("YeuThich").child(auth.getUid()).child(cuaHang.getIDCuaHang()).setValue(cuaHang);
+                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).setValue(cuaHang);
 
                 } else {
                     btnYeuThich.setSelected(false);
                     check = 1;
-                    mDatabase.child("YeuThich").child(auth.getUid()).child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
+                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 

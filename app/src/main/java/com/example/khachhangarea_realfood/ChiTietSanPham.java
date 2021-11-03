@@ -1,6 +1,7 @@
 package com.example.khachhangarea_realfood;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -47,7 +48,7 @@ public class ChiTietSanPham extends AppCompatActivity {
     private SanPham sanPham;
     private CuaHang cuaHang;
     private ProgressBar pbLoadChiTietSanPham;
-    private Button btnXemShop, btnDatHang;
+    private Button btnXemShop, btnDatHang, btnYeuThich;
     private ElegantNumberButton btnSoLuong;
     private ArrayList<CuaHang> cuaHangs = new ArrayList<>();
     private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -117,7 +118,6 @@ public class ChiTietSanPham extends AppCompatActivity {
                                     String data = gson.toJson(cuaHang);
                                     intent.putExtra("dataCuaHang", data);
                                     startActivity(intent);
-                                    Toast.makeText(ChiTietSanPham.this, cuaHang.getIDCuaHang() + "", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -132,15 +132,54 @@ public class ChiTietSanPham extends AppCompatActivity {
                 }
             });
 
+            mDatabase.child("YeuThich").child(mAuth.getUid()).child("Food").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        SanPham sanPhamAll = dataSnapshot.getValue(SanPham.class);
+                        if (sanPhamAll.getIDSanPham().equals(sanPham.getIDSanPham())) {
+                            btnYeuThich.setSelected(true);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
         }
     }
 
     private void setEvent() {
-
         btnDatHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addGioHang();
+            }
+        });
+        btnYeuThich.setOnClickListener(new View.OnClickListener() {
+            int check = 1;
+
+            @Override
+            public void onClick(View v) {
+                if (check == 1 && !btnYeuThich.isSelected()) {
+                    btnYeuThich.setSelected(true);
+                    check = 0;
+                    mDatabase.child("YeuThich").child(mAuth.getUid()).child("Food").child(sanPham.getIDSanPham()).setValue(sanPham);
+
+                } else {
+                    btnYeuThich.setSelected(false);
+                    check = 1;
+                    mDatabase.child("YeuThich").child(mAuth.getUid()).child("Food").child(sanPham.getIDSanPham()).removeValue(new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+
+                        }
+                    });
+
+                }
             }
         });
     }
@@ -174,5 +213,6 @@ public class ChiTietSanPham extends AppCompatActivity {
         tvAddressShop = findViewById(R.id.tvAddressShop);
         btnSoLuong = findViewById(R.id.btnSoLuong);
         btnDatHang = findViewById(R.id.btnDatHang);
+        btnYeuThich = findViewById(R.id.btnYeuThich);
     }
 }

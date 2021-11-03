@@ -21,114 +21,111 @@
              />
 
         <LinearLayout
+            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_marginLeft="10dp"
+            <TextView
+                android:layout_marginBottom="5dp"
+                android:id="@+id/tvTenSanPham"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_marginBottom="5dp"
-                    android:id="@+id/tvTenSanPham"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pizza Tôm Phô Mai"
-                    android:textColor="@color/black"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_marginBottom="5dp"
-                    android:id="@+id/tvLoaiSanPham"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Loại sản phẩm"
-                    android:textSize="12dp" />
-
-                <LinearLayout
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvGia"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="65,000"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" VNĐ"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_star_rate" />
-
-                    <TextView
-                        android:id="@+id/tvTBRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:text="4.9"
-                        android:textColor="@color/orange"
-                        android:textSize="14dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="("
-                        android:textSize="14dp" />
-
-                    <TextView
-                        android:id="@+id/tvRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:text="1032"
-                        android:textSize="14dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ratings"
-                        android:textSize="14dp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
+                android:text="Pizza Tôm Phô Mai"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/tvLoaiSanPham"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Loại sản phẩm"
+                        android:textSize="12dp" />
 
+                    <LinearLayout
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvGia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="65,000"
+                            android:textColor="@color/black"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" VNĐ"
+                            android:textColor="@color/black"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+                </LinearLayout>
                 <ImageView
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
                     android:id="@+id/ivMuaNgay"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:src="@drawable/ic_baseline_add_shopping_cart_24" />
+            </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_star_rate" />
+
+                <TextView
+                    android:id="@+id/tvTBRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="4.9"
+                    android:textColor="@color/orange"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="("
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="1032"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ratings"
+                    android:textSize="14dp" />
 
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
