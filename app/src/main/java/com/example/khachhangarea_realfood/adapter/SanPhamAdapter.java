@@ -120,8 +120,8 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                 UUID uuid = UUID.randomUUID();
                 String IDInfo = "MD_" + uuid.toString();
                 String donGia = sanPham.getGia();
-                DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", soLuong, donGia, null, sanPham);
-                mDatabase.child("DonHangInfo").child(auth.getUid()).child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "",auth.getUid(), soLuong, donGia, null, sanPham);
+                mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();

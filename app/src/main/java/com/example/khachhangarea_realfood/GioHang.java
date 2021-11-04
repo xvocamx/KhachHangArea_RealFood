@@ -30,6 +30,7 @@ import com.example.khachhangarea_realfood.adapter.ItemGioHangAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
+import com.example.khachhangarea_realfood.model.GioHangDisplay;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,6 +60,9 @@ public class GioHang extends AppCompatActivity {
     private ProgressBar pbLoadGioHang;
     private Button btnThanhToan, btnXacNhan, btnHuy;
     private KAlertDialog kAlertDialog;
+    ArrayList<GioHangDisplay> gioHangDisplays = new ArrayList<>();
+    ArrayList<DonHangInfo> tempGioHangs = new ArrayList<>();
+    ArrayList<String> idCuaHang = new ArrayList<>();
     int tong = 0;
 
     @Override
@@ -74,26 +78,72 @@ public class GioHang extends AppCompatActivity {
     }
 
     private void LoadGioHang() {
-        mDatabase.child("DonHangInfo").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("DonHangInfo").orderByChild("idkhachHang").equalTo(auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 donHangInfos.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
-                    if(donHangInfo.getIDDonHang().isEmpty()){
+                    if (donHangInfo.getIDDonHang().isEmpty()) {
                         donHangInfos.add(donHangInfo);
                     }
                 }
+                tempGioHangs = donHangInfos;
                 gioHangAdapter.notifyDataSetChanged();
                 pbLoadGioHang.setVisibility(View.GONE);
-            }
+                for (int i = 0; i < donHangInfos.size() - 1; i++) {
+                    String id = donHangInfos.get(i).getSanPham().getIDCuaHang();
+                    for (int j = 0; j < donHangInfos.size(); j++) {
+                        if (donHangInfos.get(j).getSanPham().getIDCuaHang() == id) {
+                            if (!CheckExitID(id))
+                            {
+                                idCuaHang.add(id);
+                            }
+                        }
+                    }
+                }
+                for (String id :idCuaHang) {
+                    GioHangDisplay gioHangDisplay = new GioHangDisplay();
+                    gioHangDisplay.setIdCuaHang(id);
+                 mDatabase.child("DonHangInfo").orderByChild("idkhachHang").equalTo(auth.getUid()).addValueEventListener(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                         ArrayList<DonHangInfo > temp = new ArrayList<>();
+                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                             DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
+                                if (donHangInfo.getSanPham().getIDCuaHang().equals(id))
+                                {
+                                    temp.add(donHangInfo);
+                                    Toast.makeText(GioHang.this, "Child"+donHangInfo.getSanPham().getChiTietSanPham()+"",Toast.LENGTH_SHORT).show();
+                                }
+                         }
+                         gioHangDisplay.setSanPhams(temp);
+                         gioHangDisplays.add(gioHangDisplay);
+                     }
 
+                     @Override
+                     public void onCancelled(@NonNull DatabaseError error) {
+
+                     }
+                 });
+                }
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
+
+    private boolean CheckExitID(String id) {
+        for (String temp :idCuaHang) {
+        if (temp.equals(id)){
+            return  true;
+        }
+        }
+        return false;
+    }
+
 
     private void setEvent() {
         linearLayoutManager = new LinearLayoutManager(this);
@@ -131,8 +181,7 @@ public class GioHang extends AppCompatActivity {
                 if (tong == 0) {
                     tvChiPhiVanChuyen.setText(0 + "");
                     tvTongTien.setText(0 + "");
-                }
-                else {
+                } else {
                     int phiVanChuyen = 30000;
                     tvChiPhiVanChuyen.setText(phiVanChuyen + "");
                     tongTien = tong + phiVanChuyen;
@@ -143,7 +192,7 @@ public class GioHang extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         double tien = tong + 30000;
-                        if(tong != 0){
+                        if (tong != 0) {
                             openThanhToan(Gravity.CENTER, tien);
                         }
 
@@ -199,7 +248,7 @@ public class GioHang extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         KhachHang khachHang = snapshot.getValue(KhachHang.class);
-                        DonHang donHang = new DonHang(IDDonHang,auth.getUid(),null,khachHang.getDiaChi(),khachHang.getSoDienThoai(),ghiChu,null,tien,currentTime,TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien);
+                        DonHang donHang = new DonHang(IDDonHang, auth.getUid(), null, khachHang.getDiaChi(), khachHang.getSoDienThoai(), ghiChu, null, tien, currentTime, TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien);
                         mDatabase.child("DonHang").child(IDDonHang).setValue(donHang);
                         SparseBooleanArray sparse = gioHangAdapter.getBooleanArray();
                         for (int i = 0; i < sparse.size(); i++) {
@@ -209,7 +258,7 @@ public class GioHang extends AppCompatActivity {
                                 mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).setValue(donHangInfo);
                             }
                         }
-                        Intent intent = new Intent(GioHang.this,Home.class);
+                        Intent intent = new Intent(GioHang.this, Home.class);
                         startActivity(intent);
                     }
 
