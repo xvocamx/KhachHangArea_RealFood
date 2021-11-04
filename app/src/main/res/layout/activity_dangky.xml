@@ -62,7 +62,7 @@
                 android:hint="@string/nhaplaimatkhau"
                 android:inputType="textPassword" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDangKy"
                 style="@style/button"
                 android:text="@string/dangky" />

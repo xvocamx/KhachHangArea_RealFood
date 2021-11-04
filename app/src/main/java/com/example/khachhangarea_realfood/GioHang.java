@@ -200,7 +200,7 @@ public class GioHang extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         KhachHang khachHang = snapshot.getValue(KhachHang.class);
                         DonHang donHang = new DonHang(IDDonHang,auth.getUid(),null,khachHang.getDiaChi(),khachHang.getSoDienThoai(),ghiChu,null,tien,currentTime,TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien);
-                        mDatabase.child("DonHang").child(auth.getUid()).child(IDDonHang).setValue(donHang);
+                        mDatabase.child("DonHang").child(IDDonHang).setValue(donHang);
                         SparseBooleanArray sparse = gioHangAdapter.getBooleanArray();
                         for (int i = 0; i < sparse.size(); i++) {
                             if (sparse.valueAt(i)) {

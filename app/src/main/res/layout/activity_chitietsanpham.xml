@@ -254,7 +254,7 @@ leo malesuada" />
             app:textSize="5dp" />
     </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnDatHang"
         style="@style/button"
         android:text="Thêm vào giỏ hàng" />

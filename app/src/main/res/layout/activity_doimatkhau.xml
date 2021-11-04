@@ -21,7 +21,7 @@
         style="@style/edittext"
         android:hint="@string/ConfirmNewPassword" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLuu"
         style="@style/button"
         android:text="@string/luu"/>

@@ -33,7 +33,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp" />
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:layout_marginTop="20dp"
         style="@style/button"
         android:text="Báo cáo"

@@ -47,7 +47,7 @@
                 android:drawableLeft="@drawable/ic_lock"
                 android:hint="@string/password" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDangNhap"
                 style="@style/button"
                 android:text="@string/dangnhap" />

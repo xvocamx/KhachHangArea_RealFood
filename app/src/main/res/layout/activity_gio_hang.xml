@@ -266,7 +266,7 @@
 
             </LinearLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnThanhToan"
                 style="@style/button"
                 android:text="@string/thanh_toan" />
