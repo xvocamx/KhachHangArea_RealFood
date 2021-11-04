@@ -190,7 +190,7 @@ public class ChiTietSanPham extends AppCompatActivity {
         String IDInfo = "MD_" + uuid.toString();
         String donGia = sanPham.getGia();
         DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "",mAuth.getUid(), soLuong, donGia, null, sanPham);
-        mDatabase.child("DonHangInfo").child(user.getUid()).child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Intent intent = new Intent(ChiTietSanPham.this, GioHang.class);

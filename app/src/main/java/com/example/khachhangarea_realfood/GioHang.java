@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.GioHangAdapter;
+import com.example.khachhangarea_realfood.adapter.GioHangProAdapter;
 import com.example.khachhangarea_realfood.adapter.ItemGioHangAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DonHang;
@@ -60,6 +61,7 @@ public class GioHang extends AppCompatActivity {
     private ProgressBar pbLoadGioHang;
     private Button btnThanhToan, btnXacNhan, btnHuy;
     private KAlertDialog kAlertDialog;
+    GioHangProAdapter gioHangProAdapter ;
     ArrayList<GioHangDisplay> gioHangDisplays = new ArrayList<>();
     ArrayList<DonHangInfo> tempGioHangs = new ArrayList<>();
     ArrayList<String> idCuaHang = new ArrayList<>();
@@ -71,6 +73,7 @@ public class GioHang extends AppCompatActivity {
         setContentView(R.layout.activity_gio_hang);
         donHangInfos = new ArrayList<>();
         donHangInfo = new DonHangInfo();
+        gioHangProAdapter = new GioHangProAdapter(this,R.layout.list_item_giohang,gioHangDisplays);
         gioHangAdapter = new GioHangAdapter(this, R.layout.list_item_giohang_sanpham, donHangInfos);
         setControl();
         setEvent();
@@ -82,6 +85,8 @@ public class GioHang extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 donHangInfos.clear();
+                gioHangDisplays.clear();
+                idCuaHang.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
                     if (donHangInfo.getIDDonHang().isEmpty()) {
@@ -89,7 +94,6 @@ public class GioHang extends AppCompatActivity {
                     }
                 }
                 tempGioHangs = donHangInfos;
-                gioHangAdapter.notifyDataSetChanged();
                 pbLoadGioHang.setVisibility(View.GONE);
                 for (int i = 0; i < donHangInfos.size() - 1; i++) {
                     String id = donHangInfos.get(i).getSanPham().getIDCuaHang();
@@ -114,11 +118,12 @@ public class GioHang extends AppCompatActivity {
                                 if (donHangInfo.getSanPham().getIDCuaHang().equals(id))
                                 {
                                     temp.add(donHangInfo);
-                                    Toast.makeText(GioHang.this, "Child"+donHangInfo.getSanPham().getChiTietSanPham()+"",Toast.LENGTH_SHORT).show();
+
                                 }
-                         }
-                         gioHangDisplay.setSanPhams(temp);
+                         }  gioHangDisplay.setSanPhams(temp);
                          gioHangDisplays.add(gioHangDisplay);
+                         gioHangProAdapter.notifyDataSetChanged();
+                         Toast.makeText(GioHang.this, "Size"+gioHangDisplay.getSanPhams().size(),Toast.LENGTH_SHORT).show();
                      }
 
                      @Override
@@ -149,7 +154,7 @@ public class GioHang extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvGioHang.setLayoutManager(linearLayoutManager);
-        rcvGioHang.setAdapter(gioHangAdapter);
+        rcvGioHang.setAdapter(gioHangProAdapter);
         LoadGioHang();
 
 

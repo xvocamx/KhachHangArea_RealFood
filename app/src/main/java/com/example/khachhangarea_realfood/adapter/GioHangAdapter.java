@@ -106,40 +106,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                 holder.pbLoadItemGioHang.setVisibility(View.GONE);
             }
         });
-        mDatabase.child("CuaHang").child(donHangInfo.getSanPham().getIDCuaHang()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                CuaHang cuaHang = snapshot.getValue(CuaHang.class);
-                holder.tvTenCuaHang.setText(cuaHang.getTenCuaHang());
-                holder.btnXemShop.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, ChiTietCuaHang.class);
-                        Gson gson = new Gson();
-                        String data = gson.toJson(cuaHang);
-                        intent.putExtra("dataCuaHang", data);
-                        context.startActivity(intent);
-                        Toast.makeText(context, cuaHang.getIDCuaHang() + "", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                holder.btnXoa.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).removeValue(new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 
-                            }
-                        });
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         holder.btnSoLuong.setNumber(donHangInfo.getSoLuong());
         holder.btnSoLuong.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
@@ -154,10 +121,11 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                                     .setCancelText("Không").setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
                                 @Override
                                 public void onClick(KAlertDialog kAlertDialog) {
-                                    mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).removeValue(new DatabaseReference.CompletionListener() {
+                                    mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).removeValue(new DatabaseReference.CompletionListener() {
                                         @Override
                                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                             kAlertDialog.dismiss();
+                                            Toast.makeText(context, "oke", Toast.LENGTH_SHORT).show();
                                             LoadChecked(position,holder);
                                         }
                                     });
@@ -239,11 +207,9 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ivSanPham = itemView.findViewById(R.id.ivSanPham);
-            ivShop = itemView.findViewById(R.id.ivShop);
-            tvTenCuaHang = itemView.findViewById(R.id.tvTenCuaHang);
             tvTenSanPham = itemView.findViewById(R.id.tvTenSanPham);
             tvGia = itemView.findViewById(R.id.tvGia);
-            edtMaGiamGia = itemView.findViewById(R.id.edtMaGiamGia);
+
             ckbSanPham = itemView.findViewById(R.id.ckbSanPham);
             ckbSanPham.setOnClickListener(this);
             btnXoa = itemView.findViewById(R.id.btnXoaSanPham);

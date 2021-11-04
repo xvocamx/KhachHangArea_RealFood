@@ -28,6 +28,6 @@ public class GioHangDisplay {
     }
 
     public void setSanPhams(ArrayList<DonHangInfo> sanPhams) {
-        this.donHangInfos = donHangInfos;
+        this.donHangInfos = sanPhams;
     }
 }
