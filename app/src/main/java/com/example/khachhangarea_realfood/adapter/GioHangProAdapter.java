@@ -27,6 +27,7 @@ package com.example.khachhangarea_realfood.adapter;
         import com.developer.kalert.KAlertDialog;
         import com.example.khachhangarea_realfood.ChiTietCuaHang;
         import com.example.khachhangarea_realfood.ChiTietSanPham;
+        import com.example.khachhangarea_realfood.Firebase_Manager;
         import com.example.khachhangarea_realfood.R;
         import com.example.khachhangarea_realfood.model.CuaHang;
         import com.example.khachhangarea_realfood.model.DonHangInfo;
@@ -55,12 +56,9 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
     private Activity context;
     private int resource;
     private ArrayList<GioHangDisplay> gioHangDisplays;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private KAlertDialog kAlertDialog;
-
-
 
 
     public GioHangProAdapter(Activity context, int resource, ArrayList<GioHangDisplay> gioHangDisplays) {
@@ -92,7 +90,7 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
         if (gioHangDisplay == null) {
             return;
         }
-        mDatabase.child("CuaHang").child(gioHangDisplay.getIdCuaHang()).addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("CuaHang").child(gioHangDisplay.getIdCuaHang()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 CuaHang cuaHang = snapshot.getValue(CuaHang.class);
@@ -103,7 +101,7 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
 
             }
         });
-        storageRef.child("CuaHang").child(gioHangDisplay.getIdCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        firebase_manager.storageRef.child("CuaHang").child(gioHangDisplay.getIdCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(context)

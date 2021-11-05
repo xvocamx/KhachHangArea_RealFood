@@ -15,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +30,7 @@ public class LoaiSanPhamAdapter extends RecyclerView.Adapter<LoaiSanPhamAdapter.
     private int resource;
     private ArrayList<LoaiSanPham> loaiSanPhams;
     private ClickItemLoai delegation;
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
 
     public void setDelegation(ClickItemLoai delegation) {
         this.delegation = delegation;
@@ -56,17 +57,7 @@ public class LoaiSanPhamAdapter extends RecyclerView.Adapter<LoaiSanPhamAdapter.
         }
         holder.tvTenLoai.setText(loaiSanPham.getTenLoai());
 
-        storageRef.child("LoaiSanPham").child(loaiSanPham.getiDLoai()).child("Loại sản phẩm").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(context).load(uri).into(holder.ivLoai);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("", e.getMessage());
-            }
-        });
+        firebase_manager.LoadImageLoai(loaiSanPham,context, holder.ivLoai);
 
         holder.onClickListener = new View.OnClickListener() {
             @Override

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.developer.kalert.KAlertDialog;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
@@ -36,9 +37,7 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
     private Activity context;
     private int resource;
     private ArrayList<SanPham> sanPhams;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
     private ClickItemFoodListener delegation;
     private KAlertDialog kAlertDialog;
 
@@ -66,7 +65,7 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
             return;
         }
         holder.tvNameFood.setText(sanPham.getTenSanPham());
-        mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -83,7 +82,7 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
             }
         });
         holder.tvRating.setText(String.valueOf(sanPham.getRating()));
-        storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        firebase_manager.storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(context).load(uri.toString()).into(holder.ivFood);
@@ -104,7 +103,7 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
                         .setCancelText("Không").setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
                             @Override
                             public void onClick(KAlertDialog kAlertDialog) {
-                                mDatabase.child("YeuThich").child(auth.getUid()).child("Food").child(sanPham.getIDSanPham()).removeValue(new DatabaseReference.CompletionListener() {
+                                firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Food").child(sanPham.getIDSanPham()).removeValue(new DatabaseReference.CompletionListener() {
                                     @Override
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         kAlertDialog.dismiss();

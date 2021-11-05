@@ -61,29 +61,7 @@ public class Home extends AppCompatActivity {
 
     private void setEvent() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-//            @Override
-//            public void onTabSelected(int tabId) {
-//                switch (tabId) {
-//                    case R.id.tab_home:
-//                        HomeFragment homeFragment = new HomeFragment();
-//                        loadFragment(homeFragment);
-//                        break;
-//                    case R.id.tab_favorite:
-//                        FavoriteFragment favoriteFragment = new FavoriteFragment();
-//                        loadFragment(favoriteFragment);
-//                        break;
-//                    case R.id.tab_notification:
-//                        NotificationFragment notificationFragment = new NotificationFragment();
-//                        loadFragment(notificationFragment);
-//                        break;
-//                    case R.id.tab_setting:
-//                        SettingFragment settingFragment = new SettingFragment();
-//                        loadFragment(settingFragment);
-//                        break;
-//                }
-//            }
-//        });
+
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

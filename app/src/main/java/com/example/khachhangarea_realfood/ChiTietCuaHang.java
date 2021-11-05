@@ -53,9 +53,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
     private CircleImageView civAvatar;
     private CuaHang cuaHang;
     private ProgressBar pbLoadChiTietCuaHang;
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,45 +101,24 @@ public class ChiTietCuaHang extends AppCompatActivity {
             tvDiaChi.setText(cuaHang.getDiaChi());
             tvPhone.setText(cuaHang.getSoDienThoai());
             tvMota.setText(cuaHang.getThongTinChiTiet());
-            storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+            firebase_manager.LoadLogoCuaHang(cuaHang, getApplicationContext(), civAvatar);
+
+            firebase_manager.LoadWallPaperCuaHang(cuaHang, getApplicationContext(), ivWallPaper);
+
+            firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onSuccess(Uri uri) {
-                    Glide.with(getApplicationContext())
-                            .load(uri)
-                            .into(civAvatar);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("", e.getMessage());
-                }
-            });
-            storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("WallPaper").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Glide.with(getApplicationContext())
-                            .load(uri)
-                            .into(ivWallPaper);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("", e.getMessage());
-                }
-            });
-            mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull  DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        CuaHang cuaHangAll =dataSnapshot.getValue(CuaHang.class);
-                        if(cuaHangAll.getIDCuaHang().equals(cuaHang.getIDCuaHang())){
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        CuaHang cuaHangAll = dataSnapshot.getValue(CuaHang.class);
+                        if (cuaHangAll.getIDCuaHang().equals(cuaHang.getIDCuaHang())) {
                             btnYeuThich.setSelected(true);
                         }
                     }
                 }
 
                 @Override
-                public void onCancelled(@NonNull  DatabaseError error) {
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
             });
@@ -167,17 +144,18 @@ public class ChiTietCuaHang extends AppCompatActivity {
         }).attach();
         btnYeuThich.setOnClickListener(new View.OnClickListener() {
             int check = 1;
+
             @Override
             public void onClick(View v) {
                 if (check == 1 && !btnYeuThich.isSelected()) {
                     btnYeuThich.setSelected(true);
                     check = 0;
-                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).setValue(cuaHang);
+                    firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).setValue(cuaHang);
 
                 } else {
                     btnYeuThich.setSelected(false);
                     check = 1;
-                    mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
+                    firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.developer.kalert.KAlertDialog;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,9 +34,7 @@ public class YeuThichShopAdapter extends RecyclerView.Adapter<YeuThichShopAdapte
     private Activity context;
     private int resource;
     private ArrayList<CuaHang> cuaHangs;
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
     private KAlertDialog kAlertDialog;
     private ClickItemShopListener delegation;
 
@@ -65,7 +64,7 @@ public class YeuThichShopAdapter extends RecyclerView.Adapter<YeuThichShopAdapte
         holder.tvTenCuaHang.setText(cuaHang.getTenCuaHang());
         holder.tvDiaChi.setText(cuaHang.getDiaChi());
         holder.tvRatings.setText(String.valueOf(cuaHang.getRating()));
-        storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        firebase_manager.storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(context).load(uri.toString()).into(holder.ivShop);
@@ -88,7 +87,7 @@ public class YeuThichShopAdapter extends RecyclerView.Adapter<YeuThichShopAdapte
                         .setCancelText("Không").setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
                             @Override
                             public void onClick(KAlertDialog kAlertDialog) {
-                                mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
+                                firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
                                     @Override
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         kAlertDialog.dismiss();

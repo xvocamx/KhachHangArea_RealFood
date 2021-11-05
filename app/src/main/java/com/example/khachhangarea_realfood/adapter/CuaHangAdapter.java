@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.SanPham;
@@ -32,7 +33,7 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
     private int resource;
     private ArrayList<CuaHang> cuaHangs;
     private ClickItemShopListener delegation;
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
 
     public void setDelegation(ClickItemShopListener delegation) {
         this.delegation = delegation;
@@ -63,26 +64,13 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
         Float rating = Float.valueOf(cuaHang.getRating());
         holder.tvRatings.setText(rating.toString());
 
-        storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(context)
-                        .load(uri)
-                        .into(holder.ivShop);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("",e.getMessage());
-            }
-        });
+        firebase_manager.LoadLogoCuaHang(cuaHang,context,holder.ivShop);
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(delegation != null){
+                if (delegation != null) {
                     delegation.getInformationShop(cuaHang);
-                }
-                else {
+                } else {
                     Toast.makeText(context, "You must set delegation before", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -123,12 +111,13 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
 
         @Override
         public void onClick(View v) {
-            if(onClickListener !=null){
+            if (onClickListener != null) {
                 onClickListener.onClick(v);
             }
         }
 
     }
+
     public interface ClickItemShopListener {
         void getInformationShop(CuaHang cuaHang);
     }

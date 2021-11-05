@@ -28,6 +28,7 @@ import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.ChiTietCuaHang;
 import com.example.khachhangarea_realfood.ChiTietSanPham;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
@@ -55,8 +56,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
     private Activity context;
     private int resource;
     private ArrayList<DonHangInfo> donHangInfos;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private KAlertDialog kAlertDialog;
     private CheckBoxListener checkBoxListener;
@@ -97,7 +97,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
         holder.tvTenSanPham.setText(donHangInfo.getSanPham().getTenSanPham());
         String gia = String.valueOf(Integer.valueOf(donHangInfo.getSanPham().getGia()));
         holder.tvGia.setText(gia);
-        storageRef.child("SanPham").child(donHangInfo.getSanPham().getIDCuaHang()).child(donHangInfo.getSanPham().getIDSanPham()).child(donHangInfo.getSanPham().getImages().get(0)).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+        firebase_manager.storageRef.child("SanPham").child(donHangInfo.getSanPham().getIDCuaHang()).child(donHangInfo.getSanPham().getIDSanPham()).child(donHangInfo.getSanPham().getImages().get(0)).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 Glide.with(context)
@@ -121,7 +121,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                                     .setCancelText("Không").setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
                                 @Override
                                 public void onClick(KAlertDialog kAlertDialog) {
-                                    mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).removeValue(new DatabaseReference.CompletionListener() {
+                                    firebase_manager.mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).removeValue(new DatabaseReference.CompletionListener() {
                                         @Override
                                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                             kAlertDialog.dismiss();
@@ -142,7 +142,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                     kAlertDialog.show();
                 } else {
                     donHangInfo.setSoLuong(String.valueOf(newValue));
-                    mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    firebase_manager.mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             LoadChecked(position,holder);

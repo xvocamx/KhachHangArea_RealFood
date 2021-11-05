@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.DanhMuc;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,7 +28,7 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.MyViewHo
     private Activity context;
     private int resource;
     private ArrayList<DanhMuc> danhMucs;
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
 
     public DanhMucAdapter(Activity context, int resource, ArrayList<DanhMuc> danhMucs) {
         this.context = context;
@@ -49,7 +50,7 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.MyViewHo
             return;
         }
         holder.tvTenDanhMuc.setText(danhMuc.getTenDanhMuc());
-        storageRef.child("DanhMuc").child(danhMuc.getIDDanhMuc()).child("image").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        firebase_manager.storageRef.child("DanhMuc").child(danhMuc.getIDDanhMuc()).child("image").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(context)

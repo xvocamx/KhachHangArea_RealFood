@@ -70,14 +70,12 @@ public class SearchViewSanPham extends AppCompatActivity {
     }
 
     private void LoadSanPham(){
-
         mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     SanPham sanPham = dataSnapshot.getValue(SanPham.class);
                     sanPhams.add(sanPham);
-
                     sanPhamAdapter.notifyDataSetChanged();
                 }
                 if (getIntent() != null && getIntent().getExtras() != null) {

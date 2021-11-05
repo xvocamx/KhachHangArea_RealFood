@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.khachhangarea_realfood.DangNhap;
 import com.example.khachhangarea_realfood.DoiMatKhau;
 import com.example.khachhangarea_realfood.DonMua;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.SuaThongTin;
 import com.example.khachhangarea_realfood.model.KhachHang;
@@ -45,10 +46,7 @@ public class SettingFragment extends Fragment {
     private TextView tvDoiMatKhau,tvSua;
     private Button btnDangXuat;
     private LinearLayout lnDonMua;
-    private FirebaseAuth auth;
-    private DatabaseReference mDatabase;
-    private StorageReference storageRef;
-    private FirebaseUser user;
+    private Firebase_Manager firebase_manager;
     private TextView tvName,tvEmail,tvPhone,tvDiaChi;
     private CircleImageView civAvatar;
 
@@ -75,10 +73,7 @@ public class SettingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_setting, container, false);
-        auth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        storageRef = FirebaseStorage.getInstance().getReference();
-        user = auth.getCurrentUser();
+        firebase_manager = new Firebase_Manager();
         setControl();
         setEvent();
         LoadInfoKhachHang();
@@ -130,8 +125,8 @@ public class SettingFragment extends Fragment {
         civAvatar = mView.findViewById(R.id.civAvatar);
     }
     private void LoadInfoKhachHang() {
-        tvEmail.setText(user.getEmail());
-        mDatabase.child("KhachHang").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+        tvEmail.setText(firebase_manager.user.getEmail());
+        firebase_manager.mDatabase.child("KhachHang").child(firebase_manager.user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 KhachHang khachHang = snapshot.getValue(KhachHang.class);
@@ -145,7 +140,7 @@ public class SettingFragment extends Fragment {
 
             }
         });
-        storageRef.child("KhachHang").child(user.getUid()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        firebase_manager.storageRef.child("KhachHang").child(firebase_manager.user.getUid()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(getActivity()).load(uri.toString()).into(civAvatar);

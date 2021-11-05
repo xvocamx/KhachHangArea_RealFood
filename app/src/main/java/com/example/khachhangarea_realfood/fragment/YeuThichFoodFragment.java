@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.khachhangarea_realfood.ChiTietCuaHang;
 import com.example.khachhangarea_realfood.ChiTietSanPham;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.adapter.YeuThichFoodAdapter;
 import com.example.khachhangarea_realfood.adapter.YeuThichShopAdapter;
@@ -36,8 +37,7 @@ public class YeuThichFoodFragment extends Fragment {
     private View view;
     private RecyclerView rcvYeuThichFood;
     private LinearLayoutManager linearLayoutManager;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
     private YeuThichFoodAdapter yeuThichFoodAdapter;
     private ArrayList<SanPham> sanPhams;
     private ProgressBar pbFavoriteFood;
@@ -88,23 +88,7 @@ public class YeuThichFoodFragment extends Fragment {
     }
 
     private void LoadFavoriteFood() {
-        mDatabase.child("YeuThich").child(auth.getUid()).child("Food").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull  DataSnapshot snapshot) {
-                sanPhams.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    SanPham sanPham = dataSnapshot.getValue(SanPham.class);
-                    sanPhams.add(sanPham);
-                    yeuThichFoodAdapter.notifyDataSetChanged();
-                }
-                pbFavoriteFood.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        firebase_manager.LoadYeuThichFood(sanPhams,yeuThichFoodAdapter,pbFavoriteFood);
     }
 
     private void setControl() {

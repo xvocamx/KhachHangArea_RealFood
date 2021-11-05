@@ -34,6 +34,7 @@ public class DanhSachLoai extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private GridLayoutManager gridLayoutManager;
     private ProgressBar pbLoadLoai;
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,25 +54,7 @@ public class DanhSachLoai extends AppCompatActivity {
     }
 
     private void LoadItemLoai(){
-        mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull  DataSnapshot snapshot) {
-                sanPhams.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    SanPham sanPham = dataSnapshot.getValue(SanPham.class);
-                    if(sanPham.getIDLoai().equals(loaiSanPham.getiDLoai())){
-                        sanPhams.add(sanPham);
-                        sanPhamAdapter.notifyDataSetChanged();
-                    }
-                }
-                pbLoadLoai.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
-
-            }
-        });
+        firebase_manager.GetSanPhamTheoLoai(sanPhams,sanPhamAdapter,loaiSanPham,pbLoadLoai);
     }
 
     private void setEvent() {

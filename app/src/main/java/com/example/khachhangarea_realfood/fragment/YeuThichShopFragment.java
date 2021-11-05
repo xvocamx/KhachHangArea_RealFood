@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.adapter.YeuThichShopAdapter;
 import com.example.khachhangarea_realfood.ChiTietCuaHang;
@@ -32,8 +33,7 @@ public class YeuThichShopFragment extends Fragment {
     private View view;
     private RecyclerView rcvYeuThichShop;
     private LinearLayoutManager linearLayoutManager;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
     private YeuThichShopAdapter yeuThichShopAdapter;
     private ArrayList<CuaHang> cuaHangs;
     private ProgressBar pbFavoriteShop;
@@ -86,23 +86,7 @@ public class YeuThichShopFragment extends Fragment {
     }
 
     private void LoadFavoriteShop() {
-        mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                cuaHangs.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    CuaHang cuaHangAll =dataSnapshot.getValue(CuaHang.class);
-                    cuaHangs.add(cuaHangAll);
-                    yeuThichShopAdapter.notifyDataSetChanged();
-                }
-                pbFavoriteShop.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        firebase_manager.LoadYeuThichShop(cuaHangs,yeuThichShopAdapter,pbFavoriteShop);
     }
 
     private void setControl() {

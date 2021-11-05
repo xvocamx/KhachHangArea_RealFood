@@ -51,10 +51,7 @@ public class ChiTietSanPham extends AppCompatActivity {
     private Button btnXemShop, btnDatHang, btnYeuThich;
     private ElegantNumberButton btnSoLuong;
     private ArrayList<CuaHang> cuaHangs = new ArrayList<>();
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseUser user = mAuth.getCurrentUser();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,16 +76,9 @@ public class ChiTietSanPham extends AppCompatActivity {
             tvRating.setText(rating.toString());
             tvMoTa.setText(sanPham.getChiTietSanPham());
 
-            storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(0)).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    Glide.with(getApplicationContext())
-                            .load(task.getResult().toString())
-                            .into(ivFood);
-                }
-            });
+            firebase_manager.LoadImageFood(sanPham,getApplicationContext(),ivFood);
 
-            mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
+           firebase_manager.mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -97,19 +87,7 @@ public class ChiTietSanPham extends AppCompatActivity {
                         if (sanPham.getIDCuaHang().equals(cuaHang.getIDCuaHang())) {
                             tvTenCuaHang.setText(cuaHang.getTenCuaHang());
                             tvAddressShop.setText(cuaHang.getDiaChi());
-                            storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Glide.with(getApplicationContext())
-                                            .load(uri)
-                                            .into(ivShop);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d("", e.getMessage());
-                                }
-                            });
+                            firebase_manager.LoadLogoCuaHang(cuaHang,getApplicationContext(),ivShop);
                             btnXemShop.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -132,7 +110,7 @@ public class ChiTietSanPham extends AppCompatActivity {
                 }
             });
 
-            mDatabase.child("YeuThich").child(mAuth.getUid()).child("Food").addValueEventListener(new ValueEventListener() {
+            firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Food").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -167,12 +145,12 @@ public class ChiTietSanPham extends AppCompatActivity {
                 if (check == 1 && !btnYeuThich.isSelected()) {
                     btnYeuThich.setSelected(true);
                     check = 0;
-                    mDatabase.child("YeuThich").child(mAuth.getUid()).child("Food").child(sanPham.getIDSanPham()).setValue(sanPham);
+                    firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Food").child(sanPham.getIDSanPham()).setValue(sanPham);
 
                 } else {
                     btnYeuThich.setSelected(false);
                     check = 1;
-                    mDatabase.child("YeuThich").child(mAuth.getUid()).child("Food").child(sanPham.getIDSanPham()).removeValue(new DatabaseReference.CompletionListener() {
+                    firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Food").child(sanPham.getIDSanPham()).removeValue(new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 
@@ -189,8 +167,8 @@ public class ChiTietSanPham extends AppCompatActivity {
         UUID uuid = UUID.randomUUID();
         String IDInfo = "MD_" + uuid.toString();
         String donGia = sanPham.getGia();
-        DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "",mAuth.getUid(), soLuong, donGia, null, sanPham);
-        mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "",firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
+        firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Intent intent = new Intent(ChiTietSanPham.this, GioHang.class);

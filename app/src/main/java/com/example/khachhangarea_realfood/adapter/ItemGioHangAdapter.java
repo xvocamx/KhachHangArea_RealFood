@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.SanPham;
@@ -28,8 +29,7 @@ public class ItemGioHangAdapter extends RecyclerView.Adapter<ItemGioHangAdapter.
     private Activity context;
     private int resource;
     private ArrayList<DonHangInfo> donHangInfos;
-
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
 
     public ItemGioHangAdapter(Activity context, int resource, ArrayList<DonHangInfo> donHangInfos) {
         this.context = context;
@@ -51,7 +51,7 @@ public class ItemGioHangAdapter extends RecyclerView.Adapter<ItemGioHangAdapter.
             return;
         }
         holder.btnSoLuong.setNumber(donHangInfo.getSoLuong()+"");
-        mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {

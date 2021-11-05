@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.khachhangarea_realfood.ChiTietCuaHang;
 import com.example.khachhangarea_realfood.ChiTietSanPham;
 import com.example.khachhangarea_realfood.DanhSachLoai;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.SearchViewSanPham;
@@ -63,16 +64,14 @@ public class HomeFragment extends Fragment {
     private ArrayList<SanPham> sanPhamSaleFoods, sanPhamPopularFoods;
     private ArrayList<CuaHang> cuaHangs;
     private ArrayList<LoaiSanPham> loaiSanPhams;
-    private DatabaseReference mDatabase;
     private LinearLayoutManager linearLayoutManagerSaleFood, linearLayoutManagerPopularShop, linearLayoutManagerPopularFood, linearLayoutManagerLoai;
     private RecyclerView rcvFoodSale, rcvPopularShop, rcvPopularFood, rcvLoai;
     private Button btnTimKiem;
     private ImageBadgeView ivMyOrder;
     private ProgressBar pbLoad;
     private TextView tvGood;
-    CuaHang cuaHang;
     private SearchView searchView;
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -95,7 +94,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_home, container, false);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         cuaHangs = new ArrayList<>();
         sanPhamSaleFoods = new ArrayList<>();
         sanPhamPopularFoods = new ArrayList<>();
@@ -115,7 +113,7 @@ public class HomeFragment extends Fragment {
         linearLayoutManagerSaleFood.setOrientation(RecyclerView.HORIZONTAL);
         rcvFoodSale.setLayoutManager(linearLayoutManagerSaleFood);
         rcvFoodSale.setAdapter(sanPhamAdapter);
-        getFoodSale();
+        getSaleFood();
         //Popular Shop
         linearLayoutManagerPopularShop = new LinearLayoutManager(getActivity());
         linearLayoutManagerPopularShop.setOrientation(RecyclerView.VERTICAL);
@@ -182,7 +180,7 @@ public class HomeFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
-        mDatabase.child("KhachHang").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("KhachHang").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 KhachHang khachHang = snapshot.getValue(KhachHang.class);
@@ -194,7 +192,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        mDatabase.child("DonHangInfo").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("DonHangInfo").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ivMyOrder.setBadgeValue((int) snapshot.getChildrenCount());
@@ -211,80 +209,20 @@ public class HomeFragment extends Fragment {
     }
 
     public void getLoai() {
-        mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                loaiSanPhams.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    LoaiSanPham loaiSanPham = dataSnapshot.getValue(LoaiSanPham.class);
-                    loaiSanPhams.add(loaiSanPham);
-                    loaiSanPhamAdapter.notifyDataSetChanged();
-                }
-                pbLoad.setVisibility(View.GONE);
-            }
+        firebase_manager.GetLoaiSanPham(loaiSanPhams,loaiSanPhamAdapter,pbLoad);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
-    public void getFoodSale() {
-        mDatabase.child("SanPham").limitToFirst(4).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    SanPham sanPham = postSnapshot.getValue(SanPham.class);
-                    sanPhamSaleFoods.add(sanPham);
-                    sanPhamAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+    public void getSaleFood() {
+        firebase_manager.GetSaleFood(sanPhamSaleFoods,sanPhamAdapter);
     }
 
     public void getPopularShop() {
-        mDatabase.child("CuaHang").limitToFirst(4).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                cuaHangs.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    cuaHang = dataSnapshot.getValue(CuaHang.class);
-                    if (cuaHang.getTrangThaiCuaHang() != TrangThaiCuaHang.ChuaKichHoat) {
-                        cuaHangs.add(cuaHang);
-                        cuaHangAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        firebase_manager.GetPopularShop(cuaHangs,cuaHangAdapter);
     }
 
     public void getPopularFood() {
-        mDatabase.child("SanPham").limitToFirst(4).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    SanPham sanPham = postSnapshot.getValue(SanPham.class);
-                    sanPhamPopularFoods.add(sanPham);
-                    sanPhamAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        firebase_manager.GetPopularFood(sanPhamPopularFoods,sanPhamAdapter);
     }
 
     private void setControl() {

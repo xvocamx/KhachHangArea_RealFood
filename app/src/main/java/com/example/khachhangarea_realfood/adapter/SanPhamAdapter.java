@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.khachhangarea_realfood.ChiTietSanPham;
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
@@ -45,9 +46,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
     private int resource;
     private ArrayList<SanPham> arrayList, arrayListOld;
     private ClickItemFoodListener delegation;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+    private Firebase_Manager firebase_manager = new Firebase_Manager();
 
     public void setDelegation(ClickItemFoodListener delegation) {
         this.delegation = delegation;
@@ -78,30 +77,23 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         holder.tvGia.setText(sanPham.getGia());
         Float rating = Float.valueOf(sanPham.getRating());
         holder.tvRatings.setText(rating.toString());
-        mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     LoaiSanPham loaiSanPham = dataSnapshot.getValue(LoaiSanPham.class);
-                    if(loaiSanPham.getiDLoai().equals(sanPham.getIDLoai())){
+                    if (loaiSanPham.getiDLoai().equals(sanPham.getIDLoai())) {
                         holder.tvLoaiSanPham.setText(loaiSanPham.getTenLoai());
                     }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-        storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(0)).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                Glide.with(context)
-                        .load(task.getResult().toString())
-                        .into(holder.ivSanPham);
-            }
-        });
+        firebase_manager.LoadImageFood(sanPham,context, holder.ivSanPham);
 
         holder.onClickListener = new View.OnClickListener() {
             @Override
@@ -120,8 +112,8 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                 UUID uuid = UUID.randomUUID();
                 String IDInfo = "MD_" + uuid.toString();
                 String donGia = sanPham.getGia();
-                DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "",auth.getUid(), soLuong, donGia, null, sanPham);
-                mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
+                firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
