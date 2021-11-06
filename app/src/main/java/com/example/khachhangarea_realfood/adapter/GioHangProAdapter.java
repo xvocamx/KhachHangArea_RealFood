@@ -61,7 +61,7 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
     private Firebase_Manager firebase_manager = new Firebase_Manager();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private KAlertDialog kAlertDialog;
-    CheckBoxListener checkBoxListener;
+    GioHangAdapter.CheckBoxListener checkBoxListener;
 
     public GioHangProAdapter(Activity context, int resource, ArrayList<GioHangDisplay> gioHangDisplays) {
         this.context = context;
@@ -94,9 +94,6 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
         }
 
         firebase_manager.mDatabase.child("CuaHang").child(gioHangDisplay.getIdCuaHang()).addValueEventListener(new ValueEventListener() {
-
-
-        mDatabase.child("CuaHang").child(gioHangDisplay.getIdCuaHang()).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
