@@ -142,7 +142,11 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                     kAlertDialog.show();
                 } else {
                     donHangInfo.setSoLuong(String.valueOf(newValue));
+
                     firebase_manager.mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                    mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+
                         @Override
                         public void onSuccess(Void unused) {
                             LoadChecked(position,holder);
@@ -152,7 +156,31 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
             }
         });
 
-
+        holder.btnXoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                kAlertDialog =
+                        new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("Thông báo")
+                                .setContentText("Bạn có muốn xóa sản phẩm này không?")
+                                .setConfirmText("Có")
+                                .setCancelText("Không").setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
+                            @Override
+                            public void onClick(KAlertDialog kAlertDialog) {
+                                mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).removeValue(new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                        kAlertDialog.dismiss();
+                                        Toast.makeText(context, "oke", Toast.LENGTH_SHORT).show();
+                                        LoadChecked(position,holder);
+                                        notifyDataSetChanged();
+                                    }
+                                });
+                            }
+                        });
+                kAlertDialog.show();;
+            }
+        });
         holder.ckbSanPham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,7 +192,10 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                     holder.ckbSanPham.setChecked(false);
                     booleanArray.put(position, false);
                 }
-                checkBoxListener.getGiaGioHang();
+                if (checkBoxListener != null)
+                {
+                    checkBoxListener.getGiaGioHang();
+                }
             }
         });
         LoadChecked(position,holder);

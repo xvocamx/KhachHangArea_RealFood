@@ -93,9 +93,9 @@ public class GioHang extends AppCompatActivity {
                         donHangInfos.add(donHangInfo);
                     }
                 }
-                tempGioHangs = donHangInfos;
+
                 pbLoadGioHang.setVisibility(View.GONE);
-                for (int i = 0; i < donHangInfos.size() - 1; i++) {
+                for (int i = 0; i < donHangInfos.size(); i++) {
                     String id = donHangInfos.get(i).getSanPham().getIDCuaHang();
                     for (int j = 0; j < donHangInfos.size(); j++) {
                         if (donHangInfos.get(j).getSanPham().getIDCuaHang() == id) {
@@ -109,16 +109,11 @@ public class GioHang extends AppCompatActivity {
                 for (String id :idCuaHang) {
                     GioHangDisplay gioHangDisplay = new GioHangDisplay();
                     gioHangDisplay.setIdCuaHang(id);
-                 mDatabase.child("DonHangInfo").orderByChild("idkhachHang").equalTo(auth.getUid()).addValueEventListener(new ValueEventListener() {
-                     @Override
-                     public void onDataChange(@NonNull  DataSnapshot snapshot) {
                          ArrayList<DonHangInfo > temp = new ArrayList<>();
-                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                             DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
+                         for (DonHangInfo donHangInfo : donHangInfos) {
                                 if (donHangInfo.getSanPham().getIDCuaHang().equals(id))
                                 {
                                     temp.add(donHangInfo);
-
                                 }
                          }  gioHangDisplay.setSanPhams(temp);
                          gioHangDisplays.add(gioHangDisplay);
@@ -126,12 +121,7 @@ public class GioHang extends AppCompatActivity {
                          Toast.makeText(GioHang.this, "Size"+gioHangDisplay.getSanPhams().size(),Toast.LENGTH_SHORT).show();
                      }
 
-                     @Override
-                     public void onCancelled(@NonNull DatabaseError error) {
 
-                     }
-                 });
-                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

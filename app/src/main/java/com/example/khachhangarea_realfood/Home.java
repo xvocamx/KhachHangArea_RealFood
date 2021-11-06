@@ -24,10 +24,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.collection.LLRBNode;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarTab;
-import com.roughike.bottombar.OnTabSelectListener;
-import com.zagori.bottomnavbar.BottomNavBar;
 
-import static android.graphics.Color.BLACK;
 
 public class Home extends AppCompatActivity {
     FrameLayout frameLayout;
@@ -45,7 +42,7 @@ public class Home extends AppCompatActivity {
         setEvent();
         HomeFragment homeFragment = new HomeFragment();
         loadFragment(homeFragment);
-        BottomBarTab barTab = bottomBar.getTabWithId(R.id.tab_notification);
+        BottomBarTab barTab = bottomBar.getTabWithId(R.id.tab_notification1);
         barTab.setBadgeCount(5);
         bottomNavigationView.setBackground(null);
 
@@ -75,7 +72,7 @@ public class Home extends AppCompatActivity {
                         FavoriteFragment favoriteFragment = new FavoriteFragment();
                         loadFragment(favoriteFragment);
                         break;
-                    case R.id.tab_notification:
+                    case R.id.tab_notification1:
                         NotificationFragment notificationFragment = new NotificationFragment();
                         loadFragment(notificationFragment);
                         break;

@@ -4,6 +4,7 @@ package com.example.khachhangarea_realfood.adapter;
         import android.net.Uri;
         import android.util.Log;
         import android.util.SparseBooleanArray;
+        import android.view.Gravity;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
@@ -54,12 +55,13 @@ package com.example.khachhangarea_realfood.adapter;
 
 public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.MyViewHolder> {
     private Activity context;
+    int tong =0;
     private int resource;
     private ArrayList<GioHangDisplay> gioHangDisplays;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private KAlertDialog kAlertDialog;
-
+    CheckBoxListener checkBoxListener;
 
     public GioHangProAdapter(Activity context, int resource, ArrayList<GioHangDisplay> gioHangDisplays) {
         this.context = context;
@@ -90,7 +92,12 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
         if (gioHangDisplay == null) {
             return;
         }
+
         firebase_manager.mDatabase.child("CuaHang").child(gioHangDisplay.getIdCuaHang()).addValueEventListener(new ValueEventListener() {
+
+
+        mDatabase.child("CuaHang").child(gioHangDisplay.getIdCuaHang()).addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 CuaHang cuaHang = snapshot.getValue(CuaHang.class);
@@ -121,6 +128,24 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         holder.rcSanPham.setLayoutManager(linearLayoutManager);
         holder.rcSanPham.setAdapter(gioHangAdapter);
+
+        gioHangAdapter.setCheckBoxListener(new GioHangAdapter.CheckBoxListener() {
+            @Override
+            public void getGiaGioHang() {
+                tong = 0;
+                SparseBooleanArray sparse = gioHangAdapter.getBooleanArray();
+                for (int i = 0; i < sparse.size(); i++) {
+                    if (sparse.valueAt(i)) {
+                        DonHangInfo donHangInfo = donHangInfos.get(sparse.keyAt(i));
+                        tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong());
+                    }
+
+                }
+
+                int tongTien = tong;
+                Toast.makeText(context, tong+"", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
