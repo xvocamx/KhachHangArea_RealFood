@@ -61,7 +61,6 @@ public class ItemGioHangAdapter extends RecyclerView.Adapter<ItemGioHangAdapter.
                     holder.tvGia.setText(gia);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -69,6 +68,7 @@ public class ItemGioHangAdapter extends RecyclerView.Adapter<ItemGioHangAdapter.
         });
 
     }
+
 
     @Override
     public int getItemViewType(int position) {

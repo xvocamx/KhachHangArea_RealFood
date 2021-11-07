@@ -22,8 +22,8 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/ivSanPham"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 android:scaleType="centerCrop"
                  />
@@ -99,8 +99,8 @@
                 android:id="@+id/btnSoLuong"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+
+
                 app:backGroundColor="@color/gray"
                 app:backgroundDrawable="@drawable/custom_button"
                 app:textSize="6dp"

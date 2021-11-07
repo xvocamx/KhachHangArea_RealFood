@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".GioHang">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -33,11 +33,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:paddingBottom="100dp"/>
+                    android:paddingBottom="100dp"
+                    android:nestedScrollingEnabled="false"/>
 
             </FrameLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:background="@color/white"
@@ -287,11 +288,11 @@
                     android:text="@string/vnd"
                     android:textColor="#FF5722"
                     android:textSize="17dp" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnThanhToan"
+                    style="@style/button_v1"
+                    android:text="Mua ngay" />
             </LinearLayout>
         </LinearLayout>
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnThanhToan"
-            style="@style/button"
-            android:text="@string/thanh_toan" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

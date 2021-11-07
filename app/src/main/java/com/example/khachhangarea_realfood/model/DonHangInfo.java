@@ -1,9 +1,34 @@
 package com.example.khachhangarea_realfood.model;
 
-public class DonHangInfo {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class DonHangInfo implements Parcelable {
     String IDInfo, IDDonHang,IDKhachHang, soLuong, donGia, maGiamGia;
     SanPham sanPham;
     boolean selected;
+
+    protected DonHangInfo(Parcel in) {
+        IDInfo = in.readString();
+        IDDonHang = in.readString();
+        IDKhachHang = in.readString();
+        soLuong = in.readString();
+        donGia = in.readString();
+        maGiamGia = in.readString();
+        selected = in.readByte() != 0;
+    }
+
+    public static final Creator<DonHangInfo> CREATOR = new Creator<DonHangInfo>() {
+        @Override
+        public DonHangInfo createFromParcel(Parcel in) {
+            return new DonHangInfo(in);
+        }
+
+        @Override
+        public DonHangInfo[] newArray(int size) {
+            return new DonHangInfo[size];
+        }
+    };
 
     public boolean isSelected() {
         return selected;
@@ -81,5 +106,21 @@ public class DonHangInfo {
 
     public void setSanPham(SanPham sanPham) {
         this.sanPham = sanPham;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(IDInfo);
+        dest.writeString(IDDonHang);
+        dest.writeString(IDKhachHang);
+        dest.writeString(soLuong);
+        dest.writeString(donGia);
+        dest.writeString(maGiamGia);
+        dest.writeByte((byte) (selected ? 1 : 0));
     }
 }

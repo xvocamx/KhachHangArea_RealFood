@@ -37,17 +37,19 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
     private Activity context;
 
     private int resource;
-    private ArrayList<GioHangDisplay> gioHangDisplays;
+    private ArrayList<GioHangDisplay> gioHangDisplays; 
     private Firebase_Manager firebase_manager = new Firebase_Manager();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private KAlertDialog kAlertDialog;
 
 
 
+    public ThanhToanProAdapter(Activity context, int resource, ArrayList<GioHangDisplay> gioHangDisplays) {
+        this.context = context;
+        this.resource = resource;
+        this.gioHangDisplays = gioHangDisplays;
 
-
-
-
+    }
 
 
     @NonNull
@@ -63,7 +65,7 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
         GioHangDisplay gioHangDisplay = gioHangDisplays.get(position);
 
 
-        if (gioHangDisplay == null) {
+        if (gioHangDisplay == null||gioHangDisplay.getSanPhams().size()==0) {
             return;
         }
 
@@ -94,7 +96,7 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
         });
 
         ArrayList<DonHangInfo> donHangInfos = gioHangDisplay.getSanPhams();
-        ThanhToanAdapter gioHangAdapter = new ThanhToanAdapter(context,R.layout.list_item_thanhtoan,donHangInfos);
+        ThanhToanAdapter gioHangAdapter = new ThanhToanAdapter(context,R.layout.list_item_thanhtoan_sanpham,donHangInfos);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         holder.rcSanPham.setLayoutManager(linearLayoutManager);

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.Window;
@@ -35,6 +36,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -92,6 +94,9 @@ public class GioHang extends AppCompatActivity {
                     String id = donHangInfos.get(i).getSanPham().getIDCuaHang();
                     for (int j = 0; j < donHangInfos.size(); j++) {
                         if (donHangInfos.get(j).getSanPham().getIDCuaHang() == id) {
+                            if (idCuaHang.size() == 0) {
+                                idCuaHang.add(id);
+                            }
                             if (!CheckExitID(id)) {
                                 idCuaHang.add(id);
                             }
@@ -155,99 +160,48 @@ public class GioHang extends AppCompatActivity {
             public void getGiaGioHang() {
                 tong = 0;
 
-                for (GioHangDisplay gioHangDisplay:gioHangDisplays
-                     ) {
+                for (GioHangDisplay gioHangDisplay : gioHangDisplays
+                ) {
 
-                    for (DonHangInfo donHangInfo: gioHangDisplay.getSanPhams()
-                         ) {
-                        if (donHangInfo.isSelected())
-                        {
-                            tong+= Integer.parseInt( donHangInfo.getSanPham().getGia())*Integer.parseInt(donHangInfo.getSoLuong());
+                    for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()
+                    ) {
+                        if (donHangInfo.isSelected()) {
+                            tong += Integer.parseInt(donHangInfo.getSanPham().getGia()) * Integer.parseInt(donHangInfo.getSoLuong());
                         }
                     }
                 }
-                tvTongTien.setText(tong+"");
+                tvTongTien.setText(tong + "");
             }
         });
         btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                if (checkSelectedItem()) {
+                    String string = new Gson().toJson(gioHangDisplays);
+                    Intent intent = new Intent(getApplicationContext(), ThanhToanActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("data", string);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(GioHang.this, "Vui lòng chọn sản phẩm!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
 
-    private void openThanhToan(int gravity, double tien) {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.layout_dialog_thanhtoan);
-
-        Window window = dialog.getWindow();
-        if (window == null) {
-            return;
+    private boolean checkSelectedItem() {
+        for (GioHangDisplay gioHangDisplay :gioHangDisplays) {
+            for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams() ) {
+                if (donHangInfo.isSelected()) {
+                    return true;
+                }
+            }
         }
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        WindowManager.LayoutParams windowAttributes = window.getAttributes();
-        windowAttributes.gravity = gravity;
-        window.setAttributes(windowAttributes);
-
-
-        dialog.setCancelable(false);
-
-        btnXacNhan = dialog.findViewById(R.id.btnXacNhan);
-        btnHuy = dialog.findViewById(R.id.btnHuy);
-        tvNoiDung = dialog.findViewById(R.id.tvNoiDung);
-        tvTien = dialog.findViewById(R.id.tvTien);
-        String noiDung = "Chuyển tiền đến số tài khoản\n" + "1212425256\n" + "Dat\n" + "Ngân hàng: " + "Ngân hàng Thương mại TNHH MTV Đại Dương";
-        tvNoiDung.setText(noiDung);
-        tvTien.setText(tien + "");
-
-
-        btnHuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        btnXacNhan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String IDDonHang = "DH_" + UUID.randomUUID().toString();
-                String ghiChu = edtGhiChu.getText().toString();
-                Date currentTime = Calendar.getInstance().getTime();
-                mDatabase.child("KhachHang").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        KhachHang khachHang = snapshot.getValue(KhachHang.class);
-                        DonHang donHang = new DonHang(IDDonHang,"", auth.getUid(), null, khachHang.getDiaChi(), khachHang.getSoDienThoai(), ghiChu, null, tien, currentTime, TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien);
-                        mDatabase.child("DonHang").child(IDDonHang).setValue(donHang);
-                        SparseBooleanArray sparse = gioHangAdapter.getBooleanArray();
-                        for (int i = 0; i < sparse.size(); i++) {
-                            if (sparse.valueAt(i)) {
-                                DonHangInfo donHangInfo = donHangInfos.get(sparse.keyAt(i));
-                                donHangInfo.setIDDonHang(IDDonHang);
-                                mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).setValue(donHangInfo);
-                            }
-                        }
-                        Intent intent = new Intent(GioHang.this, Home.class);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-            }
-        });
-
-        dialog.show();
+        return false;
     }
+
 
     private void setControl() {
         lnGhiChu = findViewById(R.id.lnThemGhiChu);
