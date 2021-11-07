@@ -145,17 +145,12 @@ public class ChiTietSanPham extends AppCompatActivity {
                 if (check == 1 && !btnYeuThich.isSelected()) {
                     btnYeuThich.setSelected(true);
                     check = 0;
-                    firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Food").child(sanPham.getIDSanPham()).setValue(sanPham);
+                    firebase_manager.ThemYeuThichFood(sanPham);
 
                 } else {
                     btnYeuThich.setSelected(false);
                     check = 1;
-                    firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Food").child(sanPham.getIDSanPham()).removeValue(new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-
-                        }
-                    });
+                    firebase_manager.XoaYeuThichFood(sanPham);
 
                 }
             }

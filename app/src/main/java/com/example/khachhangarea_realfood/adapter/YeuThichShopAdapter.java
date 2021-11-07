@@ -61,6 +61,7 @@ public class YeuThichShopAdapter extends RecyclerView.Adapter<YeuThichShopAdapte
         if (cuaHang == null) {
             return;
         }
+        holder.ivShop.setImageResource(R.drawable.logo_pizza);
         holder.tvTenCuaHang.setText(cuaHang.getTenCuaHang());
         holder.tvDiaChi.setText(cuaHang.getDiaChi());
         holder.tvRatings.setText(String.valueOf(cuaHang.getRating()));
@@ -92,6 +93,10 @@ public class YeuThichShopAdapter extends RecyclerView.Adapter<YeuThichShopAdapte
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         kAlertDialog.dismiss();
                                         Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                        if(cuaHangs.size() == 0){
+                                            cuaHangs.clear();
+                                            notifyDataSetChanged();
+                                        }
                                     }
                                 });
                             }

@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".fragment.TatCaSanPhamFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvTatCaSanPham"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Tat ca san pham" />
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

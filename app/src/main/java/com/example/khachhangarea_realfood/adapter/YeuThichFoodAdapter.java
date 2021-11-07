@@ -65,22 +65,7 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
             return;
         }
         holder.tvNameFood.setText(sanPham.getTenSanPham());
-        firebase_manager.mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    LoaiSanPham loaiSanPham = dataSnapshot.getValue(LoaiSanPham.class);
-                    if (loaiSanPham.getiDLoai().equals(sanPham.getIDLoai())) {
-                        holder.tvTenLoai.setText(loaiSanPham.getTenLoai());
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        firebase_manager.LayTenLoai(sanPham,holder.tvTenLoai);
         holder.tvRating.setText(String.valueOf(sanPham.getRating()));
         firebase_manager.storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -108,6 +93,9 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         kAlertDialog.dismiss();
                                         Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                        if(sanPhams.size() == 0){
+                                            sanPhams.clear();
+                                        }
                                     }
                                 });
                             }

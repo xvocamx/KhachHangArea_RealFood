@@ -1,6 +1,6 @@
 package com.example.khachhangarea_realfood.model;
 
-import com.example.khachhangarea_realfood.TrangThaiCuaHang;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiCuaHang;
 
 public class CuaHang {
     String IDCuaHang;

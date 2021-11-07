@@ -1,12 +1,11 @@
 package com.example.khachhangarea_realfood.model;
 
-import com.example.khachhangarea_realfood.TrangThaiDonHang;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiDonHang;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class DonHang {
-    String  IDDonHang , IDKhachHang , IDShipper , diaChi, soDienThoai, ghiChu_KhachHang, ghiChu_Shipper;
+    String IDDonHang, IDCuaHang, IDKhachHang, IDShipper, diaChi, soDienThoai, ghiChu_KhachHang, ghiChu_Shipper;
     double tongTien;
     Date ngayTao;
     TrangThaiDonHang trangThai;
@@ -14,8 +13,9 @@ public class DonHang {
     public DonHang() {
     }
 
-    public DonHang(String IDDonHang, String IDKhachHang, String IDShipper, String diaChi, String soDienThoai, String ghiChu_KhachHang, String ghiChu_Shipper, double tongTien, Date ngayTao, TrangThaiDonHang trangThai) {
+    public DonHang(String IDDonHang, String IDCuaHang, String IDKhachHang, String IDShipper, String diaChi, String soDienThoai, String ghiChu_KhachHang, String ghiChu_Shipper, double tongTien, Date ngayTao, TrangThaiDonHang trangThai) {
         this.IDDonHang = IDDonHang;
+        this.IDCuaHang = IDCuaHang;
         this.IDKhachHang = IDKhachHang;
         this.IDShipper = IDShipper;
         this.diaChi = diaChi;
@@ -25,6 +25,14 @@ public class DonHang {
         this.tongTien = tongTien;
         this.ngayTao = ngayTao;
         this.trangThai = trangThai;
+    }
+
+    public String getIDCuaHang() {
+        return IDCuaHang;
+    }
+
+    public void setIDCuaHang(String IDCuaHang) {
+        this.IDCuaHang = IDCuaHang;
     }
 
     public String getIDDonHang() {

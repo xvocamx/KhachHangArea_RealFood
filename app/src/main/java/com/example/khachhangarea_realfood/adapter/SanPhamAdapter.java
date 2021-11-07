@@ -77,22 +77,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         holder.tvGia.setText(sanPham.getGia());
         Float rating = Float.valueOf(sanPham.getRating());
         holder.tvRatings.setText(rating.toString());
-        firebase_manager.mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    LoaiSanPham loaiSanPham = dataSnapshot.getValue(LoaiSanPham.class);
-                    if (loaiSanPham.getiDLoai().equals(sanPham.getIDLoai())) {
-                        holder.tvLoaiSanPham.setText(loaiSanPham.getTenLoai());
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        firebase_manager.LayTenLoai(sanPham,holder.tvLoaiSanPham);
         firebase_manager.LoadImageFood(sanPham,context, holder.ivSanPham);
 
         holder.onClickListener = new View.OnClickListener() {

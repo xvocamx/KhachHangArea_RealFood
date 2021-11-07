@@ -7,6 +7,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.khachhangarea_realfood.adapter.ViewPaperAdapter;
+import com.example.khachhangarea_realfood.fragment.TatCaSanPhamFragment;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.example.khachhangarea_realfood.model.YeuThich;
@@ -54,6 +56,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
     private CuaHang cuaHang;
     private ProgressBar pbLoadChiTietCuaHang;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +130,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
     }
 
     private void setEvent() {
-        viewPaperAdapter = new ViewPaperAdapter(this);
+        viewPaperAdapter = new ViewPaperAdapter(this, cuaHang.getIDCuaHang());
         mViewPager.setAdapter(viewPaperAdapter);
         new TabLayoutMediator(mTabLayout, mViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -135,6 +138,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         tab.setText("Tất cả sản phẩm");
+
                         break;
                     case 1:
                         tab.setText("Đánh giá");
@@ -150,18 +154,12 @@ public class ChiTietCuaHang extends AppCompatActivity {
                 if (check == 1 && !btnYeuThich.isSelected()) {
                     btnYeuThich.setSelected(true);
                     check = 0;
-                    firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).setValue(cuaHang);
+                    firebase_manager.ThemYeuThichCuaHang(cuaHang);
 
                 } else {
                     btnYeuThich.setSelected(false);
                     check = 1;
-                    firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-
-                        }
-                    });
-
+                    firebase_manager.XoaYeuThichCuaHang(cuaHang);
                 }
             }
         });

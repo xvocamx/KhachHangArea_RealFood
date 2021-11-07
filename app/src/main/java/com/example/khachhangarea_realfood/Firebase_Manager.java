@@ -6,10 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiCuaHang;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.LoaiSanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
@@ -45,6 +48,52 @@ public class Firebase_Manager {
         storageRef = FirebaseStorage.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+    }
+
+    public void ThemYeuThichCuaHang(CuaHang cuaHang){
+        mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).setValue(cuaHang);
+    }
+
+    public void XoaYeuThichCuaHang(CuaHang cuaHang){
+        mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+
+            }
+        });
+    }
+
+    public void ThemYeuThichFood(SanPham sanPham){
+        mDatabase.child("YeuThich").child(auth.getUid()).child("Food").child(sanPham.getIDSanPham()).setValue(sanPham);
+    }
+
+    public void XoaYeuThichFood(SanPham sanPham){
+        mDatabase.child("YeuThich").child(auth.getUid()).child("Food").child(sanPham.getIDSanPham()).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+
+            }
+        });
+    }
+
+
+    public void LayTenLoai(SanPham sanPham, TextView tvTenLoai){
+        mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    LoaiSanPham loaiSanPham = dataSnapshot.getValue(LoaiSanPham.class);
+                    if (loaiSanPham.getiDLoai().equals(sanPham.getIDLoai())) {
+                        tvTenLoai.setText(loaiSanPham.getTenLoai());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void LoadImageLoai(LoaiSanPham loaiSanPham, Context context, ImageView ivLoai) {
