@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -56,7 +55,7 @@ public class GioHang extends AppCompatActivity {
     private ProgressBar pbLoadGioHang;
     private Button btnThanhToan, btnXacNhan, btnHuy;
     private KAlertDialog kAlertDialog;
-    GioHangProAdapter gioHangProAdapter ;
+    GioHangProAdapter gioHangProAdapter;
     ArrayList<GioHangDisplay> gioHangDisplays = new ArrayList<>();
     ArrayList<DonHangInfo> tempGioHangs = new ArrayList<>();
     ArrayList<String> idCuaHang = new ArrayList<>();
@@ -68,7 +67,7 @@ public class GioHang extends AppCompatActivity {
         setContentView(R.layout.activity_gio_hang);
         donHangInfos = new ArrayList<>();
         donHangInfo = new DonHangInfo();
-        gioHangProAdapter = new GioHangProAdapter(this,R.layout.list_item_giohang,gioHangDisplays);
+        gioHangProAdapter = new GioHangProAdapter(this, R.layout.list_item_giohang, gioHangDisplays);
         gioHangAdapter = new GioHangAdapter(this, R.layout.list_item_giohang_sanpham, donHangInfos);
         setControl();
         setEvent();
@@ -88,36 +87,33 @@ public class GioHang extends AppCompatActivity {
                         donHangInfos.add(donHangInfo);
                     }
                 }
-
                 pbLoadGioHang.setVisibility(View.GONE);
                 for (int i = 0; i < donHangInfos.size(); i++) {
                     String id = donHangInfos.get(i).getSanPham().getIDCuaHang();
                     for (int j = 0; j < donHangInfos.size(); j++) {
                         if (donHangInfos.get(j).getSanPham().getIDCuaHang() == id) {
-                            if (!CheckExitID(id))
-                            {
+                            if (!CheckExitID(id)) {
                                 idCuaHang.add(id);
                             }
                         }
                     }
                 }
-                for (String id :idCuaHang) {
+                for (String id : idCuaHang) {
                     GioHangDisplay gioHangDisplay = new GioHangDisplay();
                     gioHangDisplay.setIdCuaHang(id);
-                         ArrayList<DonHangInfo > temp = new ArrayList<>();
-                         for (DonHangInfo donHangInfo : donHangInfos) {
-                                if (donHangInfo.getSanPham().getIDCuaHang().equals(id))
-                                {
-                                    temp.add(donHangInfo);
-                                }
-                         }  gioHangDisplay.setSanPhams(temp);
-                         gioHangDisplays.add(gioHangDisplay);
-                         gioHangProAdapter.notifyDataSetChanged();
-                         Toast.makeText(GioHang.this, "Size"+gioHangDisplay.getSanPhams().size(),Toast.LENGTH_SHORT).show();
-                     }
-
-
+                    ArrayList<DonHangInfo> temp = new ArrayList<>();
+                    for (DonHangInfo donHangInfo : donHangInfos) {
+                        if (donHangInfo.getSanPham().getIDCuaHang().equals(id)) {
+                            temp.add(donHangInfo);
+                        }
+                    }
+                    gioHangDisplay.setSanPhams(temp);
+                    gioHangDisplays.add(gioHangDisplay);
+                    gioHangProAdapter.notifyDataSetChanged();
+                    Toast.makeText(GioHang.this, "Size" + gioHangDisplay.getSanPhams().size(), Toast.LENGTH_SHORT).show();
+                }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -126,10 +122,10 @@ public class GioHang extends AppCompatActivity {
     }
 
     private boolean CheckExitID(String id) {
-        for (String temp :idCuaHang) {
-        if (temp.equals(id)){
-            return  true;
-        }
+        for (String temp : idCuaHang) {
+            if (temp.equals(id)) {
+                return true;
+            }
         }
         return false;
     }
@@ -154,40 +150,29 @@ public class GioHang extends AppCompatActivity {
             }
         });
 
-        gioHangAdapter.setCheckBoxListener(new GioHangAdapter.CheckBoxListener() {
+        gioHangProAdapter.setCheckBoxListener(new GioHangAdapter.CheckBoxListener() {
             @Override
             public void getGiaGioHang() {
                 tong = 0;
-                SparseBooleanArray sparse = gioHangAdapter.getBooleanArray();
-                for (int i = 0; i < sparse.size(); i++) {
-                    if (sparse.valueAt(i)) {
-                        DonHangInfo donHangInfo = donHangInfos.get(sparse.keyAt(i));
-                        tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong());
-                    }
 
-                }
-                tvTongPhu.setText(tong + "");
-                int tongTien = tong;
-                if (tong == 0) {
-                    tvChiPhiVanChuyen.setText(0 + "");
-                    tvTongTien.setText(0 + "");
-                } else {
-                    int phiVanChuyen = 30000;
-                    tvChiPhiVanChuyen.setText(phiVanChuyen + "");
-                    tongTien = tong + phiVanChuyen;
-                    tvTongTien.setText(tongTien + "");
+                for (GioHangDisplay gioHangDisplay:gioHangDisplays
+                     ) {
 
-                }
-                btnThanhToan.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        double tien = tong + 30000;
-                        if (tong != 0) {
-                            openThanhToan(Gravity.CENTER, tien);
+                    for (DonHangInfo donHangInfo: gioHangDisplay.getSanPhams()
+                         ) {
+                        if (donHangInfo.isSelected())
+                        {
+                            tong+= Integer.parseInt( donHangInfo.getSanPham().getGia())*Integer.parseInt(donHangInfo.getSoLuong());
                         }
-
                     }
-                });
+                }
+                tvTongTien.setText(tong+"");
+            }
+        });
+        btnThanhToan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
             }
         });
 

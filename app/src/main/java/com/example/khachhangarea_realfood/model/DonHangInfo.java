@@ -3,6 +3,15 @@ package com.example.khachhangarea_realfood.model;
 public class DonHangInfo {
     String IDInfo, IDDonHang,IDKhachHang, soLuong, donGia, maGiamGia;
     SanPham sanPham;
+    boolean selected;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public DonHangInfo(String IDInfo, String IDDonHang, String IDKhachHang, String soLuong, String donGia, String maGiamGia, SanPham sanPham) {
         this.IDInfo = IDInfo;
@@ -12,6 +21,7 @@ public class DonHangInfo {
         this.donGia = donGia;
         this.maGiamGia = maGiamGia;
         this.sanPham = sanPham;
+        selected = false;
     }
 
     public DonHangInfo() {

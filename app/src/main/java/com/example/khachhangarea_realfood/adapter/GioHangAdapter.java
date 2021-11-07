@@ -30,6 +30,7 @@ import com.example.khachhangarea_realfood.ChiTietCuaHang;
 import com.example.khachhangarea_realfood.ChiTietSanPham;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiGioHang;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.SanPham;
@@ -60,7 +61,15 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private KAlertDialog kAlertDialog;
     private CheckBoxListener checkBoxListener;
+    private TrangThaiGioHang trangThaiGioHang = TrangThaiGioHang.GIO_HANG;
 
+    public TrangThaiGioHang getTrangThaiGioHang() {
+        return trangThaiGioHang;
+    }
+
+    public void setTrangThaiGioHang(TrangThaiGioHang trangThaiGioHang) {
+        this.trangThaiGioHang = trangThaiGioHang;
+    }
     public void setCheckBoxListener(CheckBoxListener checkBoxListener) {
         this.checkBoxListener = checkBoxListener;
     }
@@ -91,6 +100,14 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull GioHangAdapter.MyViewHolder holder, int position) {
         DonHangInfo donHangInfo = donHangInfos.get(position);
+        if (donHangInfo.isSelected())
+        {
+            holder.ckbSanPham.setChecked(true);
+
+        }
+        else {
+            holder.ckbSanPham.setChecked(false);
+        }
         if (donHangInfo == null) {
             return;
         }
@@ -113,6 +130,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
                 if (newValue == 0) {
+                    checkBoxListener.getGiaGioHang();
                     kAlertDialog =
                             new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("Thông báo")
@@ -126,7 +144,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                             kAlertDialog.dismiss();
                                             Toast.makeText(context, "oke", Toast.LENGTH_SHORT).show();
-                                            LoadChecked(position, holder);
+                                            checkBoxListener.getGiaGioHang();
                                         }
                                     });
                                 }
@@ -135,7 +153,8 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                                 public void onClick(KAlertDialog kAlertDialog) {
                                     holder.btnSoLuong.setNumber(1 + "");
                                     kAlertDialog.dismiss();
-                                    LoadChecked(position, holder);
+                                    checkBoxListener.getGiaGioHang();
+
                                 }
                             });
 
@@ -150,7 +169,10 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
 
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    LoadChecked(position, holder);
+                                    if (checkBoxListener!= null)
+                                    {
+                                        checkBoxListener.getGiaGioHang();
+                                    }
                                 }
                             });
                         }
@@ -174,8 +196,10 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                                     @Override
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         kAlertDialog.dismiss();
-                                        Toast.makeText(context, "oke", Toast.LENGTH_SHORT).show();
-                                        LoadChecked(position,holder);
+                                        if (checkBoxListener!= null)
+                                        {
+                                            checkBoxListener.getGiaGioHang();
+                                        }
                                         notifyDataSetChanged();
                                     }
                                 });
@@ -187,36 +211,27 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
         holder.ckbSanPham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!booleanArray.get(position, false)) {
-                    holder.ckbSanPham.setChecked(true);
-                    booleanArray.put(position, true);
-
-                } else {
-                    holder.ckbSanPham.setChecked(false);
-                    booleanArray.put(position, false);
-                }
-                if (checkBoxListener != null)
+                if (holder.ckbSanPham.isChecked())
                 {
-                    checkBoxListener.getGiaGioHang();
+                    donHangInfo.setSelected(true);
+                    if (checkBoxListener!= null)
+                    {
+                        checkBoxListener.getGiaGioHang();
+                    }
+                }
+                else {
+                    donHangInfo.setSelected(false);
+                    if (checkBoxListener!= null)
+                    {
+                        checkBoxListener.getGiaGioHang();
+                    }
                 }
             }
         });
-        LoadChecked(position,holder);
+
 
     }
 
-    private void LoadChecked(int position, MyViewHolder holder) {
-        SparseBooleanArray sparse = booleanArray;
-        for (int i = 0; i < sparse.size(); i++) {
-            if (sparse.valueAt(i)) {
-                if (sparse.keyAt(i)==position)
-                {
-                    holder.ckbSanPham.setChecked(true);
-                    checkBoxListener.getGiaGioHang();
-                }
-            }
-        }
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -266,6 +281,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
     public interface CheckBoxListener {
         void getGiaGioHang();
     }
+
 
 
 }

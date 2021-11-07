@@ -11,12 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KhachHangArea_RealFood"
         tools:replace="android:theme">
+        <activity android:name=".ThanhToanActivity"
+            android:label="Thanh Toán"
+            android:parentActivityName=".GioHang"></activity>
         <activity
             android:name=".DanhSachLoai"
             android:label="Danh sách loại sản phẩm"
-            android:parentActivityName=".Home"></activity>
-        <activity
-            android:name=".YeuThich" />
+            android:parentActivityName=".Home" />
+        <activity android:name=".YeuThich" />
         <activity
             android:name=".SearchViewSanPham"
             android:label="Danh sách sản phẩm"

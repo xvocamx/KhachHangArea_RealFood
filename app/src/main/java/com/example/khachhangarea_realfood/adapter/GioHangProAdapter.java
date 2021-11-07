@@ -2,6 +2,7 @@ package com.example.khachhangarea_realfood.adapter;
         import android.app.Activity;
         import android.content.Intent;
         import android.net.Uri;
+        import android.os.Build;
         import android.util.Log;
         import android.util.SparseBooleanArray;
         import android.view.Gravity;
@@ -20,6 +21,7 @@ package com.example.khachhangarea_realfood.adapter;
 
         import androidx.annotation.NonNull;
         import androidx.annotation.Nullable;
+        import androidx.annotation.RequiresApi;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,21 +65,25 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
     private KAlertDialog kAlertDialog;
     GioHangAdapter.CheckBoxListener checkBoxListener;
 
+    public GioHangAdapter.CheckBoxListener getCheckBoxListener() {
+        return checkBoxListener;
+    }
+
+    public void setCheckBoxListener(GioHangAdapter.CheckBoxListener checkBoxListener) {
+        this.checkBoxListener = checkBoxListener;
+    }
+
     public GioHangProAdapter(Activity context, int resource, ArrayList<GioHangDisplay> gioHangDisplays) {
         this.context = context;
         this.resource = resource;
         this.gioHangDisplays = gioHangDisplays;
+
     }
 
-    private SparseBooleanArray booleanArray = new SparseBooleanArray();
 
-    public SparseBooleanArray getBooleanArray() {
-        return booleanArray;
-    }
 
-    public void setBooleanArray(SparseBooleanArray booleanArray) {
-        this.booleanArray = booleanArray;
-    }
+
+
 
     @NonNull
     @Override
@@ -86,9 +92,12 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
         return new MyViewHolder(linearLayout);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onBindViewHolder(@NonNull GioHangProAdapter.MyViewHolder holder, int position) {
         GioHangDisplay gioHangDisplay = gioHangDisplays.get(position);
+
+
         if (gioHangDisplay == null) {
             return;
         }
@@ -125,22 +134,27 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         holder.rcSanPham.setLayoutManager(linearLayoutManager);
         holder.rcSanPham.setAdapter(gioHangAdapter);
-
-        gioHangAdapter.setCheckBoxListener(new GioHangAdapter.CheckBoxListener() {
+        gioHangAdapter.setCheckBoxListener(checkBoxListener);
+        holder.ckAll.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void getGiaGioHang() {
-                tong = 0;
-                SparseBooleanArray sparse = gioHangAdapter.getBooleanArray();
-                for (int i = 0; i < sparse.size(); i++) {
-                    if (sparse.valueAt(i)) {
-                        DonHangInfo donHangInfo = donHangInfos.get(sparse.keyAt(i));
-                        tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong());
+            public void onClick(View v) {
+                if (holder.ckAll.isChecked())
+                {
+                    for (DonHangInfo donHangInfo:donHangInfos
+                         ) {
+                        donHangInfo.setSelected(true);
                     }
-
+                    gioHangAdapter.notifyDataSetChanged();
+                    checkBoxListener.getGiaGioHang();
                 }
-
-                int tongTien = tong;
-                Toast.makeText(context, tong+"", Toast.LENGTH_SHORT).show();
+                else {
+                    for (DonHangInfo donHangInfo:donHangInfos
+                    ) {
+                        donHangInfo.setSelected(false);
+                    }
+                    gioHangAdapter.notifyDataSetChanged();
+                    checkBoxListener.getGiaGioHang();
+                }
             }
         });
     }
@@ -162,12 +176,15 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
         ImageView ivShop;
         ProgressBar pbLoadItemGioHang;
         RecyclerView rcSanPham;
+        CheckBox ckAll;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ivShop = itemView.findViewById(R.id.ivShop);
             tvTenCuaHang = itemView.findViewById(R.id.tvNameShop);
             pbLoadItemGioHang = itemView.findViewById(R.id.pbLoadItemGioHang);
             rcSanPham = itemView.findViewById(R.id.rcvItemGiohang);
+            ckAll = itemView.findViewById(R.id.chkCheckAll);
             this.setIsRecyclable(false);
         }
     }

@@ -182,7 +182,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        firebase_manager.mDatabase.child("DonHangInfo").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("DonHangInfo").orderByChild("idkhachHang").equalTo(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ivMyOrder.setBadgeValue((int) snapshot.getChildrenCount());
