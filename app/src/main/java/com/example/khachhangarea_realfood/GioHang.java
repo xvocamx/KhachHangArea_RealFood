@@ -115,7 +115,7 @@ public class GioHang extends AppCompatActivity {
                     gioHangDisplay.setSanPhams(temp);
                     gioHangDisplays.add(gioHangDisplay);
                     gioHangProAdapter.notifyDataSetChanged();
-                    Toast.makeText(GioHang.this, "Size" + gioHangDisplay.getSanPhams().size(), Toast.LENGTH_SHORT).show();
+
                 }
             }
 

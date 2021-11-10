@@ -23,6 +23,7 @@ import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
@@ -47,7 +48,6 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
     private ArrayList<SanPham> arrayList, arrayListOld;
     private ClickItemFoodListener delegation;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
-    boolean res = true;
 
     public void setDelegation(ClickItemFoodListener delegation) {
         this.delegation = delegation;
@@ -74,14 +74,13 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         if (sanPham == null) {
             return;
         }
-        //Hien thi thong tin san pham
         holder.tvTenSanPham.setText(sanPham.getTenSanPham());
         holder.tvGia.setText(sanPham.getGia());
         Float rating = Float.valueOf(sanPham.getRating());
         holder.tvRatings.setText(rating.toString());
-        firebase_manager.LayTenLoai(sanPham, holder.tvLoaiSanPham);
-        firebase_manager.LoadImageFood(sanPham, context, holder.ivSanPham);
-        //Su kiem click vao cac item
+        firebase_manager.LayTenLoai(sanPham,holder.tvLoaiSanPham);
+        firebase_manager.LoadImageFood(sanPham,context, holder.ivSanPham);
+
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,17 +91,54 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                 }
             }
         };
-
-        //Mua san pham ngay
         holder.ivMuaNgay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String soLuong = "1";
-                UUID uuid = UUID.randomUUID();
-                String IDInfo = "MD_" + uuid.toString();
-                String donGia = sanPham.getGia();
-                DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
-                firebase_manager.ThemVaoGioHang(donHangInfo,IDInfo, context);
+              firebase_manager.  mDatabase.child("DonHangInfo").orderByChild("idkhachHang").equalTo(firebase_manager.auth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                  @Override
+                  public void onComplete(@NonNull  Task<DataSnapshot> task) {
+                      boolean res = true;
+                      String soLuong = "1";
+                      UUID uuid = UUID.randomUUID();
+                      String IDInfo = "MD_" + uuid.toString();
+                      String donGia = sanPham.getGia();
+                      DonHangInfo tempDonHang = new DonHangInfo();
+                      DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
+                      for (DataSnapshot dataSnapshot:task.getResult().getChildren()
+                      ) {
+
+                          DonHangInfo temp = dataSnapshot.getValue(DonHangInfo.class);
+                          if (temp.getIDDonHang().equals(""))
+                          {
+                              if (donHangInfo.getSanPham().getIDSanPham().equals(temp.getSanPham().getIDSanPham()))
+                              {
+                                  res = false;
+                                  tempDonHang = temp;
+                                  break;
+                              }
+                          }
+                      }
+                      if (res == true)
+                      {
+                          firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                              @Override
+                              public void onSuccess(Void unused) {
+                                  Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                              }
+                          });
+                      }
+                      else {
+                          tempDonHang.setSoLuong((Integer.parseInt(tempDonHang.getSoLuong())+1)+"");
+                          firebase_manager.mDatabase.child("DonHangInfo").child(tempDonHang.getIDInfo()).setValue(tempDonHang).addOnSuccessListener(new OnSuccessListener<Void>() {
+                              @Override
+                              public void onSuccess(Void unused) {
+                                  Toast.makeText(context, "Thêm +1 sản phảm thành công", Toast.LENGTH_SHORT).show();
+                              }
+                          });
+                      }
+                  }
+              });
+
             }
         });
     }
@@ -117,24 +153,6 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         return arrayList.size();
     }
 
-    //Kiem tra
-    private boolean KiemTra(DonHangInfo donHangInfo) {
-        firebase_manager.mDatabase.child("DonHangInfo").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-                    DonHangInfo hangInfo = dataSnapshot.getValue(DonHangInfo.class);
-                    if (donHangInfo.getSanPham().getIDSanPham().equals(hangInfo.getSanPham().getIDSanPham()) && hangInfo.getIDDonHang().equals("")) {
-                        int soLuongSanPham = Integer.valueOf(hangInfo.getSoLuong()) + 1;
-                        hangInfo.setSoLuong(String.valueOf(soLuongSanPham));
-                        firebase_manager.mDatabase.child("DonHangInfo").child(hangInfo.getIDInfo()).setValue(hangInfo);
-                        res = false;
-                    }
-                }
-            }
-        });
-        return res;
-    }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTenSanPham;
@@ -207,6 +225,4 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
             }
         };
     }
-
-
 }

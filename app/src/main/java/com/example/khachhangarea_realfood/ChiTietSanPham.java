@@ -158,12 +158,17 @@ public class ChiTietSanPham extends AppCompatActivity {
     }
 
     private void addGioHang() {
-        String soLuong = btnSoLuong.getNumber();
+        String soLuong = "1";
         UUID uuid = UUID.randomUUID();
         String IDInfo = "MD_" + uuid.toString();
         String donGia = sanPham.getGia();
         DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
-        firebase_manager.ThemVaoGioHang(donHangInfo, IDInfo, getApplicationContext());
+        firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(ChiTietSanPham.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

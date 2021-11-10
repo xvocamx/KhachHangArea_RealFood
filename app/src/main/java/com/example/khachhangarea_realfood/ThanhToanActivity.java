@@ -75,7 +75,7 @@ public class ThanhToanActivity extends AppCompatActivity {
             String data = bundle.getString("data");
             gioHangDisplays = new Gson().fromJson(data, new TypeToken<ArrayList<GioHangDisplay>>(){}.getType());
             for (GioHangDisplay gioHangDisplay:gioHangDisplays
-                 ) {
+            ) {
                 gioHangDisplay.setSanPhams((ArrayList<DonHangInfo>) gioHangDisplay.getSanPhams().stream().filter(donHangInfo1 -> donHangInfo1.isSelected()==true).collect(Collectors.toList()));
             }
             gioHangDisplays.removeIf(gioHangDisplay -> gioHangDisplay.getSanPhams().size()==0);
@@ -182,7 +182,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                 KAlertDialog kAlertDialog = new KAlertDialog(ThanhToanActivity.this,KAlertDialog.PROGRESS_TYPE);
                 kAlertDialog.show();
                 for (GioHangDisplay gioHangDisplay:gioHangDisplays
-                     ) {
+                ) {
                     String IDDonHang = "DH_" + UUID.randomUUID().toString();
                     DonHang donHang = new DonHang(IDDonHang, gioHangDisplay.getIdCuaHang(), firebase_manager.auth.getUid()
                             , "",  diaChi,  soDienThoai, "", "", tong, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
