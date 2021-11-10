@@ -92,6 +92,9 @@ public class ChiTietCuaHang extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_baocao:
                 Intent intentBaoCao = new Intent(ChiTietCuaHang.this, BaoCaoShop.class);
+                Gson gson = new Gson();
+                String data = gson.toJson(cuaHang);
+                intentBaoCao.putExtra("dataShop", data);
                 startActivity(intentBaoCao);
         }
         return super.onOptionsItemSelected(item);

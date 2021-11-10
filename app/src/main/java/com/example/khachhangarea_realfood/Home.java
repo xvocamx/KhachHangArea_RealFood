@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +15,9 @@ import com.example.khachhangarea_realfood.fragment.FavoriteFragment;
 import com.example.khachhangarea_realfood.fragment.HomeFragment;
 import com.example.khachhangarea_realfood.fragment.NotificationFragment;
 import com.example.khachhangarea_realfood.fragment.SettingFragment;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.database.collection.LLRBNode;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarTab;
 
@@ -58,8 +54,6 @@ public class Home extends AppCompatActivity {
 
     private void setEvent() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

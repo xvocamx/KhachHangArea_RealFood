@@ -10,40 +10,41 @@
 
     <Spinner
         android:id="@+id/spLyDo"
-        android:background="@drawable/custom_spinner"
-        android:entries="@array/lydo"
-        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_spinner"
+        android:entries="@array/lydo" />
 
     <EditText
         android:id="@+id/edtLyDo"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:padding="10dp"
         android:background="@drawable/custom_button_dangxuat"
         android:hint="Lý do báo cáo"
-        android:textSize="15dp" />
+        android:padding="10dp"
+        android:textSize="15dp"
+        android:visibility="gone" />
 
     <TextView
-        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/h_nh_nh_d_ng_b_o_c_o" />
 
     <ImageView
         android:id="@+id/ivBaoCao"
-        android:scaleType="fitXY"
-        android:background="@drawable/custom_button_dangxuat"
-        android:src="@drawable/ic_add_plus"
         android:layout_width="120dp"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:background="@drawable/custom_button_dangxuat"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_add_plus" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnBaoCao"
-        android:layout_marginTop="20dp"
         style="@style/button"
-        android:text="Báo cáo"
-        />
+        android:layout_marginTop="20dp"
+        android:text="Báo cáo" />
 </LinearLayout>

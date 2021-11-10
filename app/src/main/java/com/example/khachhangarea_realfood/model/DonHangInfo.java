@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class DonHangInfo implements Parcelable {
-    String IDInfo, IDDonHang,IDKhachHang, soLuong, donGia, maGiamGia;
+    String IDInfo,IDDonHang,IDKhachHang, soLuong, donGia, maGiamGia;
     SanPham sanPham;
     boolean selected;
 
@@ -106,6 +106,20 @@ public class DonHangInfo implements Parcelable {
 
     public void setSanPham(SanPham sanPham) {
         this.sanPham = sanPham;
+    }
+
+    @Override
+    public String toString() {
+        return "DonHangInfo{" +
+                "IDInfo='" + IDInfo + '\'' +
+                ", IDDonHang='" + IDDonHang + '\'' +
+                ", IDKhachHang='" + IDKhachHang + '\'' +
+                ", soLuong='" + soLuong + '\'' +
+                ", donGia='" + donGia + '\'' +
+                ", maGiamGia='" + maGiamGia + '\'' +
+                ", sanPham=" + sanPham +
+                ", selected=" + selected +
+                '}';
     }
 
     @Override

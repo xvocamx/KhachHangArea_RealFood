@@ -80,11 +80,6 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
 
     }
 
-
-
-
-
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -130,7 +125,7 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
 
         ArrayList<DonHangInfo> donHangInfos = gioHangDisplay.getSanPhams();
         GioHangAdapter gioHangAdapter = new GioHangAdapter(context,R.layout.list_item_giohang_sanpham,donHangInfos);
-         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         holder.rcSanPham.setLayoutManager(linearLayoutManager);
         holder.rcSanPham.setAdapter(gioHangAdapter);

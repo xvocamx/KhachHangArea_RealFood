@@ -47,7 +47,7 @@ public class SettingFragment extends Fragment {
     private Button btnDangXuat;
     private LinearLayout lnDonMua;
     private Firebase_Manager firebase_manager;
-    private TextView tvName,tvEmail,tvPhone,tvDiaChi;
+    private TextView tvName,tvEmail,tvPhone,tvDiaChi,tvNgaySinh;
     private CircleImageView civAvatar;
 
     public SettingFragment() {
@@ -122,6 +122,7 @@ public class SettingFragment extends Fragment {
         tvEmail = mView.findViewById(R.id.tvEmail);
         tvPhone = mView.findViewById(R.id.tvPhone);
         tvDiaChi = mView.findViewById(R.id.tvAddress);
+        tvNgaySinh = mView.findViewById(R.id.tvBirtDay);
         civAvatar = mView.findViewById(R.id.civAvatar);
     }
     private void LoadInfoKhachHang() {
@@ -133,6 +134,7 @@ public class SettingFragment extends Fragment {
                 tvName.setText(khachHang.getTenKhachHang());
                 tvPhone.setText(khachHang.getSoDienThoai());
                 tvDiaChi.setText(khachHang.getDiaChi());
+                tvNgaySinh.setText(khachHang.getNgaySinh());
             }
 
             @Override

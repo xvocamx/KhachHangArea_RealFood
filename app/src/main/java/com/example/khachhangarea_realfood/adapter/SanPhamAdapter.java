@@ -47,6 +47,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
     private ArrayList<SanPham> arrayList, arrayListOld;
     private ClickItemFoodListener delegation;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
+    boolean res = true;
 
     public void setDelegation(ClickItemFoodListener delegation) {
         this.delegation = delegation;
@@ -73,13 +74,14 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         if (sanPham == null) {
             return;
         }
+        //Hien thi thong tin san pham
         holder.tvTenSanPham.setText(sanPham.getTenSanPham());
         holder.tvGia.setText(sanPham.getGia());
         Float rating = Float.valueOf(sanPham.getRating());
         holder.tvRatings.setText(rating.toString());
-        firebase_manager.LayTenLoai(sanPham,holder.tvLoaiSanPham);
-        firebase_manager.LoadImageFood(sanPham,context, holder.ivSanPham);
-
+        firebase_manager.LayTenLoai(sanPham, holder.tvLoaiSanPham);
+        firebase_manager.LoadImageFood(sanPham, context, holder.ivSanPham);
+        //Su kiem click vao cac item
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +92,8 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                 }
             }
         };
+
+        //Mua san pham ngay
         holder.ivMuaNgay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +102,9 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                 String IDInfo = "MD_" + uuid.toString();
                 String donGia = sanPham.getGia();
                 DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
+//                if(KiemTra(donHangInfo)==true){
+//
+//                }
                 firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -118,6 +125,24 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         return arrayList.size();
     }
 
+    //Kiem tra
+    private boolean KiemTra(DonHangInfo donHangInfo) {
+        firebase_manager.mDatabase.child("DonHangInfo").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                    DonHangInfo hangInfo = dataSnapshot.getValue(DonHangInfo.class);
+                    if (donHangInfo.getSanPham().getIDSanPham().equals(hangInfo.getSanPham().getIDSanPham()) && hangInfo.getIDDonHang().equals("")) {
+                        int soLuongSanPham = Integer.valueOf(hangInfo.getSoLuong()) + 1;
+                        hangInfo.setSoLuong(String.valueOf(soLuongSanPham));
+                        firebase_manager.mDatabase.child("DonHangInfo").child(hangInfo.getIDInfo()).setValue(hangInfo);
+                        res = false;
+                    }
+                }
+            }
+        });
+        return res;
+    }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTenSanPham;
@@ -190,4 +215,6 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
             }
         };
     }
+
+
 }

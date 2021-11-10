@@ -49,6 +49,13 @@
                 android:hint="@string/diachi" />
 
             <EditText
+                android:id="@+id/edtBirthDay"
+                style="@style/edittext"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:hint="Ngày sinh"
+                android:inputType="date" />
+
+            <EditText
                 android:id="@+id/edtPassword"
                 style="@style/edittext"
                 android:drawableLeft="@drawable/ic_lock"
@@ -61,6 +68,7 @@
                 android:drawableLeft="@drawable/ic_lock"
                 android:hint="@string/nhaplaimatkhau"
                 android:inputType="textPassword" />
+
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDangKy"
@@ -79,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
-                    android:text ="@string/bandacotaikhoanroi"
+                    android:text="@string/bandacotaikhoanroi"
                     android:textSize="14dp" />
 
                 <TextView

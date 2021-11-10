@@ -85,6 +85,12 @@
                 android:drawableLeft="@drawable/ic_location"
                 android:text="24/12 Nguyen Van Cu" />
 
+            <TextView
+                android:id="@+id/tvBirtDay"
+                style="@style/textviewinformation"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:text="21/15/2001" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"

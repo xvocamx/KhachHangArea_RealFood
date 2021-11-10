@@ -3,11 +3,13 @@ package com.example.khachhangarea_realfood;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,8 +22,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class DangKy extends AppCompatActivity {
-    private EditText edtName, edtEmail, edtPhone, edtAddress, edtPassword, edtConfirmPassword;
+    private EditText edtName, edtEmail, edtPhone, edtAddress, edtPassword, edtConfirmPassword, edtBirthDay;
     private TextView tvDangNhap;
     private Button btnDangKy;
     private FirebaseAuth mAuth;
@@ -40,6 +45,24 @@ public class DangKy extends AppCompatActivity {
     }
 
     private void setEvent() {
+        edtBirthDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String date = dayOfMonth + "/" + month + "/" + year;
+                        edtBirthDay.setText(date);
+                    }
+                };
+                Calendar calendar = Calendar.getInstance();
+                int ngay = calendar.get(Calendar.DAY_OF_MONTH);
+                int thang = calendar.get(Calendar.MONTH);
+                int nam = calendar.get(Calendar.YEAR);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DangKy.this, dateSetListener, nam, thang, ngay);
+                datePickerDialog.show();
+            }
+        });
         tvDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +78,10 @@ public class DangKy extends AppCompatActivity {
         });
     }
 
+    private void showDatePickerDiaLog() {
+
+    }
+
     private void onClickDangKy() {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
@@ -62,6 +89,7 @@ public class DangKy extends AppCompatActivity {
         String name = edtName.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
         String address = edtAddress.getText().toString().trim();
+        String birtDay = edtBirthDay.getText().toString().trim();
         progressDialog = new ProgressDialog(this);
 
         if (name.isEmpty()) {
@@ -74,6 +102,8 @@ public class DangKy extends AppCompatActivity {
             edtPhone.setError("Vui lòng nhập số điện thoại");
         } else if (address.isEmpty()) {
             edtAddress.setError("Vui lòng nhập địa chỉ");
+        } else if (birtDay.isEmpty()) {
+            edtBirthDay.setError("Vui lòng nhập ngày sinh");
         } else if (password.isEmpty()) {
             edtPassword.setError("Vui lòng nhập password");
         } else if (password.length() < 6) {
@@ -94,7 +124,7 @@ public class DangKy extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                KhachHang khachHang = new KhachHang(mAuth.getUid(),name,address,phone,"",email,"",null);
+                                KhachHang khachHang = new KhachHang(mAuth.getUid(), name, address, phone, "", email, "", null, birtDay);
                                 mDatabase.child("KhachHang").child(mAuth.getUid()).setValue(khachHang);
                                 progressDialog.dismiss();
                                 Toast.makeText(DangKy.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
@@ -121,5 +151,6 @@ public class DangKy extends AppCompatActivity {
         edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
         tvDangNhap = findViewById(R.id.tvDangNhap);
         btnDangKy = findViewById(R.id.btnDangKy);
+        edtBirthDay = findViewById(R.id.edtBirthDay);
     }
 }

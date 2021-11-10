@@ -2,10 +2,9 @@ package com.example.khachhangarea_realfood.model;
 
 
 public class KhachHang {
-    String IDKhachHang, tenKhachHang, diaChi, soDienThoai, khuVuc, email, trangThai, avatar;
+    String IDKhachHang, tenKhachHang, diaChi, soDienThoai, khuVuc, email, trangThai, avatar,ngaySinh;
 
-
-    public KhachHang(String IDKhachHang, String tenKhachHang, String diaChi, String soDienThoai, String khuVuc, String email, String trangThai, String avatar) {
+    public KhachHang(String IDKhachHang, String tenKhachHang, String diaChi, String soDienThoai, String khuVuc, String email, String trangThai, String avatar, String ngaySinh) {
         this.IDKhachHang = IDKhachHang;
         this.tenKhachHang = tenKhachHang;
         this.diaChi = diaChi;
@@ -14,7 +13,9 @@ public class KhachHang {
         this.email = email;
         this.trangThai = trangThai;
         this.avatar = avatar;
+        this.ngaySinh = ngaySinh;
     }
+
     public KhachHang() {
     }
 
@@ -82,4 +83,11 @@ public class KhachHang {
         this.avatar = avatar;
     }
 
+    public String getNgaySinh() {
+        return ngaySinh;
+    }
+
+    public void setNgaySinh(String ngaySinh) {
+        this.ngaySinh = ngaySinh;
+    }
 }

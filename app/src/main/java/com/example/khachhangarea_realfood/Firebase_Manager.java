@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,10 @@ public class Firebase_Manager {
         storageRef = FirebaseStorage.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+    }
+
+    public UploadTask UpImageBaoCao(Uri image,String cuaHang){
+        return  storageRef.child("BaoCao").child(cuaHang).child("ImageBaoCao").putFile(image);
     }
 
     public void ThemYeuThichCuaHang(CuaHang cuaHang){
