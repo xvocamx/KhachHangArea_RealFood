@@ -76,9 +76,9 @@ public class ChiTietSanPham extends AppCompatActivity {
             tvRating.setText(rating.toString());
             tvMoTa.setText(sanPham.getChiTietSanPham());
 
-            firebase_manager.LoadImageFood(sanPham,getApplicationContext(),ivFood);
+            firebase_manager.LoadImageFood(sanPham, getApplicationContext(), ivFood);
 
-           firebase_manager.mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
+            firebase_manager.mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -87,7 +87,7 @@ public class ChiTietSanPham extends AppCompatActivity {
                         if (sanPham.getIDCuaHang().equals(cuaHang.getIDCuaHang())) {
                             tvTenCuaHang.setText(cuaHang.getTenCuaHang());
                             tvAddressShop.setText(cuaHang.getDiaChi());
-                            firebase_manager.LoadLogoCuaHang(cuaHang,getApplicationContext(),ivShop);
+                            firebase_manager.LoadLogoCuaHang(cuaHang, getApplicationContext(), ivShop);
                             btnXemShop.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -162,15 +162,8 @@ public class ChiTietSanPham extends AppCompatActivity {
         UUID uuid = UUID.randomUUID();
         String IDInfo = "MD_" + uuid.toString();
         String donGia = sanPham.getGia();
-        DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "",firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
-        firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Intent intent = new Intent(ChiTietSanPham.this, GioHang.class);
-                startActivity(intent);
-                Toast.makeText(ChiTietSanPham.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-            }
-        });
+        DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
+        firebase_manager.ThemVaoGioHang(donHangInfo, IDInfo, getApplicationContext());
     }
 
 

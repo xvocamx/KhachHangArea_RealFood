@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.YeuThichFoodAdapter;
 import com.example.khachhangarea_realfood.adapter.YeuThichShopAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,15 +53,24 @@ public class Firebase_Manager {
         user = auth.getCurrentUser();
     }
 
-    public UploadTask UpImageBaoCao(Uri image,String cuaHang){
-        return  storageRef.child("BaoCao").child(cuaHang).child("ImageBaoCao").putFile(image);
+    public void ThemVaoGioHang(DonHangInfo donHangInfo, String IDInfo, Context context) {
+        mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    public void ThemYeuThichCuaHang(CuaHang cuaHang){
+    public UploadTask UpImageBaoCao(Uri image, String cuaHang) {
+        return storageRef.child("BaoCao").child(cuaHang).child("ImageBaoCao").putFile(image);
+    }
+
+    public void ThemYeuThichCuaHang(CuaHang cuaHang) {
         mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).setValue(cuaHang);
     }
 
-    public void XoaYeuThichCuaHang(CuaHang cuaHang){
+    public void XoaYeuThichCuaHang(CuaHang cuaHang) {
         mDatabase.child("YeuThich").child(auth.getUid()).child("Shop").child(cuaHang.getIDCuaHang()).removeValue(new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
@@ -68,11 +79,11 @@ public class Firebase_Manager {
         });
     }
 
-    public void ThemYeuThichFood(SanPham sanPham){
+    public void ThemYeuThichFood(SanPham sanPham) {
         mDatabase.child("YeuThich").child(auth.getUid()).child("Food").child(sanPham.getIDSanPham()).setValue(sanPham);
     }
 
-    public void XoaYeuThichFood(SanPham sanPham){
+    public void XoaYeuThichFood(SanPham sanPham) {
         mDatabase.child("YeuThich").child(auth.getUid()).child("Food").child(sanPham.getIDSanPham()).removeValue(new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
@@ -82,7 +93,7 @@ public class Firebase_Manager {
     }
 
 
-    public void LayTenLoai(SanPham sanPham, TextView tvTenLoai){
+    public void LayTenLoai(SanPham sanPham, TextView tvTenLoai) {
         mDatabase.child("LoaiSanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

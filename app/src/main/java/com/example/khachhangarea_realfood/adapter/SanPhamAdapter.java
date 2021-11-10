@@ -102,15 +102,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                 String IDInfo = "MD_" + uuid.toString();
                 String donGia = sanPham.getGia();
                 DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
-//                if(KiemTra(donHangInfo)==true){
-//
-//                }
-                firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                firebase_manager.ThemVaoGioHang(donHangInfo,IDInfo, context);
             }
         });
     }
