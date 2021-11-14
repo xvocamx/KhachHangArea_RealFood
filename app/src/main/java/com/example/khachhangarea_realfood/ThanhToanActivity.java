@@ -46,22 +46,23 @@ import java.util.stream.Collectors;
 
 public class ThanhToanActivity extends AppCompatActivity {
 
-    TextView txtTenNguoiNhan,tvDiaChi;
+    TextView txtTenNguoiNhan, tvDiaChi, tvTongTien;
     private ArrayList<DonHangInfo> donHangInfos;
     private RecyclerView rcvThanhToan;
     private LinearLayoutManager linearLayoutManager;
     private DonHangInfo donHangInfo;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private TextView  tvTongTien;
+    private EditText edtDiaChiNhanHang,edtSoDienThoai;
     private ProgressBar pbLoadGioHang;
     private Button btnThanhToan;
-    String diaChi,soDienThoai;
+    String diaChi, soDienThoai;
     ThanhToanProAdapter thanhToanProAdapter;
     ArrayList<GioHangDisplay> gioHangDisplays = new ArrayList<>();
     ArrayList<String> idCuaHang = new ArrayList<>();
     int tong = 0;
     Firebase_Manager firebase_manager = new Firebase_Manager();
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +70,16 @@ public class ThanhToanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_thanh_toan);
         donHangInfos = new ArrayList<>();
         donHangInfo = new DonHangInfo();
-        if (getIntent()!=null)
-        {
+        if (getIntent() != null) {
             Bundle bundle = getIntent().getExtras();
             String data = bundle.getString("data");
-            gioHangDisplays = new Gson().fromJson(data, new TypeToken<ArrayList<GioHangDisplay>>(){}.getType());
-            for (GioHangDisplay gioHangDisplay:gioHangDisplays
+            gioHangDisplays = new Gson().fromJson(data, new TypeToken<ArrayList<GioHangDisplay>>() {
+            }.getType());
+            for (GioHangDisplay gioHangDisplay : gioHangDisplays
             ) {
-                gioHangDisplay.setSanPhams((ArrayList<DonHangInfo>) gioHangDisplay.getSanPhams().stream().filter(donHangInfo1 -> donHangInfo1.isSelected()==true).collect(Collectors.toList()));
+                gioHangDisplay.setSanPhams((ArrayList<DonHangInfo>) gioHangDisplay.getSanPhams().stream().filter(donHangInfo1 -> donHangInfo1.isSelected() == true).collect(Collectors.toList()));
             }
-            gioHangDisplays.removeIf(gioHangDisplay -> gioHangDisplay.getSanPhams().size()==0);
+            gioHangDisplays.removeIf(gioHangDisplay -> gioHangDisplay.getSanPhams().size() == 0);
             thanhToanProAdapter = new ThanhToanProAdapter(this, R.layout.list_item_thanhtoan, gioHangDisplays);
 
         }
@@ -93,25 +94,25 @@ public class ThanhToanActivity extends AppCompatActivity {
     private void LoadData() {
         firebase_manager.mDatabase.child("KhachHang").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 KhachHang khachHang = snapshot.getValue(KhachHang.class);
-                txtTenNguoiNhan.setText( khachHang.getTenKhachHang());
-                tvDiaChi.setText( khachHang.getDiaChi());
+                txtTenNguoiNhan.setText(khachHang.getTenKhachHang());
+                tvDiaChi.setText(khachHang.getDiaChi());
             }
 
             @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-        for (GioHangDisplay gioHangDisplay:gioHangDisplays) {
-            for (DonHangInfo donHangInfo:gioHangDisplay.getSanPhams()
+        for (GioHangDisplay gioHangDisplay : gioHangDisplays) {
+            for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()
             ) {
-                tong+=Integer.parseInt(donHangInfo.getDonGia())*Integer.parseInt(donHangInfo.getSoLuong());
+                tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong());
             }
         }
 
-        tvTongTien.setText(tong+"");
+        tvTongTien.setText(tong + "");
     }
 
     private void LoadGioHang() {
@@ -179,18 +180,24 @@ public class ThanhToanActivity extends AppCompatActivity {
         btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KAlertDialog kAlertDialog = new KAlertDialog(ThanhToanActivity.this,KAlertDialog.PROGRESS_TYPE);
+                KAlertDialog kAlertDialog = new KAlertDialog(ThanhToanActivity.this, KAlertDialog.PROGRESS_TYPE);
                 kAlertDialog.show();
-                for (GioHangDisplay gioHangDisplay:gioHangDisplays
+                for (GioHangDisplay gioHangDisplay : gioHangDisplays
                 ) {
                     String IDDonHang = "DH_" + UUID.randomUUID().toString();
+                    if(edtDiaChiNhanHang != null){
+                        diaChi = edtDiaChiNhanHang.getText().toString();
+                    }
+                    if(edtSoDienThoai !=null){
+                        soDienThoai = edtSoDienThoai.getText().toString();
+                    }
                     DonHang donHang = new DonHang(IDDonHang, gioHangDisplay.getIdCuaHang(), firebase_manager.auth.getUid()
-                            , "",  diaChi,  soDienThoai, "", "", tong, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
+                            , "", diaChi, soDienThoai, "", "", tong, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
                     );
                     firebase_manager.mDatabase.child("DonHang").child(IDDonHang).setValue(donHang).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            for (DonHangInfo donHangInfo: gioHangDisplay.getSanPhams()) {
+                            for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()) {
 
                                 donHangInfo.setIDDonHang(IDDonHang);
                                 firebase_manager.mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -205,7 +212,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
-                                    public void onFailure(@NonNull  Exception e) {
+                                    public void onFailure(@NonNull Exception e) {
                                         kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
                                         kAlertDialog.setContentText(e.getMessage());
                                     }
@@ -214,7 +221,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull  Exception e) {
+                        public void onFailure(@NonNull Exception e) {
                             kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
                             kAlertDialog.setContentText(e.getMessage());
                         }
@@ -226,7 +233,6 @@ public class ThanhToanActivity extends AppCompatActivity {
     }
 
 
-
     private void setControl() {
         rcvThanhToan = findViewById(R.id.rcvThanhToan);
         tvTongTien = findViewById(R.id.tvTongTien);
@@ -234,5 +240,7 @@ public class ThanhToanActivity extends AppCompatActivity {
         tvDiaChi = findViewById(R.id.txtDiaChiNhanHang);
         txtTenNguoiNhan = findViewById(R.id.txtTenNguoiNhan);
         btnThanhToan = findViewById(R.id.btnThanhToan);
+        edtDiaChiNhanHang = findViewById(R.id.edtDiaChiNhanHang);
+        edtSoDienThoai = findViewById(R.id.edtSoDienThoai);
     }
 }

@@ -14,13 +14,17 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiCuaHang;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiDonHang;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
+import com.example.khachhangarea_realfood.adapter.DonMuaAdpater;
 import com.example.khachhangarea_realfood.adapter.LoaiSanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.YeuThichFoodAdapter;
 import com.example.khachhangarea_realfood.adapter.YeuThichShopAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
+import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,6 +55,44 @@ public class Firebase_Manager {
         storageRef = FirebaseStorage.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+    }
+
+    public void LoadThongTinKhachHang(TextView tvHoTen,TextView tvDiaChi,TextView tvSDT){
+        mDatabase.child("KhachHang").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                KhachHang khachHang = snapshot.getValue(KhachHang.class);
+                tvHoTen.setText(khachHang.getTenKhachHang());
+                tvDiaChi.setText(khachHang.getDiaChi());
+                tvSDT.setText(khachHang.getSoDienThoai());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void LoadDonHangChoXacNhan(ArrayList<DonHang> donHangs, DonMuaAdpater donMuaAdpater) {
+        mDatabase.child("DonHang").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                donHangs.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DonHang donHang = dataSnapshot.getValue(DonHang.class);
+                    if(donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien.toString())){
+                        donHangs.add(donHang);
+                        donMuaAdpater.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void ThemVaoGioHang(DonHangInfo donHangInfo, String IDInfo, Context context) {

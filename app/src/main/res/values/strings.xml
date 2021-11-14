@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">KhachHangArea_RealFood</string>
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
