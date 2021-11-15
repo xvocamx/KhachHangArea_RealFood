@@ -71,6 +71,9 @@ public class ThanhToanAdapter extends RecyclerView.Adapter<ThanhToanAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull ThanhToanAdapter.MyViewHolder holder, int position) {
         DonHangInfo donHangInfo = donHangInfos.get(position);
+        if(donHangInfo == null){
+            return;
+        }
         holder.tvTenSanPham.setText(donHangInfo.getSanPham().getTenSanPham());
         String gia = String.valueOf(Integer.valueOf(donHangInfo.getSanPham().getGia()));
         holder.tvGia.setText(gia);

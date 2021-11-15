@@ -46,14 +46,14 @@ import java.util.stream.Collectors;
 
 public class ThanhToanActivity extends AppCompatActivity {
 
-    TextView txtTenNguoiNhan, tvDiaChi, tvTongTien;
+    TextView tvTenNguoiNhan, tvTongTien;
     private ArrayList<DonHangInfo> donHangInfos;
     private RecyclerView rcvThanhToan;
     private LinearLayoutManager linearLayoutManager;
     private DonHangInfo donHangInfo;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private EditText edtDiaChiNhanHang,edtSoDienThoai;
+    private EditText edtDiaChi, edtSoDienThoai;
     private ProgressBar pbLoadGioHang;
     private Button btnThanhToan;
     String diaChi, soDienThoai;
@@ -75,8 +75,7 @@ public class ThanhToanActivity extends AppCompatActivity {
             String data = bundle.getString("data");
             gioHangDisplays = new Gson().fromJson(data, new TypeToken<ArrayList<GioHangDisplay>>() {
             }.getType());
-            for (GioHangDisplay gioHangDisplay : gioHangDisplays
-            ) {
+            for (GioHangDisplay gioHangDisplay : gioHangDisplays) {
                 gioHangDisplay.setSanPhams((ArrayList<DonHangInfo>) gioHangDisplay.getSanPhams().stream().filter(donHangInfo1 -> donHangInfo1.isSelected() == true).collect(Collectors.toList()));
             }
             gioHangDisplays.removeIf(gioHangDisplay -> gioHangDisplay.getSanPhams().size() == 0);
@@ -96,8 +95,9 @@ public class ThanhToanActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 KhachHang khachHang = snapshot.getValue(KhachHang.class);
-                txtTenNguoiNhan.setText(khachHang.getTenKhachHang());
-                tvDiaChi.setText(khachHang.getDiaChi());
+                tvTenNguoiNhan.setText(khachHang.getTenKhachHang());
+                edtDiaChi.setText(khachHang.getDiaChi());
+                edtSoDienThoai.setText(khachHang.getSoDienThoai());
             }
 
             @Override
@@ -180,53 +180,56 @@ public class ThanhToanActivity extends AppCompatActivity {
         btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KAlertDialog kAlertDialog = new KAlertDialog(ThanhToanActivity.this, KAlertDialog.PROGRESS_TYPE);
-                kAlertDialog.show();
-                for (GioHangDisplay gioHangDisplay : gioHangDisplays
-                ) {
-                    String IDDonHang = "DH_" + UUID.randomUUID().toString();
-                    if(edtDiaChiNhanHang != null){
-                        diaChi = edtDiaChiNhanHang.getText().toString();
-                    }
-                    if(edtSoDienThoai !=null){
-                        soDienThoai = edtSoDienThoai.getText().toString();
-                    }
-                    DonHang donHang = new DonHang(IDDonHang, gioHangDisplay.getIdCuaHang(), firebase_manager.auth.getUid()
-                            , "", diaChi, soDienThoai, "", "", tong, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
-                    );
-                    firebase_manager.mDatabase.child("DonHang").child(IDDonHang).setValue(donHang).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()) {
-
-                                donHangInfo.setIDDonHang(IDDonHang);
-                                firebase_manager.mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
+                diaChi = edtDiaChi.getText().toString();
+                soDienThoai = edtSoDienThoai.getText().toString();
+                if (diaChi.isEmpty()) {
+                    edtDiaChi.setError("Vui lòng nhập địa chỉ");
+                } else if (soDienThoai.isEmpty()) {
+                    edtSoDienThoai.setError("Vui lòng nhập số điện thoại");
+                } else {
+                    KAlertDialog kAlertDialog = new KAlertDialog(ThanhToanActivity.this, KAlertDialog.PROGRESS_TYPE);
+                    kAlertDialog.show();
+                    for (GioHangDisplay gioHangDisplay : gioHangDisplays
+                    ) {
+                        String IDDonHang = "DH_" + UUID.randomUUID().toString();
 
 
-                                        kAlertDialog.changeAlertType(KAlertDialog.SUCCESS_TYPE);
-                                        kAlertDialog.setContentText("Đặt hàng thành công!");
+                        DonHang donHang = new DonHang(IDDonHang, gioHangDisplay.getIdCuaHang(), firebase_manager.auth.getUid()
+                                , "", diaChi, soDienThoai, "", "", tong, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
+                        );
+                        firebase_manager.mDatabase.child("DonHang").child(IDDonHang).setValue(donHang).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()) {
 
-
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
-                                        kAlertDialog.setContentText(e.getMessage());
-                                    }
-                                });
+                                    donHangInfo.setIDDonHang(IDDonHang);
+                                    firebase_manager.mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            kAlertDialog.changeAlertType(KAlertDialog.SUCCESS_TYPE);
+                                            kAlertDialog.setContentText("Đặt hàng thành công!");
+                                            Intent intent = new Intent(ThanhToanActivity.this,Home.class);
+                                            startActivity(intent);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
+                                            kAlertDialog.setContentText(e.getMessage());
+                                        }
+                                    });
+                                }
                             }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
-                            kAlertDialog.setContentText(e.getMessage());
-                        }
-                    });
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
+                                kAlertDialog.setContentText(e.getMessage());
+                            }
+                        });
+                    }
                 }
+
             }
         });
 
@@ -237,10 +240,9 @@ public class ThanhToanActivity extends AppCompatActivity {
         rcvThanhToan = findViewById(R.id.rcvThanhToan);
         tvTongTien = findViewById(R.id.tvTongTien);
         pbLoadGioHang = findViewById(R.id.pbLoadGioHang);
-        tvDiaChi = findViewById(R.id.txtDiaChiNhanHang);
-        txtTenNguoiNhan = findViewById(R.id.txtTenNguoiNhan);
+        edtDiaChi = findViewById(R.id.edtDiaChiNhanHang);
+        tvTenNguoiNhan = findViewById(R.id.txtTenNguoiNhan);
         btnThanhToan = findViewById(R.id.btnThanhToan);
-        edtDiaChiNhanHang = findViewById(R.id.edtDiaChiNhanHang);
         edtSoDienThoai = findViewById(R.id.edtSoDienThoai);
     }
 }

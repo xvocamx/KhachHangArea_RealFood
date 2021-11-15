@@ -29,13 +29,32 @@
                     android:text="Địa chỉ nhận hàng"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtDiaChiNhanHang"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/edtDiaChiNhanHang"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Số điện thoại: "
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edtSoDienThoai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,41 +77,7 @@
                     android:text="" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Địa chỉ hiện tại: "
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/edtDiaChiNhanHang"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Số điện thoại: "
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/edtSoDienThoai"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"

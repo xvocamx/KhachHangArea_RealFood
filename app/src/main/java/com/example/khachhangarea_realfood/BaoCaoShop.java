@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.model.BaoCao;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.ThongBao;
 import com.google.gson.Gson;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
@@ -22,6 +24,7 @@ import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickCancel;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class BaoCaoShop extends AppCompatActivity {
@@ -90,14 +93,26 @@ public class BaoCaoShop extends AppCompatActivity {
                     Toast.makeText(BaoCaoShop.this, "Vui lòng chọn lý do", Toast.LENGTH_SHORT).show();
                 } else {
                     String IDBaoCao = "BC_" + UUID.randomUUID().toString();
+                    String IDThongBao = UUID.randomUUID().toString();
                     if (spLyDo.getSelectedItem().equals("Khác")) {
+
+                        String noiDung = "Người dùng " + firebase_manager.auth.getUid() + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + edtLyDo.getText().toString();
+                        ThongBao thongBao = new ThongBao(IDThongBao,noiDung,"Thông báo","","admin","", TrangThaiThongBao.ChuaXem,new Date());
                         BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), edtLyDo.getText().toString(), null);
                         firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
-                        firebase_manager.UpImageBaoCao(hinhAnhBaoCao, cuaHang.getIDCuaHang());
+                        firebase_manager.mDatabase.child("ThongBao").child(cuaHang.getIDCuaHang()).child(IDThongBao).setValue(thongBao);
+                        if(hinhAnhBaoCao !=null){
+                            firebase_manager.UpImageBaoCao(hinhAnhBaoCao, cuaHang.getIDCuaHang());
+                        }
                     } else {
+                        String noiDung = "Người dùng " + firebase_manager.auth.getUid() + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + spLyDo.getSelectedItem().toString();
+                        ThongBao thongBao = new ThongBao(IDThongBao,noiDung,"Thông báo","","admin","", TrangThaiThongBao.ChuaXem,new Date());
                         BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), spLyDo.getSelectedItem().toString(), null);
                         firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
-                        firebase_manager.UpImageBaoCao(hinhAnhBaoCao, cuaHang.getIDCuaHang());
+                        firebase_manager.mDatabase.child("ThongBao").child(cuaHang.getIDCuaHang()).child(IDThongBao).setValue(thongBao);
+                        if(hinhAnhBaoCao != null){
+                            firebase_manager.UpImageBaoCao(hinhAnhBaoCao, cuaHang.getIDCuaHang());
+                        }
                     }
                     Intent intent = new Intent(BaoCaoShop.this, ChiTietCuaHang.class);
                     Gson gson = new Gson();

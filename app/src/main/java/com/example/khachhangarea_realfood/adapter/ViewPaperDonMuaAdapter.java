@@ -34,8 +34,6 @@ public class ViewPaperDonMuaAdapter extends FragmentStateAdapter {
             case 4:
                 return new DaHuyFragment();
             case 5:
-                return new TraHangFragment();
-            case 6:
                 return new DanhGiaDonMuaFragment();
             default:
                 return new ChoXacNhanFragment();
@@ -45,6 +43,6 @@ public class ViewPaperDonMuaAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 7;
+        return 6;
     }
 }

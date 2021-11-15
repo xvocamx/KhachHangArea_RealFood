@@ -39,7 +39,6 @@ public class ChoXacNhanFragment extends Fragment {
 
     public static ChoXacNhanFragment newInstance(String param1, String param2) {
         ChoXacNhanFragment fragment = new ChoXacNhanFragment();
-        Bundle args = new Bundle();
         return fragment;
     }
 

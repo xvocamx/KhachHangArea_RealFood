@@ -17,6 +17,7 @@ import com.example.khachhangarea_realfood.TrangThai.TrangThaiCuaHang;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiDonHang;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.DonMuaAdpater;
+import com.example.khachhangarea_realfood.adapter.DonMuaDaNhanHangAdpater;
 import com.example.khachhangarea_realfood.adapter.LoaiSanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.YeuThichFoodAdapter;
@@ -57,14 +58,167 @@ public class Firebase_Manager {
         user = auth.getCurrentUser();
     }
 
-    public void LoadThongTinKhachHang(TextView tvHoTen,TextView tvDiaChi,TextView tvSDT){
+    public String GetStringTrangThaiDonHang(TrangThaiDonHang trangThaiDonHang) {
+        String res = "";
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_HuyDonHang) {
+            res = "Đã hủy";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien) {
+            res = "Chờ xác nhận chuyển tiền cọc";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_DaGiaoChoBep) {
+            res = "Đã giao đơn hàng cho bếp";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_DangChuanBihang) {
+            res = "Đang chuẩn bị hàng";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_DaChuanBiXong) {
+            res = "Đã chuẩn bị xong";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_DangGiaoShipper) {
+            res = "Đang giao shipper đi phát";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_ChoShipperLayHang) {
+            res = "Chờ shipper lấy hàng";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_ChoXacNhanGiaoHangChoShipper) {
+            res = "Chờ Shop xác nhận giao hàng cho Shipper";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.ChoShopXacNhan_Tien) {
+            res = "Chờ Shop xác nhận đã nhận tiền hàng từ Shipper";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.ChoShopXacNhan_TraHang) {
+            res = "Chờ Shop xác nhận đã nhận hàng trả về từ Shipper";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.Shipper_DaLayHang) {
+            res = "Shipper đã lấy hàng đi giao";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.Shipper_KhongNhanGiaoHang) {
+            res = "Shipper không nhận giao hàng";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.Shipper_DaTraHang) {
+            res = "Đơn hàng đã được hoàn về";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.Shipper_DaChuyenTien) {
+            res = "Đơn hàng đã thanh toán thành công";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.Shipper_GiaoKhongThanhCong) {
+            res = "Giao hàng không thành công";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.Shipper_DangGiaoHang) {
+            res = "Shipper đang giao hàng";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.KhachHang_HuyDon) {
+            res = "Khách hàng hủy đơn";
+        }
+
+
+        return res;
+    }
+
+    public void LoadTenKhachHang(TextView tvHoTen) {
         mDatabase.child("KhachHang").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 KhachHang khachHang = snapshot.getValue(KhachHang.class);
                 tvHoTen.setText(khachHang.getTenKhachHang());
-                tvDiaChi.setText(khachHang.getDiaChi());
-                tvSDT.setText(khachHang.getSoDienThoai());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void LoadDaHuyDonHang(ArrayList<DonHang> donHangs, DonMuaAdpater donMuaAdpater) {
+        mDatabase.child("DonHang").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                donHangs.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DonHang donHang = dataSnapshot.getValue(DonHang.class);
+                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_HuyDonHang.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_GiaoKhongThanhCong.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaTraHang.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.ChoShopXacNhan_TraHang.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.KhachHang_HuyDon.toString())) {
+                        donHangs.add(donHang);
+                        donMuaAdpater.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void LoadDaNhanDonHang(ArrayList<DonHang> donHangs, DonMuaDaNhanHangAdpater donMuaDaNhanHangAdpater) {
+        mDatabase.child("DonHang").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                donHangs.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DonHang donHang = dataSnapshot.getValue(DonHang.class);
+                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_GiaoThanhCong.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaChuyenTien.toString())) {
+                        donHangs.add(donHang);
+                        donMuaDaNhanHangAdpater.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void LoadDangGiaoDonHang(ArrayList<DonHang> donHangs, DonMuaAdpater donMuaAdpater) {
+        mDatabase.child("DonHang").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                donHangs.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DonHang donHang = dataSnapshot.getValue(DonHang.class);
+                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DangGiaoShipper.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_ChoShipperLayHang.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaLayHang.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DangGiaoHang.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_KhongNhanGiaoHang.toString())
+                    ) {
+                        donHangs.add(donHang);
+                        donMuaAdpater.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void LoadChuanBiDonHang(ArrayList<DonHang> donHangs, DonMuaAdpater donMuaAdpater) {
+        mDatabase.child("DonHang").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                donHangs.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DonHang donHang = dataSnapshot.getValue(DonHang.class);
+                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DangChuanBihang.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DaChuanBiXong.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DaGiaoChoBep.toString()) ||
+                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Bep_DaHuyDonHang.toString())) {
+                        donHangs.add(donHang);
+                        donMuaAdpater.notifyDataSetChanged();
+                    }
+                }
             }
 
             @Override
@@ -81,7 +235,7 @@ public class Firebase_Manager {
                 donHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHang donHang = dataSnapshot.getValue(DonHang.class);
-                    if(donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien.toString())){
+                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien.toString())) {
                         donHangs.add(donHang);
                         donMuaAdpater.notifyDataSetChanged();
                     }
@@ -101,21 +255,18 @@ public class Firebase_Manager {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean res = true;
-                for (DataSnapshot dataSnapshot:snapshot.getChildren()
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()
                 ) {
 
                     DonHangInfo temp = dataSnapshot.getValue(DonHangInfo.class);
-                    if (temp.getIDDonHang().equals(""))
-                    {
-                        if (donHangInfo.getSanPham().getIDSanPham().equals(temp.getSanPham().getIDSanPham()))
-                        {
+                    if (temp.getIDDonHang().equals("")) {
+                        if (donHangInfo.getSanPham().getIDSanPham().equals(temp.getSanPham().getIDSanPham())) {
                             res = false;
                             break;
                         }
                     }
                 }
-                if (res == true)
-                {
+                if (res == true) {
                     mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -124,14 +275,13 @@ public class Firebase_Manager {
                     });
                 }
             }
+
             @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
-
-
 
 
     public UploadTask UpImageBaoCao(Uri image, String cuaHang) {

@@ -4,7 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.khachhangarea_realfood.adapter.ViewPaperDonMuaAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -24,7 +28,6 @@ public class DonMua extends AppCompatActivity {
 
     private void setEvent() {
         LoadTab();
-
     }
 
     private void LoadTab() {
@@ -50,9 +53,6 @@ public class DonMua extends AppCompatActivity {
                         tab.setText("Đã hủy");
                         break;
                     case 5:
-                        tab.setText("Trả hàng");
-                        break;
-                    case 6:
                         tab.setText("Đánh giá");
                         break;
                 }

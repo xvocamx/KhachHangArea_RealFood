@@ -11,11 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KhachHangArea_RealFood"
         tools:replace="android:theme">
+        <activity android:name=".BinhLuan"></activity>
         <activity
             android:name=".ChiTietDonHang"
             android:label="Chi Tiết đơn hàng"
-            android:parentActivityName=".DonMua"></activity>
-
+            android:parentActivityName=".DonMua" />
         <activity
             android:name=".ThanhToanActivity"
             android:label="Thanh Toán"

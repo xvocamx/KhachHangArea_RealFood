@@ -51,6 +51,7 @@
     <string name="yeu_thich">Yêu thích</string>
     <string name="thong_bao">Thông báo</string>
     <string name="cai_dat">Cài đặt</string>
+    <string name="nhanxet">Nhận xét</string>
 
     <array name="category">
         <item>Pizaa</item>
