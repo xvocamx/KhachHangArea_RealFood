@@ -60,7 +60,7 @@ public class ChoXacNhanFragment extends Fragment {
     }
 
     private void LoadDonHangChoXacNhan() {
-        firebase_manager.LoadDonHangChoXacNhan(donHangs,donMuaAdpater);
+        firebase_manager.LoadDonHangChoXacNhan(donHangs,donMuaAdpater,getContext());
     }
 
     private void setEvent() {

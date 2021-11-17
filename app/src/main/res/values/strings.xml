@@ -52,6 +52,8 @@
     <string name="thong_bao">Thông báo</string>
     <string name="cai_dat">Cài đặt</string>
     <string name="nhanxet">Nhận xét</string>
+    <string name="s_l_ng_b_n">Số lượng đã bán:</string>
+    <string name="da_ban">Đã bán:</string>
 
     <array name="category">
         <item>Pizaa</item>

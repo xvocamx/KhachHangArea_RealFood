@@ -17,6 +17,7 @@ import com.example.khachhangarea_realfood.TrangThai.TrangThaiCuaHang;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiDonHang;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.DonMuaAdpater;
+import com.example.khachhangarea_realfood.adapter.DonMuaChuanBiHangAdpater;
 import com.example.khachhangarea_realfood.adapter.DonMuaDaNhanHangAdpater;
 import com.example.khachhangarea_realfood.adapter.LoaiSanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
@@ -44,6 +45,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Firebase_Manager {
     public DatabaseReference mDatabase;
@@ -116,6 +119,15 @@ public class Firebase_Manager {
         return res;
     }
 
+    public void LoadImageKhachHang(Context context,ImageView civAvatar){
+        storageRef.child("KhachHang").child(user.getUid()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(context).load(uri.toString()).into(civAvatar);
+            }
+        });
+    }
+
     public void LoadTenKhachHang(TextView tvHoTen) {
         mDatabase.child("KhachHang").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -147,6 +159,18 @@ public class Firebase_Manager {
                         donMuaAdpater.notifyDataSetChanged();
                     }
                 }
+
+                //Sap sep theo thoi gian
+                Collections.sort(donHangs, new Comparator<DonHang>() {
+                    @Override
+                    public int compare(DonHang o1, DonHang o2) {
+                        return o2.getNgayTao().compareTo(o1.getNgayTao());
+                    }
+                });
+                if (donHangs.size() == 0) {
+                    donHangs.clear();
+                    donMuaAdpater.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -168,6 +192,18 @@ public class Firebase_Manager {
                         donHangs.add(donHang);
                         donMuaDaNhanHangAdpater.notifyDataSetChanged();
                     }
+                }
+
+                //Sap sep theo thoi gian
+                Collections.sort(donHangs, new Comparator<DonHang>() {
+                    @Override
+                    public int compare(DonHang o1, DonHang o2) {
+                        return o2.getNgayTao().compareTo(o1.getNgayTao());
+                    }
+                });
+                if (donHangs.size() == 0) {
+                    donHangs.clear();
+                    donMuaDaNhanHangAdpater.notifyDataSetChanged();
                 }
             }
 
@@ -195,6 +231,18 @@ public class Firebase_Manager {
                         donMuaAdpater.notifyDataSetChanged();
                     }
                 }
+
+                //Sap sep theo thoi gian
+                Collections.sort(donHangs, new Comparator<DonHang>() {
+                    @Override
+                    public int compare(DonHang o1, DonHang o2) {
+                        return o2.getNgayTao().compareTo(o1.getNgayTao());
+                    }
+                });
+                if (donHangs.size() == 0) {
+                    donHangs.clear();
+                    donMuaAdpater.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -204,7 +252,7 @@ public class Firebase_Manager {
         });
     }
 
-    public void LoadChuanBiDonHang(ArrayList<DonHang> donHangs, DonMuaAdpater donMuaAdpater) {
+    public void LoadChuanBiDonHang(ArrayList<DonHang> donHangs, DonMuaChuanBiHangAdpater donMuaChuanBiHangAdpater) {
         mDatabase.child("DonHang").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -216,8 +264,19 @@ public class Firebase_Manager {
                             donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DaGiaoChoBep.toString()) ||
                             donHang.getTrangThai().toString().equals(TrangThaiDonHang.Bep_DaHuyDonHang.toString())) {
                         donHangs.add(donHang);
-                        donMuaAdpater.notifyDataSetChanged();
+                        donMuaChuanBiHangAdpater.notifyDataSetChanged();
                     }
+                }
+                //Sap sep theo thoi gian
+                Collections.sort(donHangs, new Comparator<DonHang>() {
+                    @Override
+                    public int compare(DonHang o1, DonHang o2) {
+                        return o2.getNgayTao().compareTo(o1.getNgayTao());
+                    }
+                });
+                if (donHangs.size() == 0) {
+                    donHangs.clear();
+                    donMuaChuanBiHangAdpater.notifyDataSetChanged();
                 }
             }
 
@@ -228,7 +287,7 @@ public class Firebase_Manager {
         });
     }
 
-    public void LoadDonHangChoXacNhan(ArrayList<DonHang> donHangs, DonMuaAdpater donMuaAdpater) {
+    public void LoadDonHangChoXacNhan(ArrayList<DonHang> donHangs, DonMuaAdpater donMuaAdpater, Context context) {
         mDatabase.child("DonHang").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -238,7 +297,19 @@ public class Firebase_Manager {
                     if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien.toString())) {
                         donHangs.add(donHang);
                         donMuaAdpater.notifyDataSetChanged();
+
                     }
+                }
+                //Sap sep theo thoi gian
+                Collections.sort(donHangs, new Comparator<DonHang>() {
+                    @Override
+                    public int compare(DonHang o1, DonHang o2) {
+                        return o2.getNgayTao().compareTo(o1.getNgayTao());
+                    }
+                });
+                if (donHangs.size() == 0) {
+                    donHangs.clear();
+                    donMuaAdpater.notifyDataSetChanged();
                 }
             }
 

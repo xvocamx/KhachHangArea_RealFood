@@ -9,268 +9,301 @@
     android:orientation="vertical"
     tools:context=".ChiTietSanPham">
 
-    <ImageView
-        android:id="@+id/ivFood"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="193dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/pizza" />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ivFood"
+                android:layout_width="match_parent"
+                android:layout_height="193dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pizza" />
 
-            <TextView
-                android:id="@+id/tvTenSanPham"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pizza Tom Pho Mai"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tvCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Pizza" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvTenSanPham"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pizza Tom Pho Mai"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/tvCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Pizza" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_star_rate" />
+
+                        <TextView
+                            android:id="@+id/tvTBRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:text="4.9"
+                            android:textColor="@color/orange"
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="("
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:id="@+id/tvRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:text="1032"
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ratings"
+                            android:textSize="14dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvGia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="65,000"
+                            android:textColor="@color/black"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" VNĐ"
+                            android:textColor="@color/black"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:text="@string/da_ban"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/tvSoLuongBanDuoc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:text="1"
+                            android:textColor="@color/black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnYeuThich"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:background="@drawable/button_yeuthich_selected"
+                        android:drawableLeft="@drawable/ic_favorite_pink"
+                        android:drawablePadding="5dp"
+                        android:padding="5dp"
+                        android:text="@string/yeuthich"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black" />
+
+
+                    <ImageView
+                        android:id="@+id/ivComment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/ic_chat" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_star_rate" />
+                    android:id="@+id/ivShop"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/custom_button_dangxuat"
+                    android:padding="3dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/logo_pizza" />
 
-                <TextView
-                    android:id="@+id/tvTBRating"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:text="4.9"
-                    android:textColor="@color/orange"
-                    android:textSize="14dp" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="("
-                    android:textSize="14dp" />
+                    <TextView
+                        android:id="@+id/tvTenCuaHang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Pizza Food"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
 
-                <TextView
-                    android:id="@+id/tvRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:text="1032"
-                    android:textSize="14dp" />
+                    <TextView
+                        android:id="@+id/tvAddressShop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:drawableLeft="@drawable/ic_location_green"
+                        android:text="23 Nguyễn Du, TP.HCM"
+                        android:textColor="@color/black"
+                        android:textSize="11dp" />
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/ratings"
-                    android:textSize="14dp" />
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnXemShop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="end"
+                        android:background="@drawable/custom_button_dangxuat"
+                        android:drawableLeft="@drawable/ic_store"
+                        android:drawablePadding="5dp"
+                        android:padding="5dp"
+                        android:text="@string/xem_shop"
+                        android:textColor="@color/black" />
+
+
+                </LinearLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:id="@+id/tvGia"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="65,000"
-                    android:textColor="@color/black"
-                    android:textSize="13dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" VNĐ"
-                    android:textColor="@color/black"
-                    android:textSize="13dp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnYeuThich"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:background="@drawable/button_yeuthich_selected"
-                android:drawableLeft="@drawable/ic_favorite_pink"
-                android:drawablePadding="5dp"
-                android:padding="5dp"
-                android:text="@string/yeuthich"
-                android:textAllCaps="false"
-                android:textColor="@color/black" />
-
-
-            <ImageView
-                android:id="@+id/ivComment"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_chat" />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/ivShop"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/custom_button_dangxuat"
-            android:padding="3dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/logo_pizza" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvTenCuaHang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
+                android:text="Mô tả"
+                android:textColor="@color/black"
+                android:textSize="17dp" />
+
+            <TextView
+                android:id="@+id/tvMoTa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:text="Pizza Food"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/tvAddressShop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:drawableLeft="@drawable/ic_location_green"
-                android:text="23 Nguyễn Du, TP.HCM"
-                android:textColor="@color/black"
-                android:textSize="11dp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnXemShop"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_gravity="end"
-                android:background="@drawable/custom_button_dangxuat"
-                android:drawableLeft="@drawable/ic_store"
-                android:drawablePadding="5dp"
-                android:padding="5dp"
-                android:text="@string/xem_shop"
-                android:textColor="@color/black" />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Mô tả"
-        android:textColor="@color/black"
-        android:textSize="17dp" />
-
-    <TextView
-        android:id="@+id/tvMoTa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Ornare leo non mollis id cursus. Eu euismod faucibus in
 leo malesuada" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="30dp"
-        android:gravity="end"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:gravity="end"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:text="Số lượng"
-            android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:text="Số lượng"
+                    android:textColor="@color/black" />
 
 
-        <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-            android:id="@+id/btnSoLuong"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            app:backGroundColor="@color/orange"
-            app:backgroundDrawable="@drawable/custom_button"
-            app:initialNumber="1"
-            app:textSize="5dp" />
-    </LinearLayout>
+                <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+                    android:id="@+id/btnSoLuong"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    app:backGroundColor="@color/orange"
+                    app:backgroundDrawable="@drawable/custom_button"
+                    app:initialNumber="1"
+                    app:textSize="5dp" />
+            </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnDatHang"
-        style="@style/button"
-        android:text="Thêm vào giỏ hàng" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDatHang"
+                style="@style/button"
+                android:text="Thêm vào giỏ hàng" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Đánh giá sản phẩm"
-        android:textColor="@color/black"
-        android:textSize="20dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Đánh giá sản phẩm"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvComent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvComent"
+                android:layout_width="match_parent"
+                android:layout_height="381dp" />
+        </LinearLayout>
+    </ScrollView>
+
+
 
 
 </LinearLayout>

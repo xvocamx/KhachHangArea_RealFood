@@ -6,11 +6,10 @@ public class SanPham {
     String IDSanPham, TenSanPham, IDLoai, IDDanhMuc, Gia, ChiTietSanPham, IDCuaHang;
     Float Rating;
     ArrayList<String> images;
+    int SoLuongBanDuoc;
 
     public SanPham() {
     }
-
-
 
     public SanPham(String IDSanPham, String tenSanPham, String IDLoai, String IDDanhMuc, String gia, String chiTietSanPham, String IDCuaHang, Float rating, ArrayList<String> images) {
         this.IDSanPham = IDSanPham;
@@ -96,6 +95,13 @@ public class SanPham {
         this.images = images;
     }
 
+    public int getSoLuongBanDuoc() {
+        return SoLuongBanDuoc;
+    }
+
+    public void setSoLuongBanDuoc(int soLuongBanDuoc) {
+        SoLuongBanDuoc = soLuongBanDuoc;
+    }
 
     @Override
     public String toString() {

@@ -15,6 +15,7 @@ import com.example.khachhangarea_realfood.ChiTietDonHang;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.adapter.DonMuaAdpater;
+import com.example.khachhangarea_realfood.adapter.DonMuaChuanBiHangAdpater;
 import com.example.khachhangarea_realfood.adapter.ThanhToanAdapter;
 import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
@@ -28,7 +29,7 @@ public class ChuanBiHangFragment extends Fragment {
     RecyclerView rcvChuanBiHang;
     ArrayList<DonHang> donHangs;
     LinearLayoutManager linearLayoutManager;
-    DonMuaAdpater donMuaAdpater;
+    DonMuaChuanBiHangAdpater donMuaChuanBiHangAdpater;
 
     public ChuanBiHangFragment() {
     }
@@ -49,7 +50,7 @@ public class ChuanBiHangFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_chuan_bi_hang, container, false);
         donHangs = new ArrayList<>();
-        donMuaAdpater = new DonMuaAdpater(getActivity(),R.layout.list_item_donhang,donHangs);
+        donMuaChuanBiHangAdpater = new DonMuaChuanBiHangAdpater(getActivity(),R.layout.list_item_donhang_chuanbihang,donHangs);
         setControl();
         setEvent();
         return view;
@@ -59,14 +60,14 @@ public class ChuanBiHangFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvChuanBiHang.setLayoutManager(linearLayoutManager);
-        rcvChuanBiHang.setAdapter(donMuaAdpater);
+        rcvChuanBiHang.setAdapter(donMuaChuanBiHangAdpater);
         LoadItemChuanBiHang();
     }
 
     private void LoadItemChuanBiHang() {
-        firebase_manager.LoadChuanBiDonHang(donHangs,donMuaAdpater);
+        firebase_manager.LoadChuanBiDonHang(donHangs,donMuaChuanBiHangAdpater);
         //xem chi tiet don hang
-        donMuaAdpater.setDelegation(new DonMuaAdpater.ClickItemDonMuaListener() {
+        donMuaChuanBiHangAdpater.setDelegation(new DonMuaChuanBiHangAdpater.ClickItemDonMuaListener() {
             @Override
             public void getInfomationDonMua(DonHang donHang) {
                 Intent intent = new Intent(getActivity(), ChiTietDonHang.class);

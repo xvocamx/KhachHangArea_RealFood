@@ -27,7 +27,7 @@ public class ViewPaperAdapter extends FragmentStateAdapter {
             case 0:
                 return new TatCaSanPhamFragment(idCuaHang);
             case 1:
-                return new DanhGiaFragment();
+                return new DanhGiaFragment(idCuaHang);
             default:
                 return new TatCaSanPhamFragment(idCuaHang);
         }

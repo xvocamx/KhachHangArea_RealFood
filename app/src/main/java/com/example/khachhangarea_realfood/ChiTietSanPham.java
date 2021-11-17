@@ -3,6 +3,8 @@ package com.example.khachhangarea_realfood;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,7 +20,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.developer.kalert.KAlertDialog;
+import com.example.khachhangarea_realfood.adapter.DanhGiaSanPhamAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.DanhGia;
 import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.KhachHang;
@@ -43,7 +47,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class ChiTietSanPham extends AppCompatActivity {
-    private TextView tvNameFood, tvGia, tvRating, tvMoTa, tvTenCuaHang, tvAddressShop;
+    private TextView tvNameFood, tvGia, tvRating, tvMoTa, tvTenCuaHang, tvAddressShop,tvSoLuongBanDuoc;
     private ImageView ivFood, ivShop;
     private SanPham sanPham;
     private CuaHang cuaHang;
@@ -52,11 +56,16 @@ public class ChiTietSanPham extends AppCompatActivity {
     private ElegantNumberButton btnSoLuong;
     private ArrayList<CuaHang> cuaHangs = new ArrayList<>();
     private Firebase_Manager firebase_manager = new Firebase_Manager();
+    private RecyclerView rcvComent;
+    private LinearLayoutManager linearLayoutManager;
+    private ArrayList<DanhGia> danhGias = new ArrayList<>();
+    private DanhGiaSanPhamAdapter danhGiaSanPhamAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chitietsanpham);
+        danhGiaSanPhamAdapter = new DanhGiaSanPhamAdapter(this,R.layout.list_item_comment,danhGias);
         setControl();
         if (getIntent() != null && getIntent().getExtras() != null) {
             Intent intent = getIntent();
@@ -75,9 +84,10 @@ public class ChiTietSanPham extends AppCompatActivity {
             Float rating = sanPham.getRating();
             tvRating.setText(rating.toString());
             tvMoTa.setText(sanPham.getChiTietSanPham());
-
+            if(sanPham.getSoLuongBanDuoc()+"" != null){
+                tvSoLuongBanDuoc.setText(sanPham.getSoLuongBanDuoc()+"");
+            }
             firebase_manager.LoadImageFood(sanPham, getApplicationContext(), ivFood);
-
             firebase_manager.mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,7 +119,6 @@ public class ChiTietSanPham extends AppCompatActivity {
 
                 }
             });
-
             firebase_manager.mDatabase.child("YeuThich").child(firebase_manager.auth.getUid()).child("Food").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -155,6 +164,35 @@ public class ChiTietSanPham extends AppCompatActivity {
                 }
             }
         });
+        //Hien thi list coment san pham
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        rcvComent.setLayoutManager(linearLayoutManager);
+        rcvComent.setAdapter(danhGiaSanPhamAdapter);
+        LoadItemDanhGia();
+    }
+
+    private void LoadItemDanhGia() {
+        firebase_manager.mDatabase.child("DanhGia").orderByChild("idsanPham").equalTo(sanPham.getIDSanPham()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                danhGias.clear();
+                for (DataSnapshot dataSnapshot :snapshot.getChildren()){
+                    DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
+                    danhGias.add(danhGia);
+                    danhGiaSanPhamAdapter.notifyDataSetChanged();
+                }
+                if(danhGias.size() == 0){
+                    danhGias.clear();
+                    danhGiaSanPhamAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+
+            }
+        });
     }
 
     private void addGioHang() {
@@ -178,6 +216,7 @@ public class ChiTietSanPham extends AppCompatActivity {
         tvRating = findViewById(R.id.tvRating);
         tvMoTa = findViewById(R.id.tvMoTa);
         tvTenCuaHang = findViewById(R.id.tvTenCuaHang);
+        tvSoLuongBanDuoc = findViewById(R.id.tvSoLuongBanDuoc);
         ivFood = findViewById(R.id.ivFood);
         ivShop = findViewById(R.id.ivShop);
         btnXemShop = findViewById(R.id.btnXemShop);
@@ -185,5 +224,6 @@ public class ChiTietSanPham extends AppCompatActivity {
         btnSoLuong = findViewById(R.id.btnSoLuong);
         btnDatHang = findViewById(R.id.btnDatHang);
         btnYeuThich = findViewById(R.id.btnYeuThich);
+        rcvComent = findViewById(R.id.rcvComent);
     }
 }

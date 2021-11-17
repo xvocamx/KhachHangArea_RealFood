@@ -1,10 +1,8 @@
 package com.example.khachhangarea_realfood.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,32 +10,31 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.khachhangarea_realfood.DanhGiaKhachHang;
+import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiDonHang;
 import com.example.khachhangarea_realfood.model.CuaHang;
-import com.example.khachhangarea_realfood.model.DanhGia;
 import com.example.khachhangarea_realfood.model.DonHang;
-import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHangAdpater.MyViewHolder> {
+public class DonMuaChuanBiHangAdpater extends RecyclerView.Adapter<DonMuaChuanBiHangAdpater.MyViewHolder> {
     Activity context;
     int resource;
     ArrayList<DonHang> donHangs;
     Firebase_Manager firebase_manager = new Firebase_Manager();
     ClickItemDonMuaListener delegation;
+    KAlertDialog kAlertDialog;
 
     public void setDelegation(ClickItemDonMuaListener delegation) {
         this.delegation = delegation;
     }
 
-    public DonMuaDaNhanHangAdpater(Activity context, int resource, ArrayList<DonHang> donHangs) {
+    public DonMuaChuanBiHangAdpater(Activity context, int resource, ArrayList<DonHang> donHangs) {
         this.context = context;
         this.resource = resource;
         this.donHangs = donHangs;
@@ -51,7 +48,7 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DonMuaDaNhanHangAdpater.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DonMuaChuanBiHangAdpater.MyViewHolder holder, int position) {
         DonHang donHang = donHangs.get(position);
         if (donHang == null) {
             return;
@@ -77,56 +74,36 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
         });
         holder.tvTrangThai.setText(firebase_manager.GetStringTrangThaiDonHang(donHang.getTrangThai()));
         holder.ivLogo.setImageResource(R.drawable.logo_shipper);
-
-        //Xu ly an nhan button khi da nhan xet
-        firebase_manager.mDatabase.child("DonHangInfo").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
-                    if(donHangInfo.getIDDonHang().equals(donHang.getIDDonHang())){
-                        firebase_manager.mDatabase.child("DanhGia").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot dataSnapshot1 : snapshot.getChildren()){
-                                    DanhGia danhGia = dataSnapshot1.getValue(DanhGia.class);
-                                    if(danhGia.getIDInfo().equals(donHangInfo.getIDInfo())){
-                                        holder.btnNhanXet.setVisibility(View.GONE);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        //Nhan xet cua khach hang
-        holder.btnNhanXet.setOnClickListener(new View.OnClickListener() {
+        //Xoa item don hang
+        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DanhGiaKhachHang.class);
-                Gson gson = new Gson();
-                String data = gson.toJson(donHang);
-                intent.putExtra("dataDonHang",data);
-                context.startActivity(intent);
+                kAlertDialog = new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Thông báo")
+                        .setContentText("Bạn có muốn hủy đơn hàng này ?")
+                        .setConfirmText("Có")
+                        .setCancelText("Không")
+                        .setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
+                            @Override
+                            public void onClick(KAlertDialog kAlertDialog) {
+                                kAlertDialog.dismiss();
+                                donHang.setTrangThai(TrangThaiDonHang.KhachHang_HuyDon);
+                                firebase_manager.mDatabase.child("DonHang").child(donHang.getIDDonHang()).setValue(donHang);
+                            }
+                        }).setCancelClickListener(new KAlertDialog.KAlertClickListener() {
+                            @Override
+                            public void onClick(KAlertDialog kAlertDialog) {
+                                kAlertDialog.dismiss();
+                            }
+                        });
+                kAlertDialog.show();
             }
         });
         //Su kien click vao item don hang
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(delegation != null){
+                if (delegation != null) {
                     delegation.getInfomationDonMua(donHang);
                 }
             }
@@ -145,8 +122,7 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvMaDH, tvTenCuaHang, tvRating, tvAddressShop, tvTrangThai,tvXemThongTinChiTiet;
-        ImageView ivLogo;
-        Button btnNhanXet;
+        ImageView ivLogo, ivDelete;
         View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -169,7 +145,7 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
             ivLogo = itemView.findViewById(R.id.ivLogo);
             //ivLogo.setOnClickListener(this);
 
-            btnNhanXet = itemView.findViewById(R.id.btnNhanXet);
+            ivDelete = itemView.findViewById(R.id.ivDelete);
 
             tvXemThongTinChiTiet = itemView.findViewById(R.id.tvXemThongTinChiTiet);
             tvXemThongTinChiTiet.setOnClickListener(this);
@@ -183,7 +159,7 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
         }
     }
 
-    public interface ClickItemDonMuaListener{
+    public interface ClickItemDonMuaListener {
         void getInfomationDonMua(DonHang donHang);
     }
 }

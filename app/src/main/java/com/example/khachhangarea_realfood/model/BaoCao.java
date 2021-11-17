@@ -2,19 +2,31 @@ package com.example.khachhangarea_realfood.model;
 
 import android.widget.ImageView;
 
+import java.util.Date;
+
 public class BaoCao {
     String IDBaoCao,IDKhachHang,IDCuaHang,lyDo;
     ImageView ivBaoCao;
+    Date ngayBaoCao;
 
     public BaoCao() {
     }
 
-    public BaoCao(String IDBaoCao, String IDKhachHang, String IDCuaHang, String lyDo, ImageView ivBaoCao) {
+    public BaoCao(String IDBaoCao, String IDKhachHang, String IDCuaHang, String lyDo, ImageView ivBaoCao,Date ngayBaoCao) {
         this.IDBaoCao = IDBaoCao;
         this.IDKhachHang = IDKhachHang;
         this.IDCuaHang = IDCuaHang;
         this.lyDo = lyDo;
         this.ivBaoCao = ivBaoCao;
+        this.ngayBaoCao =ngayBaoCao;
+    }
+
+    public Date getNgayBaoCao() {
+        return ngayBaoCao;
+    }
+
+    public void setNgayBaoCao(Date ngayBaoCao) {
+        this.ngayBaoCao = ngayBaoCao;
     }
 
     public String getIDBaoCao() {

@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KhachHangArea_RealFood"
         tools:replace="android:theme">
-        <activity android:name=".BinhLuan"></activity>
+        <activity android:name=".DanhGiaKhachHang" android:label="Phản hồi khách hàng" android:parentActivityName=".DonMua"></activity>
         <activity
             android:name=".ChiTietDonHang"
             android:label="Chi Tiết đơn hàng"

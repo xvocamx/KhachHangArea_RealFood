@@ -98,7 +98,7 @@ public class BaoCaoShop extends AppCompatActivity {
 
                         String noiDung = "Người dùng " + firebase_manager.auth.getUid() + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + edtLyDo.getText().toString();
                         ThongBao thongBao = new ThongBao(IDThongBao,noiDung,"Thông báo","","admin","", TrangThaiThongBao.ChuaXem,new Date());
-                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), edtLyDo.getText().toString(), null);
+                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), edtLyDo.getText().toString(), null,new Date());
                         firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
                         firebase_manager.mDatabase.child("ThongBao").child(cuaHang.getIDCuaHang()).child(IDThongBao).setValue(thongBao);
                         if(hinhAnhBaoCao !=null){
@@ -107,7 +107,7 @@ public class BaoCaoShop extends AppCompatActivity {
                     } else {
                         String noiDung = "Người dùng " + firebase_manager.auth.getUid() + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + spLyDo.getSelectedItem().toString();
                         ThongBao thongBao = new ThongBao(IDThongBao,noiDung,"Thông báo","","admin","", TrangThaiThongBao.ChuaXem,new Date());
-                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), spLyDo.getSelectedItem().toString(), null);
+                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), spLyDo.getSelectedItem().toString(), null,new Date());
                         firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
                         firebase_manager.mDatabase.child("ThongBao").child(cuaHang.getIDCuaHang()).child(IDThongBao).setValue(thongBao);
                         if(hinhAnhBaoCao != null){

@@ -64,7 +64,16 @@ public class DanhSachLoai extends AppCompatActivity {
         rcvLoai.setLayoutManager(gridLayoutManager);
         rcvLoai.setAdapter(sanPhamAdapter);
         LoadItemLoai();
-
+        sanPhamAdapter.setDelegation(new SanPhamAdapter.ClickItemFoodListener() {
+            @Override
+            public void getInformationFood(SanPham sanPham) {
+                Intent intent = new Intent(DanhSachLoai.this, ChiTietSanPham.class);
+                Gson gson = new Gson();
+                String data = gson.toJson(sanPham);
+                intent.putExtra("dataSanPham", data);
+                startActivity(intent);
+            }
+        });
         svLoai.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

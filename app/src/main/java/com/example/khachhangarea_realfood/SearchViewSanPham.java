@@ -98,6 +98,16 @@ public class SearchViewSanPham extends AppCompatActivity {
         rcvSanPham = findViewById(R.id.rcvSanPham);
         searchView = findViewById(R.id.searchViewFood);
         pbLoadTimKiemSanPham = findViewById(R.id.pbLoadTimKiemSanPham);
+        sanPhamAdapter.setDelegation(new SanPhamAdapter.ClickItemFoodListener() {
+            @Override
+            public void getInformationFood(SanPham sanPham) {
+                Intent intent = new Intent(SearchViewSanPham.this, ChiTietSanPham.class);
+                Gson gson = new Gson();
+                String data = gson.toJson(sanPham);
+                intent.putExtra("dataSanPham", data);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -76,31 +76,6 @@ public class DonMuaAdpater extends RecyclerView.Adapter<DonMuaAdpater.MyViewHold
         });
         holder.tvTrangThai.setText(firebase_manager.GetStringTrangThaiDonHang(donHang.getTrangThai()));
         holder.ivLogo.setImageResource(R.drawable.logo_shipper);
-        //Xoa item don hang
-        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                kAlertDialog = new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Thông báo")
-                        .setContentText("Bạn có muốn hủy đơn hàng này ?")
-                        .setConfirmText("Có")
-                        .setCancelText("Không")
-                        .setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
-                            @Override
-                            public void onClick(KAlertDialog kAlertDialog) {
-                                kAlertDialog.dismiss();
-                                donHang.setTrangThai(TrangThaiDonHang.KhachHang_HuyDon);
-                                firebase_manager.mDatabase.child("DonHang").child(donHang.getIDDonHang()).setValue(donHang);
-                            }
-                        }).setCancelClickListener(new KAlertDialog.KAlertClickListener() {
-                            @Override
-                            public void onClick(KAlertDialog kAlertDialog) {
-                                kAlertDialog.dismiss();
-                            }
-                        });
-                kAlertDialog.show();
-            }
-        });
         //Su kien click vao item don hang
         holder.onClickListener = new View.OnClickListener() {
             @Override
@@ -123,31 +98,32 @@ public class DonMuaAdpater extends RecyclerView.Adapter<DonMuaAdpater.MyViewHold
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvMaDH, tvTenCuaHang, tvRating, tvAddressShop, tvTrangThai;
-        ImageView ivLogo, ivDelete;
+        TextView tvMaDH, tvTenCuaHang, tvRating, tvAddressShop, tvTrangThai,tvXemThongTinChiTiet;
+        ImageView ivLogo;
         View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvMaDH = itemView.findViewById(R.id.tvMaDH);
-            tvMaDH.setOnClickListener(this);
+            //tvMaDH.setOnClickListener(this);
 
             tvTenCuaHang = itemView.findViewById(R.id.tvTenCuaHang);
-            tvTenCuaHang.setOnClickListener(this);
+            //tvTenCuaHang.setOnClickListener(this);
 
             tvRating = itemView.findViewById(R.id.tvRating);
-            tvRating.setOnClickListener(this);
+            //tvRating.setOnClickListener(this);
 
             tvAddressShop = itemView.findViewById(R.id.tvAddressShop);
-            tvAddressShop.setOnClickListener(this);
+            //tvAddressShop.setOnClickListener(this);
 
             tvTrangThai = itemView.findViewById(R.id.tvTrangThai);
-            tvTrangThai.setOnClickListener(this);
+            //tvTrangThai.setOnClickListener(this);
 
             ivLogo = itemView.findViewById(R.id.ivLogo);
-            ivLogo.setOnClickListener(this);
+            //ivLogo.setOnClickListener(this);
 
-            ivDelete = itemView.findViewById(R.id.ivDelete);
+            tvXemThongTinChiTiet = itemView.findViewById(R.id.tvXemThongTinChiTiet);
+            tvXemThongTinChiTiet.setOnClickListener(this);
         }
 
         @Override
