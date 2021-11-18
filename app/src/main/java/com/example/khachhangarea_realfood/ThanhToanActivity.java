@@ -65,6 +65,8 @@ public class ThanhToanActivity extends AppCompatActivity {
     ArrayList<GioHangDisplay> gioHangDisplays = new ArrayList<>();
     ArrayList<String> idCuaHang = new ArrayList<>();
     int tong = 0;
+    int giamGia = 0;
+    int giamPhamTram = 0;
     Firebase_Manager firebase_manager = new Firebase_Manager();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -112,7 +114,13 @@ public class ThanhToanActivity extends AppCompatActivity {
         for (GioHangDisplay gioHangDisplay : gioHangDisplays) {
             for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()
             ) {
-                tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong());
+                if (gioHangDisplay.getGiaGiam() != 0) {
+                    tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong()) - gioHangDisplay.getGiaGiam();
+                } else if (gioHangDisplay.getGiamPhanTram() != 0) {
+                    tong += (Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong()) * (gioHangDisplay.getGiamPhanTram() / 100));
+                } else {
+                    tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong());
+                }
             }
         }
 
@@ -249,7 +257,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                                             ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", firebase_manager.auth.getUid(), uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
                                             firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(IDThongBao).setValue(thongBao);
                                             //Thong bao don hang cho shop
-                                            String noiDungShop = "Đơn hàng mới " + donHang.getIDDonHang().substring(0,15) + " : " + finalTenSanPham + " " + donHang.getTongTien() + "VND";
+                                            String noiDungShop = "Đơn hàng mới " + donHang.getIDDonHang().substring(0, 15) + " : " + finalTenSanPham + " " + donHang.getTongTien() + "VND";
                                             firebase_manager.storageRef.child("CuaHang").child(donHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                 @Override
                                                 public void onSuccess(Uri uri) {

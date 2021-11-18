@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
@@ -20,12 +22,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.khachhangarea_realfood.adapter.GiamGiaAdapter;
 import com.example.khachhangarea_realfood.adapter.ViewPaperAdapter;
 import com.example.khachhangarea_realfood.fragment.TatCaSanPhamFragment;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.SanPham;
+import com.example.khachhangarea_realfood.model.Voucher;
 import com.example.khachhangarea_realfood.model.YeuThich;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,6 +46,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,27 +57,36 @@ public class ChiTietCuaHang extends AppCompatActivity {
     private TabLayout mTabLayout;
     private ViewPager2 mViewPager;
     private ViewPaperAdapter viewPaperAdapter;
-    private TextView tvTenCuaHang, tvEmail, tvDiaChi, tvPhone, tvMota;
+    private TextView tvTenCuaHang, tvEmail, tvDiaChi, tvPhone, tvMota, tvTongSanPham;
     private Button btnYeuThich;
     private ImageView ivWallPaper;
     private CircleImageView civAvatar;
     private CuaHang cuaHang;
     private ProgressBar pbLoadChiTietCuaHang;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
-
+    private ArrayList<CuaHang> cuaHangs;
+    private ArrayList<Voucher> vouchers;
+    private GiamGiaAdapter giamGiaAdapter;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerView rcvGiamGia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chitietcuahang);
+        cuaHangs = new ArrayList<>();
+        vouchers = new ArrayList<>();
+        giamGiaAdapter = new GiamGiaAdapter(this, R.layout.list_item_magiamgia, vouchers);
         setControl();
         if (getIntent() != null && getIntent().getExtras() != null) {
             Intent intent = getIntent();
             String dataCuaHang = intent.getStringExtra("dataCuaHang");
             Gson gson = new Gson();
             cuaHang = gson.fromJson(dataCuaHang, CuaHang.class);
+            LoadInfoCuaHang();
+            LoadItemGiamGia();
         }
-        LoadInfoCuaHang();
+
         setEvent();
     }
 
@@ -107,6 +124,18 @@ public class ChiTietCuaHang extends AppCompatActivity {
             tvDiaChi.setText(cuaHang.getDiaChi());
             tvPhone.setText(cuaHang.getSoDienThoai());
             tvMota.setText(cuaHang.getThongTinChiTiet());
+
+            firebase_manager.mDatabase.child("SanPham").orderByChild("idcuaHang").equalTo(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    tvTongSanPham.setText(snapshot.getChildrenCount() + "");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
 
             firebase_manager.LoadLogoCuaHang(cuaHang, getApplicationContext(), civAvatar);
 
@@ -166,6 +195,34 @@ public class ChiTietCuaHang extends AppCompatActivity {
                 }
             }
         });
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        rcvGiamGia.setLayoutManager(linearLayoutManager);
+        rcvGiamGia.setAdapter(giamGiaAdapter);
+        LoadItemGiamGia();
+    }
+
+    private void LoadItemGiamGia() {
+        firebase_manager.mDatabase.child("Voucher").orderByChild("idCuaHang").equalTo(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                vouchers.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Voucher voucher = dataSnapshot.getValue(Voucher.class);
+                    Date currentDateandTime = new Date();
+                    if (currentDateandTime.compareTo(voucher.getHanSuDung()) > 0) {
+                        vouchers.add(voucher);
+                        giamGiaAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void setControl() {
@@ -176,9 +233,11 @@ public class ChiTietCuaHang extends AppCompatActivity {
         tvPhone = findViewById(R.id.tvPhone);
         tvDiaChi = findViewById(R.id.tvDiaChi);
         tvMota = findViewById(R.id.tvMoTa);
+        tvTongSanPham = findViewById(R.id.tvTotalSanPham);
         civAvatar = findViewById(R.id.civAvatar);
         ivWallPaper = findViewById(R.id.ivWallpaper);
         btnYeuThich = findViewById(R.id.btnYeuThich);
         pbLoadChiTietCuaHang = findViewById(R.id.pbLoadChiTietCuaHang);
+        rcvGiamGia = findViewById(R.id.rcvMaGiamGia);
     }
 }

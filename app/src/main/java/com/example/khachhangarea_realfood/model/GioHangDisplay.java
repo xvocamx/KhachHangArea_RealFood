@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class GioHangDisplay implements Parcelable {
     String idCuaHang;
+    int giaGiam,giamPhanTram;
     ArrayList <DonHangInfo>donHangInfos = new ArrayList<>();
 
     public GioHangDisplay(String idCuaHang, ArrayList<DonHangInfo> donHangInfos) {
@@ -16,6 +17,22 @@ public class GioHangDisplay implements Parcelable {
 
     public GioHangDisplay() {
 
+    }
+
+    public int getGiamPhanTram() {
+        return giamPhanTram;
+    }
+
+    public void setGiamPhanTram(int giamPhanTram) {
+        this.giamPhanTram = giamPhanTram;
+    }
+
+    public int getGiaGiam() {
+        return giaGiam;
+    }
+
+    public void setGiaGiam(int giaGiam) {
+        this.giaGiam = giaGiam;
     }
 
     protected GioHangDisplay(Parcel in) {

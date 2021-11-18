@@ -119,7 +119,7 @@ public class Firebase_Manager {
         return res;
     }
 
-    public void LoadImageKhachHang(Context context,ImageView civAvatar){
+    public void LoadImageKhachHang(Context context, ImageView civAvatar) {
         storageRef.child("KhachHang").child(user.getUid()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -409,7 +409,11 @@ public class Firebase_Manager {
         storageRef.child("LoaiSanPham").child(loaiSanPham.getiDLoai()).child("Loại sản phẩm").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(context).load(uri).into(ivLoai);
+                try {
+                    Glide.with(context).load(uri).into(ivLoai);
+                } catch (Exception ex) {
+
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -420,12 +424,14 @@ public class Firebase_Manager {
     }
 
     public void LoadImageFood(SanPham sanPham, Context context, ImageView ivFood) {
-        storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(0)).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+        storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                Glide.with(context)
-                        .load(task.getResult().toString())
-                        .into(ivFood);
+            public void onSuccess(Uri uri) {
+                try {
+                    Glide.with(context).load(uri).into(ivFood);
+                } catch (Exception exception) {
+
+                }
             }
         });
     }
@@ -434,9 +440,12 @@ public class Firebase_Manager {
         storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("WallPaper").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(context)
-                        .load(uri)
-                        .into(ivWallPaper);
+                try {
+                    Glide.with(context).load(uri).into(ivWallPaper);
+                } catch (Exception exception) {
+
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -450,9 +459,12 @@ public class Firebase_Manager {
         storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(context)
-                        .load(uri)
-                        .into(civAvatar);
+                try {
+                    Glide.with(context).load(uri).into(civAvatar);
+                } catch (Exception ex) {
+
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -545,7 +557,7 @@ public class Firebase_Manager {
     }
 
     public void GetPopularShop(ArrayList<CuaHang> cuaHangs, CuaHangAdapter cuaHangAdapter) {
-        mDatabase.child("CuaHang").limitToFirst(4).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("CuaHang").limitToFirst(5).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cuaHangs.clear();
@@ -566,7 +578,7 @@ public class Firebase_Manager {
     }
 
     public void GetPopularFood(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter) {
-        mDatabase.child("SanPham").limitToFirst(4).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("SanPham").limitToFirst(5).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sanPhams.clear();
@@ -585,7 +597,7 @@ public class Firebase_Manager {
     }
 
     public void GetSaleFood(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter) {
-        mDatabase.child("SanPham").limitToFirst(4).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("SanPham").limitToFirst(5).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sanPhams.clear();
