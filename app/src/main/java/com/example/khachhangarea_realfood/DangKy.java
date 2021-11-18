@@ -134,7 +134,7 @@ public class DangKy extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 progressDialog.dismiss();
-                                Toast.makeText(DangKy.this, "Đăng ký không thành công", Toast.LENGTH_LONG).show();
+                                Toast.makeText(DangKy.this, "Email đã tồn tại !!!", Toast.LENGTH_LONG).show();
                             }
                         }
                     });

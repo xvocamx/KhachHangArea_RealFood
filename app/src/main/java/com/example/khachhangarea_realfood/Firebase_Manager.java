@@ -150,14 +150,17 @@ public class Firebase_Manager {
                 donHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHang donHang = dataSnapshot.getValue(DonHang.class);
-                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_HuyDonHang.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_GiaoKhongThanhCong.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaTraHang.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.ChoShopXacNhan_TraHang.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.KhachHang_HuyDon.toString())) {
-                        donHangs.add(donHang);
-                        donMuaAdpater.notifyDataSetChanged();
+                    if(donHang.getIDKhachHang().equals(auth.getUid())){
+                        if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_HuyDonHang.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_GiaoKhongThanhCong.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaTraHang.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.ChoShopXacNhan_TraHang.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.KhachHang_HuyDon.toString())) {
+                            donHangs.add(donHang);
+                            donMuaAdpater.notifyDataSetChanged();
+                        }
                     }
+
                 }
 
                 //Sap sep theo thoi gian
@@ -187,11 +190,14 @@ public class Firebase_Manager {
                 donHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHang donHang = dataSnapshot.getValue(DonHang.class);
-                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_GiaoThanhCong.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaChuyenTien.toString())) {
-                        donHangs.add(donHang);
-                        donMuaDaNhanHangAdpater.notifyDataSetChanged();
+                    if(donHang.getIDKhachHang().equals(auth.getUid())){
+                        if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_GiaoThanhCong.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaChuyenTien.toString())) {
+                            donHangs.add(donHang);
+                            donMuaDaNhanHangAdpater.notifyDataSetChanged();
+                        }
                     }
+
                 }
 
                 //Sap sep theo thoi gian
@@ -221,15 +227,17 @@ public class Firebase_Manager {
                 donHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHang donHang = dataSnapshot.getValue(DonHang.class);
-                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DangGiaoShipper.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_ChoShipperLayHang.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaLayHang.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DangGiaoHang.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_KhongNhanGiaoHang.toString())
-                    ) {
-                        donHangs.add(donHang);
-                        donMuaAdpater.notifyDataSetChanged();
+                    if (donHang.getIDKhachHang().equals(auth.getUid())) {
+                        if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DangGiaoShipper.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_ChoShipperLayHang.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaLayHang.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DangGiaoHang.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_KhongNhanGiaoHang.toString())) {
+                            donHangs.add(donHang);
+                            donMuaAdpater.notifyDataSetChanged();
+                        }
                     }
+
                 }
 
                 //Sap sep theo thoi gian
@@ -259,12 +267,14 @@ public class Firebase_Manager {
                 donHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHang donHang = dataSnapshot.getValue(DonHang.class);
-                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DangChuanBihang.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DaChuanBiXong.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DaGiaoChoBep.toString()) ||
-                            donHang.getTrangThai().toString().equals(TrangThaiDonHang.Bep_DaHuyDonHang.toString())) {
-                        donHangs.add(donHang);
-                        donMuaChuanBiHangAdpater.notifyDataSetChanged();
+                    if (donHang.getIDKhachHang().equals(auth.getUid())) {
+                        if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DangChuanBihang.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DaChuanBiXong.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_DaGiaoChoBep.toString()) ||
+                                donHang.getTrangThai().toString().equals(TrangThaiDonHang.Bep_DaHuyDonHang.toString())) {
+                            donHangs.add(donHang);
+                            donMuaChuanBiHangAdpater.notifyDataSetChanged();
+                        }
                     }
                 }
                 //Sap sep theo thoi gian
@@ -294,11 +304,14 @@ public class Firebase_Manager {
                 donHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHang donHang = dataSnapshot.getValue(DonHang.class);
-                    if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien.toString())) {
-                        donHangs.add(donHang);
-                        donMuaAdpater.notifyDataSetChanged();
+                    if (donHang.getIDKhachHang().equals(auth.getUid())) {
+                        if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien.toString())) {
+                            donHangs.add(donHang);
+                            donMuaAdpater.notifyDataSetChanged();
 
+                        }
                     }
+
                 }
                 //Sap sep theo thoi gian
                 Collections.sort(donHangs, new Comparator<DonHang>() {

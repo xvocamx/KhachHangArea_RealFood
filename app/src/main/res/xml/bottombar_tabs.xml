@@ -12,7 +12,7 @@
         />
     <tab
         icon="@drawable/ic_notification"
-        id="@+id/tab_notification1"
+        id="@+id/tab_notification"
         title="Thông báo"  />
     <tab
         icon="@drawable/ic_setting"

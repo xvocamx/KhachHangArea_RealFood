@@ -18,15 +18,18 @@ import com.example.khachhangarea_realfood.fragment.SettingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarTab;
+import com.roughike.bottombar.OnTabSelectListener;
 
 
 public class Home extends AppCompatActivity {
     FrameLayout frameLayout;
     BottomBar bottomBar;
-    BottomNavigationView bottomNavigationView;
-    FloatingActionButton floatingActionButton;
+    Firebase_Manager firebase_manager = new Firebase_Manager();
     public static Fragment fragment;
 
     @Override
@@ -38,9 +41,19 @@ public class Home extends AppCompatActivity {
         setEvent();
         HomeFragment homeFragment = new HomeFragment();
         loadFragment(homeFragment);
-        BottomBarTab barTab = bottomBar.getTabWithId(R.id.tab_notification1);
-        barTab.setBadgeCount(5);
-        bottomNavigationView.setBackground(null);
+        firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                BottomBarTab barTab = bottomBar.getTabWithId(R.id.tab_notification);
+                barTab.setBadgeCount((int) snapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
     }
 
@@ -54,10 +67,10 @@ public class Home extends AppCompatActivity {
 
     private void setEvent() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
+            public void onTabSelected(int tabId) {
+                switch (tabId) {
                     case R.id.tab_home:
                         HomeFragment homeFragment = new HomeFragment();
                         loadFragment(homeFragment);
@@ -75,7 +88,6 @@ public class Home extends AppCompatActivity {
                         loadFragment(settingFragment);
                         break;
                 }
-                return false;
             }
         });
 
@@ -85,7 +97,5 @@ public class Home extends AppCompatActivity {
     private void setControl() {
         bottomBar = findViewById(R.id.bottomBar);
         frameLayout = findViewById(R.id.fragment);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
     }
 }
