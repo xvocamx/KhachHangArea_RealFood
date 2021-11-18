@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,7 @@ public class ChiTietSanPham extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private ArrayList<DanhGia> danhGias = new ArrayList<>();
     private DanhGiaSanPhamAdapter danhGiaSanPhamAdapter;
+    private LinearLayout lnDanhGia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +183,7 @@ public class ChiTietSanPham extends AppCompatActivity {
                     DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
                     danhGias.add(danhGia);
                     danhGiaSanPhamAdapter.notifyDataSetChanged();
+
                 }
                 if (danhGias.size() == 0) {
                     danhGias.clear();
@@ -255,5 +258,6 @@ public class ChiTietSanPham extends AppCompatActivity {
         btnDatHang = findViewById(R.id.btnDatHang);
         btnYeuThich = findViewById(R.id.btnYeuThich);
         rcvComent = findViewById(R.id.rcvComent);
+        lnDanhGia = findViewById(R.id.lnDanhGia);
     }
 }

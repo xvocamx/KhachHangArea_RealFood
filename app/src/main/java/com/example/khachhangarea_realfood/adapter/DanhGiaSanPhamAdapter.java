@@ -1,6 +1,7 @@
 package com.example.khachhangarea_realfood.adapter;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,10 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DanhGia;
+import com.example.khachhangarea_realfood.model.KhachHang;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -54,8 +58,25 @@ public class DanhGiaSanPhamAdapter extends RecyclerView.Adapter<DanhGiaSanPhamAd
         String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(danhGia.getNgayDanhGia());
         holder.tvThoiGian.setText(date);
         holder.ratingBar.setRating(danhGia.getRating());
-        firebase_manager.LoadTenKhachHang(holder.tvTenKhachHang);
-        firebase_manager.LoadImageKhachHang(context, holder.ivAvatar);
+        firebase_manager.mDatabase.child("KhachHang").child(danhGia.getIDKhachHang()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                KhachHang khachHang = snapshot.getValue(KhachHang.class);
+                holder.tvTenKhachHang.setText(khachHang.getTenKhachHang());
+                firebase_manager.storageRef.child("KhachHang").child(khachHang.getIDKhachHang()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(context).load(uri.toString()).into(holder.ivAvatar);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+
+            }
+        });
+
         if(danhGia.getNoiDungShopTraLoi().equals("")){
             holder.lnDanhGiaShop.setVisibility(View.GONE);
         }

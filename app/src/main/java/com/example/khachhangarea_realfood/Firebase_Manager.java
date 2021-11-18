@@ -160,7 +160,6 @@ public class Firebase_Manager {
                             donMuaAdpater.notifyDataSetChanged();
                         }
                     }
-
                 }
 
                 //Sap sep theo thoi gian
