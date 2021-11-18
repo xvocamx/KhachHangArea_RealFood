@@ -3,19 +3,21 @@ package com.example.khachhangarea_realfood.model;
 import java.util.Date;
 
 public class DanhGia {
-    String IDDanhGia, IDSanPham,IDCuaHang, IDKhachHang, noiDung,IDInfo;
+    String IDDanhGia, IDSanPham, IDCuaHang, IDKhachHang, noiDung,noiDungShopTraLoi, IDInfo;
     float rating;
-    Date ngayDanhGia;
+    Date ngayDanhGia,ngayShopTraLoi;
 
-    public DanhGia(String IDDanhGia, String IDSanPham, String IDCuaHang, String IDKhachHang, String noiDung, String IDInfo, float rating, Date ngayDanhGia) {
+    public DanhGia(String IDDanhGia, String IDSanPham, String IDCuaHang, String IDKhachHang, String noiDung, String noiDungShopTraLoi, String IDInfo, float rating, Date ngayDanhGia, Date ngayShopTraLoi) {
         this.IDDanhGia = IDDanhGia;
         this.IDSanPham = IDSanPham;
         this.IDCuaHang = IDCuaHang;
         this.IDKhachHang = IDKhachHang;
         this.noiDung = noiDung;
+        this.noiDungShopTraLoi = noiDungShopTraLoi;
         this.IDInfo = IDInfo;
         this.rating = rating;
         this.ngayDanhGia = ngayDanhGia;
+        this.ngayShopTraLoi = ngayShopTraLoi;
     }
 
     public DanhGia() {
@@ -83,5 +85,21 @@ public class DanhGia {
 
     public void setNgayDanhGia(Date ngayDanhGia) {
         this.ngayDanhGia = ngayDanhGia;
+    }
+
+    public String getNoiDungShopTraLoi() {
+        return noiDungShopTraLoi;
+    }
+
+    public void setNoiDungShopTraLoi(String noiDungShopTraLoi) {
+        this.noiDungShopTraLoi = noiDungShopTraLoi;
+    }
+
+    public Date getNgayShopTraLoi() {
+        return ngayShopTraLoi;
+    }
+
+    public void setNgayShopTraLoi(Date ngayShopTraLoi) {
+        this.ngayShopTraLoi = ngayShopTraLoi;
     }
 }

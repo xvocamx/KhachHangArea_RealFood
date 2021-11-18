@@ -100,7 +100,7 @@ public class DanhGiaAdapter extends RecyclerView.Adapter<DanhGiaAdapter.MyViewHo
                 String IDSanPham = donHangInfo.getSanPham().getIDSanPham();
                 String IDKhachHang = firebase_manager.auth.getUid();
                 String IDCuaHang = donHangInfo.getSanPham().getIDCuaHang();
-                DanhGia danhGia = new DanhGia(IDDanhGia, IDSanPham, IDCuaHang, IDKhachHang, noiDung, donHangInfo.getIDInfo(), rating, new Date());
+                DanhGia danhGia = new DanhGia(IDDanhGia, IDSanPham, IDCuaHang, IDKhachHang, noiDung,"", donHangInfo.getIDInfo(), rating, new Date(),null);
                 firebase_manager.mDatabase.child("DanhGia").child(IDDanhGia).setValue(danhGia);
                 holder.lnDanhGia.setVisibility(View.GONE);
             }

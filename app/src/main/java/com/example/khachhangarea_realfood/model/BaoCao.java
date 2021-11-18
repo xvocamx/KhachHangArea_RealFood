@@ -5,27 +5,20 @@ import android.widget.ImageView;
 import java.util.Date;
 
 public class BaoCao {
-    String IDBaoCao,IDKhachHang,IDCuaHang,lyDo;
+    String IDBaoCao,IDKhachHang,IDCuaHang,lyDo,tieuDe;
     ImageView ivBaoCao;
     Date ngayBaoCao;
 
     public BaoCao() {
     }
 
-    public BaoCao(String IDBaoCao, String IDKhachHang, String IDCuaHang, String lyDo, ImageView ivBaoCao,Date ngayBaoCao) {
+    public BaoCao(String IDBaoCao, String IDKhachHang, String IDCuaHang, String lyDo, String tieuDe, ImageView ivBaoCao, Date ngayBaoCao) {
         this.IDBaoCao = IDBaoCao;
         this.IDKhachHang = IDKhachHang;
         this.IDCuaHang = IDCuaHang;
         this.lyDo = lyDo;
+        this.tieuDe = tieuDe;
         this.ivBaoCao = ivBaoCao;
-        this.ngayBaoCao =ngayBaoCao;
-    }
-
-    public Date getNgayBaoCao() {
-        return ngayBaoCao;
-    }
-
-    public void setNgayBaoCao(Date ngayBaoCao) {
         this.ngayBaoCao = ngayBaoCao;
     }
 
@@ -61,11 +54,27 @@ public class BaoCao {
         this.lyDo = lyDo;
     }
 
+    public String getTieuDe() {
+        return tieuDe;
+    }
+
+    public void setTieuDe(String tieuDe) {
+        this.tieuDe = tieuDe;
+    }
+
     public ImageView getIvBaoCao() {
         return ivBaoCao;
     }
 
     public void setIvBaoCao(ImageView ivBaoCao) {
         this.ivBaoCao = ivBaoCao;
+    }
+
+    public Date getNgayBaoCao() {
+        return ngayBaoCao;
+    }
+
+    public void setNgayBaoCao(Date ngayBaoCao) {
+        this.ngayBaoCao = ngayBaoCao;
     }
 }

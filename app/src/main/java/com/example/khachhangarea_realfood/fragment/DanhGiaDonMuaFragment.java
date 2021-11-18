@@ -1,4 +1,4 @@
-package com.example.khachhangarea_realfood.fragment;
+        package com.example.khachhangarea_realfood.fragment;
 
 import android.os.Bundle;
 

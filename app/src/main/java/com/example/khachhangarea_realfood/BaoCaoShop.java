@@ -1,5 +1,6 @@
 package com.example.khachhangarea_realfood;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,12 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.model.BaoCao;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.ThongBao;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
@@ -94,26 +101,43 @@ public class BaoCaoShop extends AppCompatActivity {
                 } else {
                     String IDBaoCao = "BC_" + UUID.randomUUID().toString();
                     String IDThongBao = UUID.randomUUID().toString();
-                    if (spLyDo.getSelectedItem().equals("Khác")) {
+                    firebase_manager.mDatabase.child("KhachHang").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            KhachHang khachHang = snapshot.getValue(KhachHang.class);
+                            String tenKhachHang = khachHang.getTenKhachHang();
+                            firebase_manager.storageRef.child("KhachHang").child(firebase_manager.auth.getUid()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    if (spLyDo.getSelectedItem().equals("Khác")) {
+                                        String noiDung = "Người dùng " + tenKhachHang + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + edtLyDo.getText().toString();
+                                        ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
+                                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Thông báo", null, new Date());
+                                        firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
+                                        firebase_manager.mDatabase.child("ThongBao").child("admin").child(IDThongBao).setValue(thongBao);
+                                        if (hinhAnhBaoCao != null) {
+                                            firebase_manager.UpImageBaoCao(hinhAnhBaoCao, cuaHang.getIDCuaHang());
+                                        }
+                                    } else {
+                                        String noiDung = "Người dùng " + tenKhachHang + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + spLyDo.getSelectedItem().toString();
+                                        ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
+                                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Thông báo", null, new Date());
+                                        firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
+                                        firebase_manager.mDatabase.child("ThongBao").child("admin").child(IDThongBao).setValue(thongBao);
+                                        if (hinhAnhBaoCao != null) {
+                                            firebase_manager.UpImageBaoCao(hinhAnhBaoCao, cuaHang.getIDCuaHang());
+                                        }
+                                    }
+                                }
+                            });
+                        }
 
-                        String noiDung = "Người dùng " + firebase_manager.auth.getUid() + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + edtLyDo.getText().toString();
-                        ThongBao thongBao = new ThongBao(IDThongBao,noiDung,"Thông báo","","admin","", TrangThaiThongBao.ChuaXem,new Date());
-                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), edtLyDo.getText().toString(), null,new Date());
-                        firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
-                        firebase_manager.mDatabase.child("ThongBao").child(cuaHang.getIDCuaHang()).child(IDThongBao).setValue(thongBao);
-                        if(hinhAnhBaoCao !=null){
-                            firebase_manager.UpImageBaoCao(hinhAnhBaoCao, cuaHang.getIDCuaHang());
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
                         }
-                    } else {
-                        String noiDung = "Người dùng " + firebase_manager.auth.getUid() + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + spLyDo.getSelectedItem().toString();
-                        ThongBao thongBao = new ThongBao(IDThongBao,noiDung,"Thông báo","","admin","", TrangThaiThongBao.ChuaXem,new Date());
-                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), spLyDo.getSelectedItem().toString(), null,new Date());
-                        firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
-                        firebase_manager.mDatabase.child("ThongBao").child(cuaHang.getIDCuaHang()).child(IDThongBao).setValue(thongBao);
-                        if(hinhAnhBaoCao != null){
-                            firebase_manager.UpImageBaoCao(hinhAnhBaoCao, cuaHang.getIDCuaHang());
-                        }
-                    }
+                    });
+
                     Intent intent = new Intent(BaoCaoShop.this, ChiTietCuaHang.class);
                     Gson gson = new Gson();
                     String data = gson.toJson(cuaHang);

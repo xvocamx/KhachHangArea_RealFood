@@ -5,61 +5,88 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.adapter.ThongBaoAdapter;
+import com.example.khachhangarea_realfood.model.ThongBao;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NotificationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
+
 public class NotificationFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    View view;
+    RecyclerView rcvThongBao;
+    LinearLayoutManager linearLayoutManager;
+    ArrayList<ThongBao> thongBaos;
+    ThongBaoAdapter thongBaoAdapter;
+    Firebase_Manager firebase_manager = new Firebase_Manager();
 
     public NotificationFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static NotificationFragment newInstance(String param1, String param2) {
         NotificationFragment fragment = new NotificationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notification, container, false);
+        view = inflater.inflate(R.layout.fragment_notification, container, false);
+        thongBaos = new ArrayList<>();
+        thongBaoAdapter = new ThongBaoAdapter(getActivity(), R.layout.list_item_notifications, thongBaos);
+        setControl();
+        setEvent();
+        return view;
+    }
+
+    private void setEvent() {
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        rcvThongBao.setLayoutManager(linearLayoutManager);
+        rcvThongBao.setAdapter(thongBaoAdapter);
+        LoadItemThongBao();
+    }
+
+    private void LoadItemThongBao() {
+        firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                thongBaos.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    ThongBao thongBao = dataSnapshot.getValue(ThongBao.class);
+                    thongBaos.add(thongBao);
+                    thongBaoAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void setControl() {
+        rcvThongBao = view.findViewById(R.id.rcvThongBao);
+
     }
 }

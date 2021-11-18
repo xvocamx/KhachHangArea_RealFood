@@ -66,7 +66,7 @@ public class Home extends AppCompatActivity {
                         FavoriteFragment favoriteFragment = new FavoriteFragment();
                         loadFragment(favoriteFragment);
                         break;
-                    case R.id.tab_notification1:
+                    case R.id.tab_notification:
                         NotificationFragment notificationFragment = new NotificationFragment();
                         loadFragment(notificationFragment);
                         break;

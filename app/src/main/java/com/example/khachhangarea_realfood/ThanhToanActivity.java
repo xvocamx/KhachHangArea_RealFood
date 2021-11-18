@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiDonHang;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.adapter.GioHangAdapter;
 import com.example.khachhangarea_realfood.adapter.GioHangProAdapter;
 import com.example.khachhangarea_realfood.adapter.ThanhToanAdapter;
@@ -27,6 +29,7 @@ import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.GioHangDisplay;
 import com.example.khachhangarea_realfood.model.KhachHang;
+import com.example.khachhangarea_realfood.model.ThongBao;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -192,8 +195,6 @@ public class ThanhToanActivity extends AppCompatActivity {
                     for (GioHangDisplay gioHangDisplay : gioHangDisplays
                     ) {
                         String IDDonHang = "DH_" + UUID.randomUUID().toString();
-
-
                         DonHang donHang = new DonHang(IDDonHang, gioHangDisplay.getIdCuaHang(), firebase_manager.auth.getUid()
                                 , "", diaChi, soDienThoai, "", "", tong, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
                         );
@@ -208,7 +209,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                                         public void onSuccess(Void unused) {
                                             kAlertDialog.changeAlertType(KAlertDialog.SUCCESS_TYPE);
                                             kAlertDialog.setContentText("Đặt hàng thành công!");
-                                            Intent intent = new Intent(ThanhToanActivity.this,Home.class);
+                                            Intent intent = new Intent(ThanhToanActivity.this, Home.class);
                                             startActivity(intent);
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
@@ -229,7 +230,27 @@ public class ThanhToanActivity extends AppCompatActivity {
                         });
                     }
                 }
+                firebase_manager.storageRef.child("KhachHang").child(firebase_manager.auth.getUid()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String IDThongBao = UUID.randomUUID().toString();
+                        firebase_manager.mDatabase.child("KhachHang").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                KhachHang khachHang = snapshot.getValue(KhachHang.class);
+                                String tenKhachHang = khachHang.getTenKhachHang();
+                                String noiDung = "Người dùng " + tenKhachHang + " đã đặt hàng thành công";
+                                ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
+                                firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(IDThongBao).setValue(thongBao);
+                            }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                });
             }
         });
 
