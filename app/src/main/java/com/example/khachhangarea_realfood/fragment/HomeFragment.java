@@ -160,14 +160,19 @@ public class HomeFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
-
-        btnTimKiem.setOnClickListener(new View.OnClickListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onQueryTextSubmit(String query) {
                 Intent intent = new Intent(getActivity(), SearchViewSanPham.class);
                 String data = searchView.getQuery().toString();
                 intent.putExtra("dataTimKiem", data);
                 getActivity().startActivity(intent);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
         firebase_manager.mDatabase.child("KhachHang").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
@@ -222,7 +227,7 @@ public class HomeFragment extends Fragment {
         rcvLoai = mView.findViewById(R.id.rcvLoai);
         ivMyOrder = mView.findViewById(R.id.ivMyOrder);
         pbLoad = mView.findViewById(R.id.pbLoad);
-        btnTimKiem = mView.findViewById(R.id.btnTimKiem);
+
         tvGood = mView.findViewById(R.id.tvGood);
         searchView = mView.findViewById(R.id.searchViewFood);
     }

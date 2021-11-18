@@ -13,68 +13,72 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="-20dp"
+                app:cardCornerRadius="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                >
+              <LinearLayout
 
-                <TextView
-                    android:id="@+id/tvGood"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:text="Let's ea"
-                    android:layout_marginRight="20dp"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                  android:background="#93242A"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+                  <LinearLayout
+                      android:paddingTop="20dp"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+                      <TextView
 
-                <FrameLayout
-                    android:layout_marginRight="10dp"
+                          android:id="@+id/tvGood"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_margin="20dp"
+                          android:text="Let's ea"
+                          android:layout_marginRight="20dp"
+                          android:textColor="@color/white"
+                          android:textSize="20dp" />
 
-                    android:layout_gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                      <FrameLayout
+                          android:layout_marginRight="10dp"
 
-                    <ru.nikartm.support.ImageBadgeView
-                        android:id="@+id/ivMyOrder"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        app:ibv_badgePadding="7dp"
-                        app:ibv_badgeTextSize="10dp"
-                        app:ibv_badgeTextColor="#ffffff"
-                        app:ibv_visibleBadge="false"
-                        app:ibv_badgeLimitValue="true"
-                        android:src="@drawable/ic_shopping_cart" />
-                </FrameLayout>
+                          android:layout_gravity="center"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content">
+
+                          <ru.nikartm.support.ImageBadgeView
+                              android:id="@+id/ivMyOrder"
+                              android:layout_width="60dp"
+                              android:layout_height="wrap_content"
+                              android:layout_gravity="right"
+                              app:ibv_badgePadding="7dp"
+                              app:ibv_badgeTextSize="10dp"
+                              app:ibv_badgeTextColor="#ffffff"
+                              app:ibv_visibleBadge="false"
+                              app:ibv_badgeLimitValue="true"
+                              android:src="@drawable/ic_shopping_cart" />
+                      </FrameLayout>
 
 
 
-            </LinearLayout>
+                  </LinearLayout>
 
 
-            <SearchView
-                android:id="@+id/searchViewFood"
-                android:layout_width="match_parent"
-                android:layout_height="57dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/custom_sreachview"
-                android:iconifiedByDefault="false"
-                android:queryBackground="@null"
-                android:queryHint="Search Food" />
+                  <SearchView
+                      android:id="@+id/searchViewFood"
+                      android:layout_width="match_parent"
+                      android:layout_height="57dp"
+                      android:layout_margin="10dp"
+                      android:background="@drawable/custom_sreachview"
+                      android:iconifiedByDefault="false"
+                      android:queryBackground="@null"
+                      android:queryHint="Search Food" />
+              </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-            <Button
-                android:background="@drawable/custom_button"
-                android:id="@+id/btnTimKiem"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
-                android:text="Tìm kiếm"/>
+
             <TextView
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"

@@ -78,12 +78,7 @@ public class Home extends AppCompatActivity {
                 return false;
             }
         });
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Home.this,GioHang.class));
-            }
-        });
+
 
     }
 
@@ -91,6 +86,6 @@ public class Home extends AppCompatActivity {
         bottomBar = findViewById(R.id.bottomBar);
         frameLayout = findViewById(R.id.fragment);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        floatingActionButton = findViewById(R.id.fab);
+
     }
 }
