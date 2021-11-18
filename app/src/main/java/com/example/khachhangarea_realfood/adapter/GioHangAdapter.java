@@ -161,21 +161,14 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                     kAlertDialog.show();
                 } else {
                     donHangInfo.setSoLuong(String.valueOf(newValue));
-                    firebase_manager.mDatabase.child("DonHangInfo").child(auth.getUid()).child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    firebase_manager.mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            firebase_manager.mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    if (checkBoxListener!= null)
-                                    {
-                                        checkBoxListener.getGiaGioHang();
-                                    }
-                                }
-                            });
+                            if (checkBoxListener!= null)
+                            {
+                                checkBoxListener.getGiaGioHang();
+                            }
                         }
-
                     });
                 }
             }});

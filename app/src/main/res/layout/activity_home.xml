@@ -28,9 +28,9 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@color/green"
-        app:bb_activeTabColor="@color/orange"
-        app:bb_inActiveTabColor="@color/white"
+        android:background="#93242A"
+        app:bb_activeTabColor="@color/white"
+        app:bb_inActiveTabColor="@color/black"
         app:bb_tabXmlResource="@xml/bottombar_tabs" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

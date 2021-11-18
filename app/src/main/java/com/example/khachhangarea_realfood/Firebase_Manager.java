@@ -333,39 +333,7 @@ public class Firebase_Manager {
         });
     }
 
-    public void ThemVaoGioHang(DonHangInfo donHangInfo, String IDInfo, Context context) {
 
-        mDatabase.child("DonHangInfo").orderByChild("idkhachHang").equalTo(auth.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean res = true;
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()
-                ) {
-
-                    DonHangInfo temp = dataSnapshot.getValue(DonHangInfo.class);
-                    if (temp.getIDDonHang().equals("")) {
-                        if (donHangInfo.getSanPham().getIDSanPham().equals(temp.getSanPham().getIDSanPham())) {
-                            res = false;
-                            break;
-                        }
-                    }
-                }
-                if (res == true) {
-                    mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
 
     public UploadTask UpImageBaoCao(Uri image, String cuaHang) {
@@ -620,10 +588,8 @@ public class Firebase_Manager {
                     sanPhamAdapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
