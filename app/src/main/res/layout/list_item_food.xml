@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="193dp"
         android:layout_margin="2dp"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
          />
 
     <LinearLayout

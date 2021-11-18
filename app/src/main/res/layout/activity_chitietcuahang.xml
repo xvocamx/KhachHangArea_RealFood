@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
+
     android:orientation="vertical"
     tools:context=".ChiTietCuaHang">
 
@@ -141,7 +140,10 @@
                     android:textColor="@color/black"
                     android:textSize="15dp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#C1C0C0" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -179,13 +181,14 @@
                     android:gravity="end"
                     android:orientation="horizontal">
 
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnYeuThich"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/button_yeuthich_selected"
+                        android:background="@color/float_transparent"
                         android:clickable="true"
                         android:drawableLeft="@drawable/ic_favorite_pink"
                         android:drawablePadding="5dp"
@@ -193,7 +196,6 @@
                         android:text="@string/yeuthich"
                         android:textAllCaps="false"
                         android:textColor="@color/black" />
-
 
                     <ImageView
                         android:id="@+id/ivComment"
@@ -256,7 +258,10 @@
                     android:text="@string/ratings"
                     android:textSize="14dp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#C1C0C0" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -273,8 +278,12 @@
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Ornare leo non mollis id cursus. Eu euismod faucibus in
 leo malesuada" />
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#C1C0C0" />
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="10dp"
                 android:id="@+id/rcvMaGiamGia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

@@ -24,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = context.getLayoutInflater();
-        LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(viewType, parent, false);
+        CardView linearLayout = (CardView) layoutInflater.inflate(viewType, parent, false);
         return new MyViewHolder(linearLayout);
     }
 

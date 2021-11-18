@@ -538,7 +538,7 @@ public class Firebase_Manager {
     }
 
     public void GetPopularShop(ArrayList<CuaHang> cuaHangs, CuaHangAdapter cuaHangAdapter) {
-        mDatabase.child("CuaHang").limitToFirst(5).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("CuaHang").limitToFirst(4).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cuaHangs.clear();

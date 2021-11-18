@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
+
     android:orientation="vertical"
     tools:context=".ChiTietSanPham">
 
@@ -17,11 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/ivFood"
                 android:layout_width="match_parent"
-                android:layout_height="193dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="220dp"
+
                 android:layout_marginBottom="10dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/pizza" />
@@ -36,6 +36,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -152,7 +153,8 @@
                         android:id="@+id/btnYeuThich"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
-                        android:background="@drawable/button_yeuthich_selected"
+
+                        android:background="@color/float_transparent"
                         android:drawableLeft="@drawable/ic_favorite_pink"
                         android:drawablePadding="5dp"
                         android:padding="5dp"
@@ -174,9 +176,16 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#C1C0C0" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -239,9 +248,15 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#C1C0C0" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_marginTop="10dp"
                 android:text="Mô tả"
                 android:textColor="@color/black"
@@ -251,47 +266,50 @@
                 android:id="@+id/tvMoTa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Ornare leo non mollis id cursus. Eu euismod faucibus in
 leo malesuada" />
 
             <LinearLayout
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="30dp"
-                android:gravity="end"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:text="Số lượng"
-                    android:textColor="@color/black" />
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
+                    <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+                        android:id="@+id/btnSoLuong"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        app:backGroundColor="#F45E5E"
+                        app:backgroundDrawable="@drawable/custom_button"
+                        app:initialNumber="1"
+                        app:textSize="5dp" />
+                </LinearLayout>
 
-                <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                    android:id="@+id/btnSoLuong"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    app:backGroundColor="@color/orange"
-                    app:backgroundDrawable="@drawable/custom_button"
-                    app:initialNumber="1"
-                    app:textSize="5dp" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnDatHang"
+                    style="@style/button"
+                    android:text="Thêm giỏ hàng" />
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnDatHang"
-                style="@style/button"
-                android:text="Thêm vào giỏ hàng" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#C1C0C0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="5dp"
                 android:text="Đánh giá sản phẩm"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
@@ -299,11 +317,8 @@ leo malesuada" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvComent"
                 android:layout_width="match_parent"
-                android:layout_height="381dp" />
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" />
         </LinearLayout>
     </ScrollView>
-
-
-
-
 </LinearLayout>
