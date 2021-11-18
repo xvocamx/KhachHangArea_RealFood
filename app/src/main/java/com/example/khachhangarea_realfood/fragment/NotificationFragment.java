@@ -13,12 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.adapter.ThongBaoAdapter;
+import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.ThongBao;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class NotificationFragment extends Fragment {
@@ -76,6 +79,14 @@ public class NotificationFragment extends Fragment {
                     thongBaos.add(thongBao);
                     thongBaoAdapter.notifyDataSetChanged();
                 }
+                //Sap sep theo thoi
+                Collections.sort(thongBaos, new Comparator<ThongBao>() {
+                    @Override
+                    public int compare(ThongBao o1, ThongBao o2) {
+                        return o2.getDate().compareTo(o1.getDate());
+                    }
+                });
+
             }
 
             @Override

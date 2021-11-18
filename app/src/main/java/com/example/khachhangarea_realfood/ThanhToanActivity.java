@@ -29,6 +29,7 @@ import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.GioHangDisplay;
 import com.example.khachhangarea_realfood.model.KhachHang;
+import com.example.khachhangarea_realfood.model.TaiKhoanNganHang;
 import com.example.khachhangarea_realfood.model.ThongBao;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -202,7 +203,6 @@ public class ThanhToanActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
                                 for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()) {
-
                                     donHangInfo.setIDDonHang(IDDonHang);
                                     firebase_manager.mDatabase.child("DonHangInfo").child(donHangInfo.getIDInfo()).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -228,29 +228,49 @@ public class ThanhToanActivity extends AppCompatActivity {
                                 kAlertDialog.setContentText(e.getMessage());
                             }
                         });
-                    }
-                }
-                firebase_manager.storageRef.child("KhachHang").child(firebase_manager.auth.getUid()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
+                        String tenSanPham = "";
+                        for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()) {
+                            tenSanPham = donHangInfo.getSanPham().getTenSanPham() + ", " + tenSanPham;
+                        }
                         String IDThongBao = UUID.randomUUID().toString();
-                        firebase_manager.mDatabase.child("KhachHang").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
+                        String finalTenSanPham = tenSanPham;
+                        firebase_manager.storageRef.child("KhachHang").child(firebase_manager.auth.getUid()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                KhachHang khachHang = snapshot.getValue(KhachHang.class);
-                                String tenKhachHang = khachHang.getTenKhachHang();
-                                String noiDung = "Người dùng " + tenKhachHang + " đã đặt hàng thành công";
-                                ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
-                                firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(IDThongBao).setValue(thongBao);
-                            }
+                            public void onSuccess(Uri uri) {
+                                firebase_manager.mDatabase.child("TaiKhoanNganHang").orderByChild("idTaiKhoan").equalTo(donHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                            //Thong bao don hang cho khach hang
+                                            TaiKhoanNganHang taiKhoanNganHang = dataSnapshot.getValue(TaiKhoanNganHang.class);
+                                            double soTien = donHang.getTongTien() * 0.1;
+                                            String noiDung = "Bạn đã đặt hàng thành công vui lòng chuyển khoản đến số tài khoản "
+                                                    + taiKhoanNganHang.getSoTaiKhoan() + " với số tiền: " + soTien;
+                                            ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", firebase_manager.auth.getUid(), uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
+                                            firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(IDThongBao).setValue(thongBao);
+                                            //Thong bao don hang cho shop
+                                            String noiDungShop = "Đơn hàng mới " + donHang.getIDDonHang().substring(0,15) + " : " + finalTenSanPham + " " + donHang.getTongTien() + "VND";
+                                            firebase_manager.storageRef.child("CuaHang").child(donHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    ThongBao thongBaoShop = new ThongBao(IDThongBao, noiDungShop, "Thông báo", "", donHang.getIDCuaHang(), uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
+                                                    firebase_manager.mDatabase.child("ThongBao").child(donHang.getIDCuaHang()).child(IDThongBao).setValue(thongBaoShop);
+                                                }
+                                            });
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                             }
                         });
                     }
-                });
+                }
+
             }
         });
 

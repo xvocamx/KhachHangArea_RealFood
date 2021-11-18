@@ -111,8 +111,8 @@ public class BaoCaoShop extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     if (spLyDo.getSelectedItem().equals("Khác")) {
                                         String noiDung = "Người dùng " + tenKhachHang + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + edtLyDo.getText().toString();
-                                        ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
-                                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Thông báo", null, new Date());
+                                        ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Báo cáo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
+                                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Báo cáo", null, new Date());
                                         firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
                                         firebase_manager.mDatabase.child("ThongBao").child("admin").child(IDThongBao).setValue(thongBao);
                                         if (hinhAnhBaoCao != null) {
@@ -120,8 +120,8 @@ public class BaoCaoShop extends AppCompatActivity {
                                         }
                                     } else {
                                         String noiDung = "Người dùng " + tenKhachHang + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + spLyDo.getSelectedItem().toString();
-                                        ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
-                                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Thông báo", null, new Date());
+                                        ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Báo cáo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
+                                        BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Báo cáo", null, new Date());
                                         firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
                                         firebase_manager.mDatabase.child("ThongBao").child("admin").child(IDThongBao).setValue(thongBao);
                                         if (hinhAnhBaoCao != null) {

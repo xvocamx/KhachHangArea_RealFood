@@ -47,7 +47,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class ChiTietSanPham extends AppCompatActivity {
-    private TextView tvNameFood, tvGia, tvRating, tvMoTa, tvTenCuaHang, tvAddressShop,tvSoLuongBanDuoc;
+    private TextView tvNameFood, tvGia, tvRating, tvMoTa, tvTenCuaHang, tvAddressShop, tvSoLuongBanDuoc;
     private ImageView ivFood, ivShop;
     private SanPham sanPham;
     private CuaHang cuaHang;
@@ -65,7 +65,7 @@ public class ChiTietSanPham extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chitietsanpham);
-        danhGiaSanPhamAdapter = new DanhGiaSanPhamAdapter(this,R.layout.list_item_comment,danhGias);
+        danhGiaSanPhamAdapter = new DanhGiaSanPhamAdapter(this, R.layout.list_item_comment, danhGias);
         setControl();
         if (getIntent() != null && getIntent().getExtras() != null) {
             Intent intent = getIntent();
@@ -84,8 +84,8 @@ public class ChiTietSanPham extends AppCompatActivity {
             Float rating = sanPham.getRating();
             tvRating.setText(rating.toString());
             tvMoTa.setText(sanPham.getChiTietSanPham());
-            if(sanPham.getSoLuongBanDuoc()+"" != null){
-                tvSoLuongBanDuoc.setText(sanPham.getSoLuongBanDuoc()+"");
+            if (sanPham.getSoLuongBanDuoc() + "" != null) {
+                tvSoLuongBanDuoc.setText(sanPham.getSoLuongBanDuoc() + "");
             }
             firebase_manager.LoadImageFood(sanPham, getApplicationContext(), ivFood);
             firebase_manager.mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
@@ -175,38 +175,68 @@ public class ChiTietSanPham extends AppCompatActivity {
     private void LoadItemDanhGia() {
         firebase_manager.mDatabase.child("DanhGia").orderByChild("idsanPham").equalTo(sanPham.getIDSanPham()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 danhGias.clear();
-                for (DataSnapshot dataSnapshot :snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
                     danhGias.add(danhGia);
                     danhGiaSanPhamAdapter.notifyDataSetChanged();
                 }
-                if(danhGias.size() == 0){
+                if (danhGias.size() == 0) {
                     danhGias.clear();
                     danhGiaSanPhamAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
 
     private void addGioHang() {
-        String soLuong = "1";
-        UUID uuid = UUID.randomUUID();
-        String IDInfo = "MD_" + uuid.toString();
-        String donGia = sanPham.getGia();
-        DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", firebase_manager.auth.getUid(), soLuong, donGia, null, sanPham);
-        firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+        firebase_manager.mDatabase.child("DonHangInfo").orderByChild("idkhachHang").equalTo(firebase_manager.auth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(ChiTietSanPham.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                boolean res = true;
+                int soLuong = Integer.valueOf(btnSoLuong.getNumber());
+                UUID uuid = UUID.randomUUID();
+                String IDInfo = "MD_" + uuid.toString();
+                String donGia = sanPham.getGia();
+                DonHangInfo tempDonHang = new DonHangInfo();
+                DonHangInfo donHangInfo = new DonHangInfo(IDInfo, "", firebase_manager.auth.getUid(), String.valueOf(soLuong), donGia, null, sanPham);
+                for (DataSnapshot dataSnapshot : task.getResult().getChildren()
+                ) {
+
+                    DonHangInfo temp = dataSnapshot.getValue(DonHangInfo.class);
+                    if (temp.getIDDonHang().equals("")) {
+                        if (donHangInfo.getSanPham().getIDSanPham().equals(temp.getSanPham().getIDSanPham())) {
+                            res = false;
+                            tempDonHang = temp;
+                            break;
+                        }
+                    }
+                }
+                if (res == true) {
+                    firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(getApplicationContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    tempDonHang.setSoLuong((Integer.parseInt(tempDonHang.getSoLuong()) + soLuong) + "");
+                    firebase_manager.mDatabase.child("DonHangInfo").child(tempDonHang.getIDInfo()).setValue(tempDonHang).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(getApplicationContext(), "Thêm +" + soLuong + " sản phảm thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
+
     }
 
 
