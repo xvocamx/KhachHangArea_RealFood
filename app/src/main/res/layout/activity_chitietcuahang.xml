@@ -188,7 +188,7 @@
                         android:layout_height="35dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="5dp"
-                        android:background="@color/float_transparent"
+                        android:background="@drawable/button_yeuthich_selected"
                         android:clickable="true"
                         android:drawableLeft="@drawable/ic_favorite_pink"
                         android:drawablePadding="5dp"

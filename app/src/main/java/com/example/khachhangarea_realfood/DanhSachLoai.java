@@ -87,6 +87,7 @@ public class DanhSachLoai extends AppCompatActivity {
                 return false;
             }
         });
+
     }
 
     private void setControl() {

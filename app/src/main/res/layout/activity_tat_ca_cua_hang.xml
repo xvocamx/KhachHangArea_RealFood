@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TatCaCuaHang">
+
+    <SearchView
+        android:id="@+id/searchViewShop"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/custom_sreachview"
+        android:iconifiedByDefault="false"
+        android:queryBackground="@null"
+        android:queryHint="Search Food" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvTatCaCuaHang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:id="@+id/pbLoadTimKiemCuaHang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+
+</LinearLayout>

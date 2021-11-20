@@ -25,6 +25,8 @@ import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.SearchViewSanPham;
+import com.example.khachhangarea_realfood.TatCaCuaHang;
+import com.example.khachhangarea_realfood.TatCaSanPham;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.LoaiSanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
@@ -59,7 +61,7 @@ public class HomeFragment extends Fragment {
     private Button btnTimKiem;
     private ImageBadgeView ivMyOrder;
     private ProgressBar pbLoad;
-    private TextView tvGood;
+    private TextView tvGood,tvTatCaCuaHang,tvTatCaSanPhamGiamGia,tvTatCaSanPhamPhoBien;
     private SearchView searchView;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
 
@@ -199,7 +201,28 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        tvTatCaCuaHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TatCaCuaHang.class);
+                startActivity(intent);
+            }
+        });
 
+        tvTatCaSanPhamPhoBien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TatCaSanPham.class);
+                startActivity(intent);
+            }
+        });
+        tvTatCaSanPhamGiamGia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),TatCaSanPham.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -227,8 +250,10 @@ public class HomeFragment extends Fragment {
         rcvLoai = mView.findViewById(R.id.rcvLoai);
         ivMyOrder = mView.findViewById(R.id.ivMyOrder);
         pbLoad = mView.findViewById(R.id.pbLoad);
-
+        tvTatCaCuaHang = mView.findViewById(R.id.tvTatCaCuaHang);
         tvGood = mView.findViewById(R.id.tvGood);
         searchView = mView.findViewById(R.id.searchViewFood);
+        tvTatCaSanPhamGiamGia = mView.findViewById(R.id.tvTatCaSanPhamGiamGia);
+        tvTatCaSanPhamPhoBien = mView.findViewById(R.id.tvTatCaSanPhamPhoBien);
     }
 }

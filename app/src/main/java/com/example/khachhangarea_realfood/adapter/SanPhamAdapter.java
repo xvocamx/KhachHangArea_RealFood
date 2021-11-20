@@ -18,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.ChiTietSanPham;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.GioHang;
@@ -48,7 +49,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
     private ArrayList<SanPham> arrayList, arrayListOld;
     private ClickItemFoodListener delegation;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
-
+    private KAlertDialog kAlertDialog;
     public void setDelegation(ClickItemFoodListener delegation) {
         this.delegation = delegation;
     }
@@ -86,8 +87,6 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
             public void onClick(View v) {
                 if (delegation != null) {
                     delegation.getInformationFood(sanPham);
-                } else {
-                    Toast.makeText(context, "You must set delegation before", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -123,7 +122,8 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                           firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                               @Override
                               public void onSuccess(Void unused) {
-                                  Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                  kAlertDialog = new KAlertDialog(context,KAlertDialog.SUCCESS_TYPE).setContentText("Thêm thành công").setConfirmText("OK");
+                                  kAlertDialog.show();
                               }
                           });
                       }
@@ -132,7 +132,10 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                           firebase_manager.mDatabase.child("DonHangInfo").child(tempDonHang.getIDInfo()).setValue(tempDonHang).addOnSuccessListener(new OnSuccessListener<Void>() {
                               @Override
                               public void onSuccess(Void unused) {
-                                  Toast.makeText(context, "Thêm +1 sản phảm thành công", Toast.LENGTH_SHORT).show();
+                                  kAlertDialog = new KAlertDialog(context,KAlertDialog.SUCCESS_TYPE)
+                                          .setContentText("Thêm thành công 1 sản phẩm vào giỏ hàng" )
+                                  .setConfirmText("OK");
+                                  kAlertDialog.show();
                               }
                           });
                       }

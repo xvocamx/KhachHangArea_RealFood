@@ -64,6 +64,7 @@ public class YeuThichFoodFragment extends Fragment {
         sanPhams = new ArrayList<>();
         yeuThichFoodAdapter = new YeuThichFoodAdapter(getActivity(),R.layout.list_item_food_yeuthich,sanPhams);
         setControl();
+        LoadFavoriteFood();
         setEvent();
         return view;
     }
@@ -89,10 +90,17 @@ public class YeuThichFoodFragment extends Fragment {
 
     private void LoadFavoriteFood() {
         firebase_manager.LoadYeuThichFood(sanPhams,yeuThichFoodAdapter,pbFavoriteFood);
+
     }
 
     private void setControl() {
         rcvYeuThichFood = view.findViewById(R.id.rcvFavoriteFood);
         pbFavoriteFood = view.findViewById(R.id.pbFavoriteFood);
+    }
+
+    @Override
+    public void onResume() {
+        LoadFavoriteFood();
+        super.onResume();
     }
 }

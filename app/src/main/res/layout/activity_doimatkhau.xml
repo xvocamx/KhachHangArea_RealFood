@@ -9,15 +9,18 @@
     <EditText
         android:id="@+id/edtPassword"
         style="@style/edittext"
+        android:inputType="textPassword"
         android:hint="@string/password" />
 
     <EditText
         android:id="@+id/edtNewPassword"
         style="@style/edittext"
+        android:inputType="textPassword"
         android:hint="@string/NewPassword" />
 
     <EditText
         android:id="@+id/edtConfirmNewPassword"
+        android:inputType="textPassword"
         style="@style/edittext"
         android:hint="@string/ConfirmNewPassword" />
 

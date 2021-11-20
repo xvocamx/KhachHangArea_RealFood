@@ -62,6 +62,7 @@ public class YeuThichShopFragment extends Fragment {
         cuaHangs = new ArrayList<>();
         yeuThichShopAdapter = new YeuThichShopAdapter(getActivity(), R.layout.list_item_shop_yeuthich, cuaHangs);
         setControl();
+        LoadFavoriteShop();
         setEvent();
         return view;
     }
@@ -92,5 +93,11 @@ public class YeuThichShopFragment extends Fragment {
     private void setControl() {
         rcvYeuThichShop = view.findViewById(R.id.rcvFavoriteShop);
         pbFavoriteShop = view.findViewById(R.id.pbFavoriteShop);
+    }
+
+    @Override
+    public void onResume() {
+        LoadFavoriteShop();
+        super.onResume();
     }
 }

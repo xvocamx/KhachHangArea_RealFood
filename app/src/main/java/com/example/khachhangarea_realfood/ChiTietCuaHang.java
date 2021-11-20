@@ -29,6 +29,7 @@ import com.example.khachhangarea_realfood.adapter.GiamGiaAdapter;
 import com.example.khachhangarea_realfood.adapter.ViewPaperAdapter;
 import com.example.khachhangarea_realfood.fragment.TatCaSanPhamFragment;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.DanhGia;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.example.khachhangarea_realfood.model.Voucher;
 import com.example.khachhangarea_realfood.model.YeuThich;
@@ -57,7 +58,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
     private TabLayout mTabLayout;
     private ViewPager2 mViewPager;
     private ViewPaperAdapter viewPaperAdapter;
-    private TextView tvTenCuaHang, tvEmail, tvDiaChi, tvPhone, tvMota, tvTongSanPham;
+    private TextView tvTenCuaHang, tvEmail, tvDiaChi, tvPhone, tvMota, tvTongSanPham, tvRating, tvTBRating;
     private Button btnYeuThich;
     private ImageView ivWallPaper;
     private CircleImageView civAvatar;
@@ -201,10 +202,29 @@ public class ChiTietCuaHang extends AppCompatActivity {
         rcvGiamGia.setLayoutManager(linearLayoutManager);
         rcvGiamGia.setAdapter(giamGiaAdapter);
         LoadItemGiamGia();
+
+        firebase_manager.mDatabase.child("DanhGia").orderByChild("idcuaHang").equalTo(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                float tongRating = 0f;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
+                    tongRating += danhGia.getRating();
+                }
+                tvRating.setText(snapshot.getChildrenCount() + "");
+                float tbRating = (float) Math.round((tongRating / snapshot.getChildrenCount()) * 10) / 10;
+                tvTBRating.setText(tbRating + "");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void LoadItemGiamGia() {
-        firebase_manager.mDatabase.child("Voucher").orderByChild("idCuaHang").equalTo(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("Voucher").orderByChild("idcuaHang").equalTo(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 vouchers.clear();
@@ -239,5 +259,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
         btnYeuThich = findViewById(R.id.btnYeuThich);
         pbLoadChiTietCuaHang = findViewById(R.id.pbLoadChiTietCuaHang);
         rcvGiamGia = findViewById(R.id.rcvMaGiamGia);
+        tvRating = findViewById(R.id.tvRating);
+        tvTBRating = findViewById(R.id.tvTBRating);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.khachhangarea_realfood.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,13 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.khachhangarea_realfood.ChiTietSanPham;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.TatCaSanPham;
+import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.TatCaFoodAdapter;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -80,6 +85,17 @@ public class TatCaSanPhamFragment extends Fragment {
         rcvTatCaSanPham.setLayoutManager(linearLayoutManager);
         rcvTatCaSanPham.setAdapter(tatCaFoodAdapter);
         LoadTatCaSanPham();
+
+        tatCaFoodAdapter.setDelegation(new SanPhamAdapter.ClickItemFoodListener() {
+            @Override
+            public void getInformationFood(SanPham sanPham) {
+                Intent intent = new Intent(getActivity(), ChiTietSanPham.class);
+                Gson gson = new Gson();
+                String data = gson.toJson(sanPham);
+                intent.putExtra("dataSanPham", data);
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
     private void setControl() {

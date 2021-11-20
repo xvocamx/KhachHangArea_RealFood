@@ -92,11 +92,6 @@ public class YeuThichShopAdapter extends RecyclerView.Adapter<YeuThichShopAdapte
                                     @Override
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         kAlertDialog.dismiss();
-                                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                        if(cuaHangs.size() == 0){
-                                            cuaHangs.clear();
-                                            notifyDataSetChanged();
-                                        }
                                     }
                                 });
                             }

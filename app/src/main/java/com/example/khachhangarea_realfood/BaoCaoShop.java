@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.model.BaoCao;
 import com.example.khachhangarea_realfood.model.CuaHang;
@@ -42,6 +43,7 @@ public class BaoCaoShop extends AppCompatActivity {
     ImageView ivBaoCao;
     Uri hinhAnhBaoCao;
     Firebase_Manager firebase_manager = new Firebase_Manager();
+    KAlertDialog kAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,6 @@ public class BaoCaoShop extends AppCompatActivity {
             cuaHang = gson.fromJson(dataCuaHang, CuaHang.class);
         }
         setEvent();
-        Toast.makeText(this, cuaHang.getIDCuaHang(), Toast.LENGTH_SHORT).show();
     }
 
     private void setEvent() {
@@ -97,7 +98,8 @@ public class BaoCaoShop extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (spLyDo.getSelectedItem().equals("Chọn lý do")) {
-                    Toast.makeText(BaoCaoShop.this, "Vui lòng chọn lý do", Toast.LENGTH_SHORT).show();
+                    kAlertDialog = new KAlertDialog(BaoCaoShop.this,KAlertDialog.SUCCESS_TYPE).setContentText("Vui lòng chọn lý do");
+                    kAlertDialog.show();
                 } else {
                     String IDBaoCao = "BC_" + UUID.randomUUID().toString();
                     String IDThongBao = UUID.randomUUID().toString();

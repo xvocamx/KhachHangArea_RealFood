@@ -92,10 +92,6 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
                                     @Override
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                         kAlertDialog.dismiss();
-                                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                        if(sanPhams.size() == 0){
-                                            sanPhams.clear();
-                                        }
                                     }
                                 });
                             }

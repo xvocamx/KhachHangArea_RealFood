@@ -28,7 +28,7 @@ public class YeuThich extends AppCompatActivity {
     }
 
     private void LoadTab() {
-        viewPaperYeuThichAdapter = new ViewPaperYeuThichAdapter(this);
+        viewPaperYeuThichAdapter = new ViewPaperYeuThichAdapter(YeuThich.this);
         viewPager.setAdapter(viewPaperYeuThichAdapter);
         new TabLayoutMediator(tableLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

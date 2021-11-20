@@ -64,8 +64,6 @@ public class LoaiSanPhamAdapter extends RecyclerView.Adapter<LoaiSanPhamAdapter.
             public void onClick(View v) {
                 if (delegation != null) {
                     delegation.getLoai(loaiSanPham);
-                } else {
-                    Toast.makeText(context, "You must set delegation before", Toast.LENGTH_SHORT).show();
                 }
             }
         };

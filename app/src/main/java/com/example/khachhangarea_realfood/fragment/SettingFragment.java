@@ -45,7 +45,7 @@ public class SettingFragment extends Fragment {
     private View mView;
     private TextView tvDoiMatKhau,tvSua;
     private Button btnDangXuat;
-    private LinearLayout lnDonMua;
+    private LinearLayout lnDonMua,lnChoXacNhan,lnChoLayHang,lnDangGiao,lnDanhGia;
     private Firebase_Manager firebase_manager;
     private TextView tvName,tvEmail,tvPhone,tvDiaChi,tvNgaySinh;
     private CircleImageView civAvatar;
@@ -94,7 +94,7 @@ public class SettingFragment extends Fragment {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getActivity(), DangNhap.class);
                 startActivity(intent);
-
+                
             }
         });
         lnDonMua.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +111,13 @@ public class SettingFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        lnChoXacNhan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ChoXacNhanFragment.class);
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
     private void setControl() {
@@ -124,6 +131,10 @@ public class SettingFragment extends Fragment {
         tvDiaChi = mView.findViewById(R.id.tvAddress);
         tvNgaySinh = mView.findViewById(R.id.tvBirtDay);
         civAvatar = mView.findViewById(R.id.civAvatar);
+        lnChoLayHang = mView.findViewById(R.id.lnCholayHang);
+        lnChoXacNhan = mView.findViewById(R.id.lnChoXacNhan);
+        lnDangGiao = mView.findViewById(R.id.lnDangGiao);
+        lnDanhGia = mView.findViewById(R.id.lnDanhGia);
     }
     private void LoadInfoKhachHang() {
         tvEmail.setText(firebase_manager.user.getEmail());

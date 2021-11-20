@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.developer.kalert.KAlertDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -25,6 +26,7 @@ public class DoiMatKhau extends AppCompatActivity {
     private FirebaseUser mUser;
     private ProgressDialog progressDialog;
     private AuthCredential credential;
+    private KAlertDialog kAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +89,17 @@ public class DoiMatKhau extends AppCompatActivity {
                             progressDialog.setTitle("Đổi mật khẩu");
                             progressDialog.setCanceledOnTouchOutside(false);
                             progressDialog.show();
+                            kAlertDialog = new KAlertDialog(DoiMatKhau.this, KAlertDialog.PROGRESS_TYPE)
+                                    .setTitleText("Đổi mật khẩu")
+                                    .setContentText("Vui lòng đợi trong khi đổi mật khẩu ...");
+                            kAlertDialog.show();
                             mUser.updatePassword(newPassword)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                progressDialog.dismiss();
-                                                Toast.makeText(DoiMatKhau.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                                                kAlertDialog.changeAlertType(KAlertDialog.SUCCESS_TYPE);
+                                                kAlertDialog.setContentText("Đổi thành công");
                                                 Intent intent = new Intent(DoiMatKhau.this, Home.class);
                                                 startActivity(intent);
                                             }
@@ -101,7 +107,16 @@ public class DoiMatKhau extends AppCompatActivity {
                                     });
                         }
                     } else {
-                        Toast.makeText(DoiMatKhau.this, "Mật khẩu cũ sai", Toast.LENGTH_SHORT).show();
+                        kAlertDialog = new KAlertDialog(DoiMatKhau.this,KAlertDialog.ERROR_TYPE);
+                        kAlertDialog.setContentText("Mật khẩu hiện tại sai");
+                        kAlertDialog.setConfirmText("OK");
+                        kAlertDialog.setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
+                            @Override
+                            public void onClick(KAlertDialog kAlertDialog) {
+                                kAlertDialog.dismiss();
+                            }
+                        });
+                        kAlertDialog.show();
                     }
                 }
             });

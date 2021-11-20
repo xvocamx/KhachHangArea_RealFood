@@ -44,11 +44,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 public class ChiTietSanPham extends AppCompatActivity {
-    private TextView tvNameFood, tvGia, tvRating, tvMoTa, tvTenCuaHang, tvAddressShop, tvSoLuongBanDuoc;
+    private TextView tvNameFood, tvGia, tvRating, tvMoTa, tvTenCuaHang, tvAddressShop, tvSoLuongBanDuoc, tvTBRating;
     private ImageView ivFood, ivShop;
     private SanPham sanPham;
     private CuaHang cuaHang;
@@ -62,6 +63,9 @@ public class ChiTietSanPham extends AppCompatActivity {
     private ArrayList<DanhGia> danhGias = new ArrayList<>();
     private DanhGiaSanPhamAdapter danhGiaSanPhamAdapter;
     private LinearLayout lnDanhGia;
+    private List<Float> allRatings = new ArrayList<Float>();
+    private float ratingSum = 0f;
+    private KAlertDialog kAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +134,25 @@ public class ChiTietSanPham extends AppCompatActivity {
                             btnYeuThich.setSelected(true);
                         }
                     }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            firebase_manager.mDatabase.child("DanhGia").orderByChild("idsanPham").equalTo(sanPham.getIDSanPham()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    float tong = 0f;
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
+                        tong += danhGia.getRating();
+                    }
+                    tvRating.setText(snapshot.getChildrenCount() + "");
+                    float tbRating = (float) Math.round((tong / snapshot.getChildrenCount()) * 10) / 10;
+                    tvTBRating.setText(tbRating + "");
+
                 }
 
                 @Override
@@ -225,7 +248,9 @@ public class ChiTietSanPham extends AppCompatActivity {
                     firebase_manager.mDatabase.child("DonHangInfo").child(IDInfo).setValue(donHangInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(getApplicationContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                            kAlertDialog = new KAlertDialog(ChiTietSanPham.this, KAlertDialog.SUCCESS_TYPE).setContentText("Thêm thành công").setConfirmText("OK");
+                            kAlertDialog.show();
+
                         }
                     });
                 } else {
@@ -233,7 +258,10 @@ public class ChiTietSanPham extends AppCompatActivity {
                     firebase_manager.mDatabase.child("DonHangInfo").child(tempDonHang.getIDInfo()).setValue(tempDonHang).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(getApplicationContext(), "Thêm +" + soLuong + " sản phảm thành công", Toast.LENGTH_SHORT).show();
+                            kAlertDialog = new KAlertDialog(ChiTietSanPham.this, KAlertDialog.SUCCESS_TYPE)
+                                    .setContentText("Thêm thành công " + soLuong + " sản phẩm vào giỏ hàng").setConfirmText("OK");
+                            kAlertDialog.show();
+
                         }
                     });
                 }
@@ -259,5 +287,6 @@ public class ChiTietSanPham extends AppCompatActivity {
         btnYeuThich = findViewById(R.id.btnYeuThich);
         rcvComent = findViewById(R.id.rcvComent);
         lnDanhGia = findViewById(R.id.lnDanhGia);
+        tvTBRating = findViewById(R.id.tvTBRating);
     }
 }

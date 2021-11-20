@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +34,7 @@ public class DangKy extends AppCompatActivity {
     private ProgressDialog progressDialog;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    KAlertDialog kAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,11 +115,14 @@ public class DangKy extends AppCompatActivity {
         } else if (!password.equals(confirmPassword)) {
             edtConfirmPassword.setError("Mật khẩu không trùng nhau");
         } else {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Vui lòng đợi trong khi đăng ký ...");
-            progressDialog.setTitle("Đăng ký");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+//            progressDialog = new ProgressDialog(this);
+//            progressDialog.setMessage("Vui lòng đợi trong khi đăng ký ...");
+//            progressDialog.setTitle("Đăng ký");
+//            progressDialog.setCanceledOnTouchOutside(false);
+//            progressDialog.show();
+            kAlertDialog = new KAlertDialog(DangKy.this, KAlertDialog.PROGRESS_TYPE)
+                    .setTitleText("Đăng ký").setContentText("Vui lòng đợi trong khi đăng ký ...");
+            kAlertDialog.show();
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -126,15 +131,16 @@ public class DangKy extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 KhachHang khachHang = new KhachHang(mAuth.getUid(), name, address, phone, "", email, "", null, birtDay);
                                 mDatabase.child("KhachHang").child(mAuth.getUid()).setValue(khachHang);
-                                progressDialog.dismiss();
-                                Toast.makeText(DangKy.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                kAlertDialog.dismiss();
                                 Intent intent = new Intent(DangKy.this, Home.class);
                                 startActivity(intent);
                                 finishAffinity();
+
                             } else {
                                 // If sign in fails, display a message to the user.
-                                progressDialog.dismiss();
-                                Toast.makeText(DangKy.this, "Email đã tồn tại !!!", Toast.LENGTH_LONG).show();
+                                kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
+                                kAlertDialog.setTitleText("Đăng ký");
+                                kAlertDialog.setContentText("Email đã tồn tại");
                             }
                         }
                     });

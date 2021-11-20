@@ -29,6 +29,7 @@ import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.GioHangDisplay;
 import com.example.khachhangarea_realfood.model.KhachHang;
+import com.example.khachhangarea_realfood.model.SanPham;
 import com.example.khachhangarea_realfood.model.TaiKhoanNganHang;
 import com.example.khachhangarea_realfood.model.ThongBao;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -111,16 +112,15 @@ public class ThanhToanActivity extends AppCompatActivity {
 
             }
         });
-        for (GioHangDisplay gioHangDisplay : gioHangDisplays) {
+        TinhTongTien(gioHangDisplays);
+    }
+
+    private void TinhTongTien(ArrayList<GioHangDisplay> displays){
+        int tong = 0;
+        for (GioHangDisplay gioHangDisplay : displays) {
             for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()
             ) {
-                if (gioHangDisplay.getGiaGiam() != 0) {
-                    tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong()) - gioHangDisplay.getGiaGiam();
-                } else if (gioHangDisplay.getGiamPhanTram() != 0) {
-                    tong += (Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong()) * (gioHangDisplay.getGiamPhanTram() / 100));
-                } else {
-                    tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong());
-                }
+                tong += Double.parseDouble(donHangInfo.getSanPham().getGia()) * Integer.parseInt(donHangInfo.getSoLuong());
             }
         }
 
@@ -163,7 +163,6 @@ public class ThanhToanActivity extends AppCompatActivity {
                     gioHangDisplay.setSanPhams(temp);
                     gioHangDisplays.add(gioHangDisplay);
                     thanhToanProAdapter.notifyDataSetChanged();
-                    Toast.makeText(ThanhToanActivity.this, "Size" + gioHangDisplay.getSanPhams().size(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -189,6 +188,12 @@ public class ThanhToanActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvThanhToan.setLayoutManager(linearLayoutManager);
         rcvThanhToan.setAdapter(thanhToanProAdapter);
+        thanhToanProAdapter.setDelegation(new ThanhToanProAdapter.CLickMaGiamGia() {
+            @Override
+            public void getGiaGioHang(ArrayList<GioHangDisplay> gioHangDisplays) {
+                TinhTongTien(gioHangDisplays);
+            }
+        });
         btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,11 +206,15 @@ public class ThanhToanActivity extends AppCompatActivity {
                 } else {
                     KAlertDialog kAlertDialog = new KAlertDialog(ThanhToanActivity.this, KAlertDialog.PROGRESS_TYPE);
                     kAlertDialog.show();
-                    for (GioHangDisplay gioHangDisplay : gioHangDisplays
-                    ) {
+
+                    for (GioHangDisplay gioHangDisplay : gioHangDisplays) {
+                        int tongTien = 0;
+                        for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()) {
+                            tongTien += Double.parseDouble(donHangInfo.getSanPham().getGia()) * Integer.parseInt(donHangInfo.getSoLuong());
+                        }
                         String IDDonHang = "DH_" + UUID.randomUUID().toString();
                         DonHang donHang = new DonHang(IDDonHang, gioHangDisplay.getIdCuaHang(), firebase_manager.auth.getUid()
-                                , "", diaChi, soDienThoai, "", "", tong, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
+                                , "", diaChi, soDienThoai, "", "", tongTien, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
                         );
                         firebase_manager.mDatabase.child("DonHang").child(IDDonHang).setValue(donHang).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -217,8 +226,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                                         public void onSuccess(Void unused) {
                                             kAlertDialog.changeAlertType(KAlertDialog.SUCCESS_TYPE);
                                             kAlertDialog.setContentText("Đặt hàng thành công!");
-                                            Intent intent = new Intent(ThanhToanActivity.this, Home.class);
-                                            startActivity(intent);
+                                            finish();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -228,6 +236,8 @@ public class ThanhToanActivity extends AppCompatActivity {
                                         }
                                     });
                                 }
+
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -249,8 +259,8 @@ public class ThanhToanActivity extends AppCompatActivity {
                                     //Thong bao don hang cho khach hang
                                     TaiKhoanNganHang taiKhoanNganHang = dataSnapshot.getValue(TaiKhoanNganHang.class);
                                     double soTien = donHang.getTongTien() * 0.1;
-                                    String noiDung = "Bạn đã đặt hàng thành công vui lòng chuyển khoản đến số tài khoản "
-                                            + taiKhoanNganHang.getSoTaiKhoan() + " với số tiền: " + soTien;
+                                    String noiDung = "Bạn đã đặt hàng thành công " + donHang.getIDDonHang().substring(0, 10) + " vui lòng chuyển khoản đến số tài khoản "
+                                            + taiKhoanNganHang.getSoTaiKhoan() + " " + taiKhoanNganHang.getTenChuTaiKhoan() + " " + taiKhoanNganHang.getTenNganHang() + " với số tiền: " + soTien;
                                     ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", firebase_manager.auth.getUid(), "", TrangThaiThongBao.ChuaXem, new Date());
                                     firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(IDThongBao).setValue(thongBao);
                                     //Thong bao don hang cho shop

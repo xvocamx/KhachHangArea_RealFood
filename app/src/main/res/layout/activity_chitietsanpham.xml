@@ -153,8 +153,7 @@
                         android:id="@+id/btnYeuThich"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
-
-                        android:background="@color/float_transparent"
+                        android:background="@drawable/button_yeuthich_selected"
                         android:drawableLeft="@drawable/ic_favorite_pink"
                         android:drawablePadding="5dp"
                         android:padding="5dp"

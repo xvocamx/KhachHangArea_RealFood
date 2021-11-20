@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -26,6 +27,7 @@ import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.GioHangDisplay;
+import com.example.khachhangarea_realfood.model.SanPham;
 import com.example.khachhangarea_realfood.model.Voucher;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,8 +46,11 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
     private Firebase_Manager firebase_manager = new Firebase_Manager();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private KAlertDialog kAlertDialog;
-    private int tong = 0;
-    private int phiVanChuyen = 30000;
+    private CLickMaGiamGia delegation;
+
+    public void setDelegation(CLickMaGiamGia delegation) {
+        this.delegation = delegation;
+    }
 
     public ThanhToanProAdapter(Activity context, int resource, ArrayList<GioHangDisplay> gioHangDisplays) {
         this.context = context;
@@ -115,32 +120,77 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
                 }
             }
         });
-
-        for (GioHangDisplay gioHangDisplay1 : gioHangDisplays) {
-            for (DonHangInfo donHangInfo : gioHangDisplay1.getSanPhams()
-            ) {
-                tong += Integer.parseInt(donHangInfo.getDonGia()) * Integer.parseInt(donHangInfo.getSoLuong());
-            }
+        if (gioHangDisplay.getGiamPhanTram() != 0) {
+            holder.lnMaGiamGia.setVisibility(View.GONE);
         }
-        holder.tvTongPhu.setText(tong + " VND");
-        holder.tvChiPhiVanChuyen.setText(phiVanChuyen + " VND");
+        if (gioHangDisplay.getGiaGiam() != 0) {
+            holder.lnMaGiamGia.setVisibility(View.GONE);
+        }
         holder.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String maGiamGia = holder.edtMaGiamGia.getText().toString().trim();
+
                 firebase_manager.mDatabase.child("Voucher").orderByChild("maGiamGia").equalTo(maGiamGia).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Voucher voucher = dataSnapshot.getValue(Voucher.class);
                             if (voucher.getPhanTramGiam() != 0) {
-                                holder.tvMaGiamGia.setText(voucher.getPhanTramGiam() + " %");
-                                gioHangDisplay.setGiamPhanTram(voucher.getPhanTramGiam());
+                                for (int i = 0; i < gioHangDisplay.getSanPhams().size(); i++) {
+                                    if (gioHangDisplay.getSanPhams().get(i).getSanPham().getIDSanPham().equals(voucher.getSanPham().getIDSanPham())) {
+                                        gioHangDisplay.setGiamPhanTram(voucher.getPhanTramGiam());
+                                        SanPham sanPham = gioHangDisplay.getSanPhams().get(i).getSanPham();
+                                        double giaSanPham = Double.parseDouble(sanPham.getGia());
+                                        double giaSanPhamGiamGia = giaSanPham - (giaSanPham * ((double) voucher.getPhanTramGiam() / 100));
+                                        sanPham.setGia(giaSanPhamGiamGia + "");
+                                        DonHangInfo donHangInfo = gioHangDisplay.getSanPhams().get(i);
+                                        ArrayList<DonHangInfo> arrayList = gioHangDisplay.getSanPhams();
+                                        donHangInfo.setSanPham(sanPham);
+                                        arrayList.set(i, donHangInfo);
+                                        gioHangDisplay.setSanPhams(arrayList);
+                                        GioHangDisplay display = gioHangDisplay;
+                                        gioHangDisplays.set(position, display);
+                                        if (delegation != null) {
+                                            delegation.getGiaGioHang(gioHangDisplays);
+                                        }
+                                        notifyDataSetChanged();
+                                    }
+                                }
                             }
                             if (voucher.getGiaGiam() != 0) {
-                                holder.tvMaGiamGia.setText(voucher.getGiaGiam() + " VND");
-                                gioHangDisplay.setGiaGiam(voucher.getGiaGiam());
+                                for (int i = 0; i < gioHangDisplay.getSanPhams().size(); i++) {
+                                    if (gioHangDisplay.getSanPhams().get(i).getSanPham().getIDSanPham().equals(voucher.getSanPham().getIDSanPham())) {
+                                        gioHangDisplay.setGiamPhanTram(voucher.getGiaGiam());
+                                        SanPham sanPham = gioHangDisplay.getSanPhams().get(i).getSanPham();
+                                        double giaSanPham = Double.parseDouble(sanPham.getGia()) - voucher.getGiaGiam();
+                                        sanPham.setGia(giaSanPham + "");
+                                        DonHangInfo donHangInfo = gioHangDisplay.getSanPhams().get(i);
+                                        ArrayList<DonHangInfo> arrayList = gioHangDisplay.getSanPhams();
+                                        donHangInfo.setSanPham(sanPham);
+                                        arrayList.set(i, donHangInfo);
+                                        gioHangDisplay.setSanPhams(arrayList);
+                                        GioHangDisplay display = gioHangDisplay;
+                                        gioHangDisplays.set(position, display);
+                                        if (delegation != null) {
+                                            delegation.getGiaGioHang(gioHangDisplays);
+                                        }
+                                        notifyDataSetChanged();
+                                    }
+                                }
                             }
+
+                        }
+                        if (gioHangDisplay.getGiamPhanTram() == 0 && gioHangDisplay.getGiaGiam() == 0) {
+                            kAlertDialog = new KAlertDialog(context, KAlertDialog.ERROR_TYPE).setConfirmText("OK");
+                            kAlertDialog.show();
+
+                        }
+                        if (gioHangDisplay.getGiamPhanTram() != 0 || gioHangDisplay.getGiaGiam() != 0) {
+                            kAlertDialog = new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE).setConfirmText("OK");
+                            kAlertDialog.show();
+
                         }
 
                     }
@@ -152,6 +202,7 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
                 });
             }
         });
+
 
     }
 
@@ -167,13 +218,14 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTenCuaHang, tvTongPhu, tvChiPhiVanChuyen, tvMaGiamGia;
+        TextView tvTenCuaHang;
         Button btnSave;
         LinearLayout lnThemGhiChu;
         EditText edtGhiChu, edtMaGiamGia;
         ImageView ivShop;
         ProgressBar pbLoadItemGioHang;
         RecyclerView rcSanPham;
+        LinearLayout lnMaGiamGia;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -184,16 +236,14 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
             lnThemGhiChu = itemView.findViewById(R.id.lnThemGhiChu);
             edtGhiChu = itemView.findViewById(R.id.edtGhiChu);
             edtMaGiamGia = itemView.findViewById(R.id.edtMaGiamGia);
-            tvTongPhu = itemView.findViewById(R.id.tvTongPhu);
-            tvChiPhiVanChuyen = itemView.findViewById(R.id.tvChiPhiVanChuyen);
-            tvMaGiamGia = itemView.findViewById(R.id.tvGiamGia);
             btnSave = itemView.findViewById(R.id.btnSave);
+            lnMaGiamGia = itemView.findViewById(R.id.lnMaGiamGia);
             this.setIsRecyclable(false);
         }
     }
 
-    public interface CheckBoxListener {
-        void getGiaGioHang();
+    public interface CLickMaGiamGia {
+        void getGiaGioHang(ArrayList<GioHangDisplay> gioHangDisplays);
     }
 
 

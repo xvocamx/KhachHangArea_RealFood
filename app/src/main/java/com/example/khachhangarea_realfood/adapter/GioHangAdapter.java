@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -143,7 +143,6 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                                         @Override
                                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                             kAlertDialog.dismiss();
-                                            Toast.makeText(context, "oke", Toast.LENGTH_SHORT).show();
                                             checkBoxListener.getGiaGioHang();
                                         }
                                     });

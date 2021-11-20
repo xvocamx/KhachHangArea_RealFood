@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,10 +31,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHolder> {
+public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHolder> implements Filterable {
     private Activity context;
     private int resource;
-    private ArrayList<CuaHang> cuaHangs;
+    private ArrayList<CuaHang> cuaHangs,cuaHangsOld;
     private ClickItemShopListener delegation;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
 
@@ -44,6 +46,7 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
         this.context = context;
         this.resource = resource;
         this.cuaHangs = cuaHangs;
+        this.cuaHangsOld = cuaHangs;
     }
 
     @NonNull
@@ -71,8 +74,6 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
             public void onClick(View v) {
                 if (delegation != null) {
                     delegation.getInformationShop(cuaHang);
-                } else {
-                    Toast.makeText(context, "You must set delegation before", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -89,6 +90,7 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
     public int getItemCount() {
         return cuaHangs.size();
     }
+
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTenCuaHang, tvDiaChi, tvRatings;
@@ -121,5 +123,36 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
 
     public interface ClickItemShopListener {
         void getInformationShop(CuaHang cuaHang);
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                if(strSearch.isEmpty()){
+                    cuaHangs = cuaHangsOld;
+                }
+                else {
+                    ArrayList<CuaHang> hangs = new ArrayList<>();
+                    for(CuaHang cuaHang : cuaHangsOld){
+                        if(cuaHang.getTenCuaHang().toLowerCase().contains(strSearch.toLowerCase())){
+                            hangs.add(cuaHang);
+                        }
+                    }
+                    cuaHangs = hangs;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = cuaHangs;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                cuaHangs = (ArrayList<CuaHang>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

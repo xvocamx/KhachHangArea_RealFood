@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,12 @@ public class TatCaFoodAdapter extends RecyclerView.Adapter<TatCaFoodAdapter.MyVi
     private Activity context;
     private int resource;
     private ArrayList<SanPham> sanPhams;
+    private SanPhamAdapter.ClickItemFoodListener delegation;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
+
+    public void setDelegation(SanPhamAdapter.ClickItemFoodListener delegation) {
+        this.delegation = delegation;
+    }
 
     public TatCaFoodAdapter(Activity context, int resource, ArrayList<SanPham> sanPhams) {
         this.context = context;
@@ -49,6 +55,15 @@ public class TatCaFoodAdapter extends RecyclerView.Adapter<TatCaFoodAdapter.MyVi
         firebase_manager.LayTenLoai(sanPham,holder.tvTenLoai);
         holder.tvRating.setText(String.valueOf(sanPham.getRating()));
         firebase_manager.LoadImageFood(sanPham,context,holder.ivFood);
+
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (delegation != null) {
+                    delegation.getInformationFood(sanPham);
+                }
+            }
+        };
     }
 
     @Override
@@ -64,23 +79,23 @@ public class TatCaFoodAdapter extends RecyclerView.Adapter<TatCaFoodAdapter.MyVi
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvNameFood, tvTenLoai, tvRating;
         ImageView ivFood;
-        LinearLayout lnRating;
+        LinearLayout lnRating,lnSanPham;
         View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNameFood = itemView.findViewById(R.id.tvNameFood);
-            tvNameFood.setOnClickListener(this);
 
             tvTenLoai = itemView.findViewById(R.id.tvTenLoai);
-            tvTenLoai.setOnClickListener(this);
 
             tvRating = itemView.findViewById(R.id.tvRating);
 
             ivFood = itemView.findViewById(R.id.ivFood);
 
             lnRating = itemView.findViewById(R.id.lnRating);
-            lnRating.setOnClickListener(this);
+
+            lnSanPham = itemView.findViewById(R.id.lnSanPham);
+            lnSanPham.setOnClickListener(this);
 
         }
 
@@ -90,5 +105,8 @@ public class TatCaFoodAdapter extends RecyclerView.Adapter<TatCaFoodAdapter.MyVi
                 onClickListener.onClick(v);
             }
         }
+    }
+    public interface ClickItemFoodListener {
+        void getInformationFood(SanPham sanPham);
     }
 }

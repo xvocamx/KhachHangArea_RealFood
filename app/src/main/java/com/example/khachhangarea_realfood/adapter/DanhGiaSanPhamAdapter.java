@@ -98,8 +98,11 @@ public class DanhGiaSanPhamAdapter extends RecyclerView.Adapter<DanhGiaSanPhamAd
             }
         });
         holder.tvDanhGiaShop.setText(danhGia.getNoiDungShopTraLoi());
-        String dateShop = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(danhGia.getNgayShopTraLoi());
-        holder.tvThoiGianShop.setText(dateShop);
+
+        if(danhGia.getNgayShopTraLoi() != null){
+            String dateShop = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(danhGia.getNgayShopTraLoi());
+            holder.tvThoiGianShop.setText(dateShop);
+        }
     }
 
     @Override

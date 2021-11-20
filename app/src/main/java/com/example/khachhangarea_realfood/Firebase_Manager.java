@@ -150,7 +150,7 @@ public class Firebase_Manager {
                 donHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHang donHang = dataSnapshot.getValue(DonHang.class);
-                    if(donHang.getIDKhachHang().equals(auth.getUid())){
+                    if (donHang.getIDKhachHang().equals(auth.getUid())) {
                         if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.SHOP_HuyDonHang.toString()) ||
                                 donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_GiaoKhongThanhCong.toString()) ||
                                 donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaTraHang.toString()) ||
@@ -189,7 +189,7 @@ public class Firebase_Manager {
                 donHangs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHang donHang = dataSnapshot.getValue(DonHang.class);
-                    if(donHang.getIDKhachHang().equals(auth.getUid())){
+                    if (donHang.getIDKhachHang().equals(auth.getUid())) {
                         if (donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_GiaoThanhCong.toString()) ||
                                 donHang.getTrangThai().toString().equals(TrangThaiDonHang.Shipper_DaChuyenTien.toString())) {
                             donHangs.add(donHang);
@@ -333,8 +333,6 @@ public class Firebase_Manager {
     }
 
 
-
-
     public UploadTask UpImageBaoCao(Uri image, String cuaHang) {
         return storageRef.child("BaoCao").child(cuaHang).child("ImageBaoCao").putFile(image);
     }
@@ -465,6 +463,10 @@ public class Firebase_Manager {
                     yeuThichShopAdapter.notifyDataSetChanged();
                 }
                 pb.setVisibility(View.GONE);
+                if(cuaHangs.size() == 0){
+                    cuaHangs.clear();
+                    yeuThichShopAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -485,6 +487,10 @@ public class Firebase_Manager {
                     yeuThichFoodAdapter.notifyDataSetChanged();
                 }
                 pb.setVisibility(View.GONE);
+                if(sanPhams.size() == 0){
+                    sanPhams.clear();
+                    yeuThichFoodAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -587,8 +593,51 @@ public class Firebase_Manager {
                     sanPhamAdapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    public void LoadTatCaSanPham (ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter, ProgressBar pb) {
+        mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sanPhams.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    SanPham sanPham = dataSnapshot.getValue(SanPham.class);
+                    sanPhams.add(sanPham);
+                    sanPhamAdapter.notifyDataSetChanged();
+                }
+                pb.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void LoadTatCaCuaHang(ArrayList<CuaHang> cuaHangs, CuaHangAdapter cuaHangAdapter, ProgressBar pb) {
+        mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cuaHangs.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    CuaHang cuaHang = dataSnapshot.getValue(CuaHang.class);
+                    if (cuaHang.getTrangThaiCuaHang() != TrangThaiCuaHang.ChuaKichHoat) {
+                        cuaHangs.add(cuaHang);
+                        cuaHangAdapter.notifyDataSetChanged();
+                    }
+                }
+                pb.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

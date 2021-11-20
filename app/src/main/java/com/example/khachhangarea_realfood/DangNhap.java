@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.developer.kalert.KAlertDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -24,6 +25,7 @@ public class DangNhap extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    KAlertDialog kAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class DangNhap extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setControl();
         setEvent();
-        if(mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(getApplicationContext(), Home.class);
             edtEmail.setText(mAuth.getCurrentUser().getEmail());
             startActivity(intent);
@@ -76,25 +78,29 @@ public class DangNhap extends AppCompatActivity {
         } else if (password.length() < 6) {
             edtPassword.setError("Độ dài password từ 6 đến 100");
         } else {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Vui lòng đợi trong khi đăng nhập ...");
-            progressDialog.setTitle("Đăng nhập");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+//            progressDialog = new ProgressDialog(this);
+//            progressDialog.setMessage("Vui lòng đợi trong khi đăng nhập ...");
+//            progressDialog.setTitle("Đăng nhập");
+//            progressDialog.setCanceledOnTouchOutside(false);
+//            progressDialog.show();
+            kAlertDialog = new KAlertDialog(DangNhap.this, KAlertDialog.PROGRESS_TYPE)
+                    .setTitleText("Đăng nhập")
+                    .setContentText("Vui lòng đợi trong khi đăng nhập ...");
+            kAlertDialog.show();
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                progressDialog.dismiss();
-                                Toast.makeText(DangNhap.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                kAlertDialog.dismiss();
                                 Intent intent = new Intent(DangNhap.this, Home.class);
                                 startActivity(intent);
                             } else {
                                 // If sign in fails, display a message to the user.
-                                progressDialog.dismiss();
-                                Toast.makeText(DangNhap.this, "Tài khoản hoặc mật khẩu sai", Toast.LENGTH_LONG).show();
+                                kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
+                                kAlertDialog.setTitleText("Đăng nhập");
+                                kAlertDialog.setContentText("Tài khoản hoặc mật khẩu sai");
                             }
                         }
                     });

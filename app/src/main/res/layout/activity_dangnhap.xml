@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:text="@string/dangky"
-                    android:textColor="@color/orange"
+                    android:textColor="#93242A"
                     android:textSize="14dp" />
             </LinearLayout>
             <TextView

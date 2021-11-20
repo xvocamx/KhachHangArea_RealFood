@@ -121,6 +121,7 @@
                     android:textColor="@color/black"
                     android:textSize="20dp" />
                 <TextView
+                    android:id="@+id/tvTatCaSanPhamGiamGia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="21dp"
@@ -163,6 +164,7 @@
                             android:textSize="20dp" />
 
                         <TextView
+                            android:id="@+id/tvTatCaCuaHang"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="21dp"
@@ -199,6 +201,7 @@
                     android:textSize="20dp" />
 
                 <TextView
+                    android:id="@+id/tvTatCaSanPhamPhoBien"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="21dp"

@@ -72,8 +72,15 @@ public class GioHang extends AppCompatActivity {
         gioHangProAdapter = new GioHangProAdapter(this, R.layout.list_item_giohang, gioHangDisplays);
         gioHangAdapter = new GioHangAdapter(this, R.layout.list_item_giohang_sanpham, donHangInfos);
         setControl();
+        TongTien();
         setEvent();
 
+    }
+
+    @Override
+    protected void onResume() {
+        TongTien();
+        super.onResume();
     }
 
     private void LoadGioHang() {
@@ -158,19 +165,7 @@ public class GioHang extends AppCompatActivity {
         gioHangProAdapter.setCheckBoxListener(new GioHangAdapter.CheckBoxListener() {
             @Override
             public void getGiaGioHang() {
-                tong = 0;
-
-                for (GioHangDisplay gioHangDisplay : gioHangDisplays
-                ) {
-
-                    for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()
-                    ) {
-                        if (donHangInfo.isSelected()) {
-                            tong += Integer.parseInt(donHangInfo.getSanPham().getGia()) * Integer.parseInt(donHangInfo.getSoLuong());
-                        }
-                    }
-                }
-                tvTongTien.setText(tong + "");
+                TongTien();
             }
         });
         btnThanhToan.setOnClickListener(new View.OnClickListener() {
@@ -183,17 +178,45 @@ public class GioHang extends AppCompatActivity {
                     bundle.putString("data", string);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                }else {
-                    Toast.makeText(GioHang.this, "Vui lòng chọn sản phẩm!", Toast.LENGTH_SHORT).show();
+                } else {
+                        kAlertDialog = new KAlertDialog(GioHang.this,KAlertDialog.WARNING_TYPE).setTitleText("Thông báo")
+                                .setContentText("Vui lòng chọn sản phẩm!!")
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
+                                    @Override
+                                    public void onClick(KAlertDialog kAlertDialog) {
+                                        kAlertDialog.dismiss();
+                                    }
+                                });
+                        kAlertDialog.show();
                 }
             }
         });
 
     }
 
+    private void TongTien() {
+        tong = 0;
+        if (gioHangDisplays.size() == 0) {
+            gioHangDisplays.clear();
+            gioHangProAdapter.notifyDataSetChanged();
+        }
+        for (GioHangDisplay gioHangDisplay : gioHangDisplays
+        ) {
+
+            for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()
+            ) {
+                if (donHangInfo.isSelected()) {
+                    tong += Integer.parseInt(donHangInfo.getSanPham().getGia()) * Integer.parseInt(donHangInfo.getSoLuong());
+                }
+            }
+        }
+        tvTongTien.setText(tong + "");
+    }
+
     private boolean checkSelectedItem() {
-        for (GioHangDisplay gioHangDisplay :gioHangDisplays) {
-            for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams() ) {
+        for (GioHangDisplay gioHangDisplay : gioHangDisplays) {
+            for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()) {
                 if (donHangInfo.isSelected()) {
                     return true;
                 }
