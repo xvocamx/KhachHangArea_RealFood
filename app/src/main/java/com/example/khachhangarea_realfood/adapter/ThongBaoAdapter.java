@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.ThongBao;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +27,11 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
     int resource;
     ArrayList<ThongBao> thongBaos;
     Firebase_Manager firebase_manager = new Firebase_Manager();
+    ClickItemThongBaoListener delegation;
+
+    public void setDelegation(ClickItemThongBaoListener delegation) {
+        this.delegation = delegation;
+    }
 
     public ThongBaoAdapter(Activity context, int resource, ArrayList<ThongBao> thongBaos) {
         this.context = context;
@@ -50,7 +56,16 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
         holder.tvNoiDungThongBao.setText(thongBao.getNoiDung());
         String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(thongBao.getDate());
         holder.tvThoiGianThongBao.setText(date);
+        holder.tvTrangThai.setText(firebase_manager.GetStringTrangThaiThongBao(thongBao.getTrangThaiThongBao()));
 
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (delegation != null) {
+                    delegation.getInformationThongBao(thongBao);
+                }
+            }
+        };
     }
 
     @Override
@@ -65,13 +80,17 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         View.OnClickListener onClickListener;
-        TextView tvTenKhachHang, tvThoiGianThongBao, tvNoiDungThongBao;
+        TextView tvTenKhachHang, tvThoiGianThongBao, tvNoiDungThongBao, tvTrangThai;
+        LinearLayout lnThongBao;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTenKhachHang = itemView.findViewById(R.id.tvTenKhachHang);
             tvThoiGianThongBao = itemView.findViewById(R.id.tvThoiGian);
             tvNoiDungThongBao = itemView.findViewById(R.id.tvNoiDung);
+            tvTrangThai = itemView.findViewById(R.id.tvTrangThai);
+            lnThongBao = itemView.findViewById(R.id.lnThongBao);
+            lnThongBao.setOnClickListener(this);
         }
 
         @Override
@@ -80,5 +99,9 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
                 onClickListener.onClick(v);
             }
         }
+    }
+
+    public interface ClickItemThongBaoListener {
+        void getInformationThongBao(ThongBao thongBao);
     }
 }

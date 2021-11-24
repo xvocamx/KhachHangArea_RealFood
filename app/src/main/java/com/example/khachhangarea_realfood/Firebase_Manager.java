@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiCuaHang;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiDonHang;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.DonMuaAdpater;
 import com.example.khachhangarea_realfood.adapter.DonMuaChuanBiHangAdpater;
@@ -29,6 +30,7 @@ import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
+import com.example.khachhangarea_realfood.model.Voucher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,6 +61,17 @@ public class Firebase_Manager {
         storageRef = FirebaseStorage.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+    }
+
+    public String GetStringTrangThaiThongBao(TrangThaiThongBao trangThaiThongBao){
+        String res = "";
+        if(trangThaiThongBao == TrangThaiThongBao.ChuaXem){
+            res = "Chưa xem";
+        }
+        if (trangThaiThongBao == TrangThaiThongBao.DaXem){
+            res = "Đã xem";
+        }
+        return res;
     }
 
     public String GetStringTrangThaiDonHang(TrangThaiDonHang trangThaiDonHang) {
@@ -114,6 +127,7 @@ public class Firebase_Manager {
         if (trangThaiDonHang == TrangThaiDonHang.KhachHang_HuyDon) {
             res = "Khách hàng hủy đơn";
         }
+
 
 
         return res;
@@ -283,6 +297,7 @@ public class Firebase_Manager {
                         return o2.getNgayTao().compareTo(o1.getNgayTao());
                     }
                 });
+
                 if (donHangs.size() == 0) {
                     donHangs.clear();
                     donMuaChuanBiHangAdpater.notifyDataSetChanged();
@@ -333,8 +348,8 @@ public class Firebase_Manager {
     }
 
 
-    public UploadTask UpImageBaoCao(Uri image, String cuaHang) {
-        return storageRef.child("BaoCao").child(cuaHang).child("ImageBaoCao").putFile(image);
+    public UploadTask UpImageBaoCao(Uri image, String baoCao) {
+        return storageRef.child("BaoCao").child(baoCao).child("ImageBaoCao").putFile(image);
     }
 
     public void ThemYeuThichCuaHang(CuaHang cuaHang) {
@@ -463,7 +478,7 @@ public class Firebase_Manager {
                     yeuThichShopAdapter.notifyDataSetChanged();
                 }
                 pb.setVisibility(View.GONE);
-                if(cuaHangs.size() == 0){
+                if (cuaHangs.size() == 0) {
                     cuaHangs.clear();
                     yeuThichShopAdapter.notifyDataSetChanged();
                 }
@@ -487,7 +502,7 @@ public class Firebase_Manager {
                     yeuThichFoodAdapter.notifyDataSetChanged();
                 }
                 pb.setVisibility(View.GONE);
-                if(sanPhams.size() == 0){
+                if (sanPhams.size() == 0) {
                     sanPhams.clear();
                     yeuThichFoodAdapter.notifyDataSetChanged();
                 }
@@ -543,7 +558,7 @@ public class Firebase_Manager {
     }
 
     public void GetPopularShop(ArrayList<CuaHang> cuaHangs, CuaHangAdapter cuaHangAdapter) {
-        mDatabase.child("CuaHang").limitToFirst(4).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("CuaHang").orderByChild("rating").limitToFirst(4).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cuaHangs.clear();
@@ -551,9 +566,10 @@ public class Firebase_Manager {
                     CuaHang cuaHang = dataSnapshot.getValue(CuaHang.class);
                     if (cuaHang.getTrangThaiCuaHang() != TrangThaiCuaHang.ChuaKichHoat) {
                         cuaHangs.add(cuaHang);
-                        cuaHangAdapter.notifyDataSetChanged();
                     }
                 }
+                Collections.reverse(cuaHangs);
+                cuaHangAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -564,16 +580,19 @@ public class Firebase_Manager {
     }
 
     public void GetPopularFood(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter) {
-        mDatabase.child("SanPham").limitToFirst(5).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("SanPham").orderByChild("soLuongBanDuoc").limitToLast(6).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sanPhams.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     SanPham sanPham = dataSnapshot.getValue(SanPham.class);
                     sanPhams.add(sanPham);
-                    sanPhamAdapter.notifyDataSetChanged();
+
                 }
+                Collections.reverse(sanPhams);
+                sanPhamAdapter.notifyDataSetChanged();
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -581,16 +600,33 @@ public class Firebase_Manager {
             }
         });
     }
-
-    public void GetSaleFood(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter) {
-        mDatabase.child("SanPham").limitToFirst(5).addValueEventListener(new ValueEventListener() {
+    public void GetSaleFood(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter,ProgressBar pb) {
+        sanPhams.clear();
+        mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sanPhams.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     SanPham sanPham = dataSnapshot.getValue(SanPham.class);
-                    sanPhams.add(sanPham);
-                    sanPhamAdapter.notifyDataSetChanged();
+                    mDatabase.child("Voucher").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                Voucher voucher = dataSnapshot.getValue(Voucher.class);
+                                if (voucher.getSanPham().getIDSanPham().equals(sanPham.getIDSanPham())) {
+                                    sanPhams.add(sanPham);
+                                    sanPhamAdapter.notifyDataSetChanged();
+                                }
+                            }
+                            pb.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             }
 
@@ -598,9 +634,47 @@ public class Firebase_Manager {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
+
+    }
+    public void GetSaleFoodLitmit(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter) {
+        sanPhams.clear();
+        mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sanPhams.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    SanPham sanPham = dataSnapshot.getValue(SanPham.class);
+                    mDatabase.child("Voucher").limitToFirst(5).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                Voucher voucher = dataSnapshot.getValue(Voucher.class);
+                                if (voucher.getSanPham().getIDSanPham().equals(sanPham.getIDSanPham())) {
+                                    sanPhams.add(sanPham);
+                                    sanPhamAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
     }
 
-    public void LoadTatCaSanPham (ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter, ProgressBar pb) {
+    public void LoadTatCaSanPham(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter, ProgressBar pb) {
         mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

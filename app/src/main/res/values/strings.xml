@@ -56,6 +56,7 @@
     <string name="da_ban">Đã bán:</string>
     <string name="gift_code">Mã giảm giá</string>
     <string name="giftcode">Gift code</string>
+    <string name="ghi_ch">Ghi chú:</string>
 
     <array name="category">
         <item>Pizaa</item>

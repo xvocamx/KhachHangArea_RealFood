@@ -81,9 +81,14 @@ public class ThanhToanAdapter extends RecyclerView.Adapter<ThanhToanAdapter.MyVi
         firebase_manager.storageRef.child("SanPham").child(donHangInfo.getSanPham().getIDCuaHang()).child(donHangInfo.getSanPham().getIDSanPham()).child(donHangInfo.getSanPham().getImages().get(0)).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
-                Glide.with(context)
-                        .load(task.getResult().toString())
-                        .into(holder.ivSanPham);
+                try{
+                    Glide.with(context)
+                            .load(task.getResult().toString())
+                            .into(holder.ivSanPham);
+                }catch (Exception ex){
+
+                }
+
                 holder.pbLoadItemGioHang.setVisibility(View.GONE);
             }
         });

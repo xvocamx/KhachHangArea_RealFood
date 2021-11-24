@@ -3,22 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_margin="5dp"
+    android:orientation="vertical"
     app:cardCornerRadius="12dp">
 
     <LinearLayout
-        android:padding="3dp"
-        android:background="#E1D6D6"
+        android:id="@+id/lnThongBao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="#E1D6D6"
+        android:orientation="horizontal"
+        android:padding="3dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/cirAvatar"
-            android:layout_marginTop="9dp"
             android:layout_width="12dp"
             android:layout_height="12dp"
+            android:layout_marginTop="9dp"
             android:src="@drawable/ic_baseline_brightness_1_24" />
 
         <LinearLayout
@@ -49,6 +50,13 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="2m" />
+
+                <TextView
+                    android:id="@+id/tvTrangThai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                     />
             </LinearLayout>
 
             <TextView

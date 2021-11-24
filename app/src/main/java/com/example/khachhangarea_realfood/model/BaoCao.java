@@ -2,17 +2,20 @@ package com.example.khachhangarea_realfood.model;
 
 import android.widget.ImageView;
 
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiBaoCao;
+
 import java.util.Date;
 
 public class BaoCao {
     String IDBaoCao,IDKhachHang,IDCuaHang,lyDo,tieuDe;
     ImageView ivBaoCao;
     Date ngayBaoCao;
+    TrangThaiBaoCao trangThaiBaoCao;
 
     public BaoCao() {
     }
 
-    public BaoCao(String IDBaoCao, String IDKhachHang, String IDCuaHang, String lyDo, String tieuDe, ImageView ivBaoCao, Date ngayBaoCao) {
+    public BaoCao(String IDBaoCao, String IDKhachHang, String IDCuaHang, String lyDo, String tieuDe, ImageView ivBaoCao, Date ngayBaoCao, TrangThaiBaoCao trangThaiBaoCao) {
         this.IDBaoCao = IDBaoCao;
         this.IDKhachHang = IDKhachHang;
         this.IDCuaHang = IDCuaHang;
@@ -20,6 +23,7 @@ public class BaoCao {
         this.tieuDe = tieuDe;
         this.ivBaoCao = ivBaoCao;
         this.ngayBaoCao = ngayBaoCao;
+        this.trangThaiBaoCao = trangThaiBaoCao;
     }
 
     public String getIDBaoCao() {
@@ -76,5 +80,13 @@ public class BaoCao {
 
     public void setNgayBaoCao(Date ngayBaoCao) {
         this.ngayBaoCao = ngayBaoCao;
+    }
+
+    public TrangThaiBaoCao getTrangThaiBaoCao() {
+        return trangThaiBaoCao;
+    }
+
+    public void setTrangThaiBaoCao(TrangThaiBaoCao trangThaiBaoCao) {
+        this.trangThaiBaoCao = trangThaiBaoCao;
     }
 }

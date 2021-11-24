@@ -24,6 +24,7 @@ import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.DanhGia;
 import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
@@ -77,8 +78,25 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         }
         holder.tvTenSanPham.setText(sanPham.getTenSanPham());
         holder.tvGia.setText(sanPham.getGia());
-        Float rating = Float.valueOf(sanPham.getRating());
-        holder.tvRatings.setText(rating.toString());
+        firebase_manager.mDatabase.child("DanhGia").orderByChild("idsanPham").equalTo(sanPham.getIDSanPham()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                float tong = 0f;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
+                    tong += danhGia.getRating();
+                }
+                holder.tvRatings.setText(snapshot.getChildrenCount() + "");
+                float tbRating = (float) Math.round((tong / snapshot.getChildrenCount()) * 10) / 10;
+                holder.tvTBRating.setText(tbRating + "");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         firebase_manager.LayTenLoai(sanPham,holder.tvLoaiSanPham);
         firebase_manager.LoadImageFood(sanPham,context, holder.ivSanPham);
 
@@ -160,7 +178,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTenSanPham;
         TextView tvLoaiSanPham;
-        TextView tvRatings;
+        TextView tvRatings,tvTBRating;
         TextView tvGia;
         ImageView ivSanPham, ivMuaNgay;
         View.OnClickListener onClickListener;
@@ -184,6 +202,8 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
 
             ivMuaNgay = itemView.findViewById(R.id.ivMuaNgay);
             ivMuaNgay.setOnClickListener(this);
+
+            tvTBRating = itemView.findViewById(R.id.tvTBRating);
         }
 
 

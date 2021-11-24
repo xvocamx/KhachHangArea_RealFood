@@ -1,7 +1,6 @@
 package com.example.khachhangarea_realfood;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,11 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,35 +18,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.khachhangarea_realfood.adapter.GiamGiaAdapter;
 import com.example.khachhangarea_realfood.adapter.ViewPaperAdapter;
-import com.example.khachhangarea_realfood.fragment.TatCaSanPhamFragment;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.DanhGia;
-import com.example.khachhangarea_realfood.model.SanPham;
 import com.example.khachhangarea_realfood.model.Voucher;
-import com.example.khachhangarea_realfood.model.YeuThich;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,7 +41,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
     private TabLayout mTabLayout;
     private ViewPager2 mViewPager;
     private ViewPaperAdapter viewPaperAdapter;
-    private TextView tvTenCuaHang, tvEmail, tvDiaChi, tvPhone, tvMota, tvTongSanPham, tvRating, tvTBRating;
+    private TextView tvTenCuaHang, tvEmail, tvDiaChi, tvPhone, tvMota, tvTongSanPham, tvRating, tvTBRating,tvThoiGianMoCua,tvThoiGianDongCua;
     private Button btnYeuThich;
     private ImageView ivWallPaper;
     private CircleImageView civAvatar;
@@ -118,6 +101,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     private void LoadInfoCuaHang() {
         if (cuaHang != null) {
             tvTenCuaHang.setText(cuaHang.getTenCuaHang());
@@ -125,7 +109,12 @@ public class ChiTietCuaHang extends AppCompatActivity {
             tvDiaChi.setText(cuaHang.getDiaChi());
             tvPhone.setText(cuaHang.getSoDienThoai());
             tvMota.setText(cuaHang.getThongTinChiTiet());
-
+            if(cuaHang.getTimeStart() != null && cuaHang.getTimeEnd() != null){
+                String dateStart = DateFormat.getTimeInstance(DateFormat.MEDIUM).format(cuaHang.getTimeStart());
+                String dateEnd = DateFormat.getTimeInstance(DateFormat.MEDIUM).format(cuaHang.getTimeEnd());
+                tvThoiGianMoCua.setText(dateStart);
+                tvThoiGianDongCua.setText(dateEnd);
+            }
             firebase_manager.mDatabase.child("SanPham").orderByChild("idcuaHang").equalTo(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -224,16 +213,17 @@ public class ChiTietCuaHang extends AppCompatActivity {
     }
 
     private void LoadItemGiamGia() {
-        firebase_manager.mDatabase.child("Voucher").orderByChild("idcuaHang").equalTo(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("Voucher").orderByChild("idCuaHang").equalTo(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 vouchers.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Voucher voucher = dataSnapshot.getValue(Voucher.class);
                     Date currentDateandTime = new Date();
-                    if (currentDateandTime.compareTo(voucher.getHanSuDung()) > 0) {
+                    if (currentDateandTime.compareTo(voucher.getHanSuDung()) < 0) {
                         vouchers.add(voucher);
                         giamGiaAdapter.notifyDataSetChanged();
+
                     }
                 }
             }
@@ -261,5 +251,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
         rcvGiamGia = findViewById(R.id.rcvMaGiamGia);
         tvRating = findViewById(R.id.tvRating);
         tvTBRating = findViewById(R.id.tvTBRating);
+        tvThoiGianMoCua = findViewById(R.id.tvThoiGianMoCua);
+        tvThoiGianDongCua =findViewById(R.id.tvThoiGianDongCua);
     }
 }

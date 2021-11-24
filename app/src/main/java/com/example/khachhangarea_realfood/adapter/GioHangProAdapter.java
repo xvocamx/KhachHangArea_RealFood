@@ -112,9 +112,14 @@ public class GioHangProAdapter extends RecyclerView.Adapter<GioHangProAdapter.My
         firebase_manager.storageRef.child("CuaHang").child(gioHangDisplay.getIdCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(context)
-                        .load(uri)
-                        .into(holder.ivShop);
+                try {
+                    Glide.with(context)
+                            .load(uri)
+                            .into(holder.ivShop);
+                }catch (Exception ex){
+
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -87,8 +87,6 @@ public class ChiTietSanPham extends AppCompatActivity {
         if (sanPham != null) {
             tvNameFood.setText(sanPham.getTenSanPham());
             tvGia.setText(sanPham.getGia());
-            Float rating = sanPham.getRating();
-            tvRating.setText(rating.toString());
             tvMoTa.setText(sanPham.getChiTietSanPham());
             if (sanPham.getSoLuongBanDuoc() + "" != null) {
                 tvSoLuongBanDuoc.setText(sanPham.getSoLuongBanDuoc() + "");
@@ -160,7 +158,7 @@ public class ChiTietSanPham extends AppCompatActivity {
 
                 }
             });
-
+            tvSoLuongBanDuoc.setText(sanPham.getSoLuongBanDuoc()+"");
         }
     }
 

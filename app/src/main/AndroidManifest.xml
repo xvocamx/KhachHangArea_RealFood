@@ -11,7 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KhachHangArea_RealFood"
         tools:replace="android:theme">
-        <activity android:name=".TatCaSanPham" android:label="Tất cả sản phẩm" android:parentActivityName=".Home"></activity>
+        <activity
+            android:name=".ChiTietThongBao"
+            android:label="Chi tiết thông báo"
+            android:parentActivityName=".Home"></activity>
+        <activity
+            android:name=".SanPhamGiamGia"
+            android:label="Sản phẩm giảm giá"
+            android:parentActivityName=".Home" />
+        <activity
+            android:name=".TatCaSanPham"
+            android:label="Tất cả sản phẩm"
+            android:parentActivityName=".Home" />
         <activity
             android:name=".TatCaCuaHang"
             android:label="Tất cả của hàng"
@@ -24,6 +35,10 @@
             android:name=".ChiTietDonHang"
             android:label="Chi Tiết đơn hàng"
             android:parentActivityName=".DonMua" />
+        <activity
+            android:name=".BaoCaoShop"
+            android:label="Báo cáo shop này"
+            android:parentActivityName=".Home" />
         <activity
             android:name=".ThanhToanActivity"
             android:label="Thanh Toán"
@@ -49,10 +64,6 @@
             android:name=".DonMua"
             android:label="Đơn hàng"
             android:parentActivityName=".Home" />
-        <activity
-            android:name=".BaoCaoShop"
-            android:label="Báo cáo cửa hàng này"
-            android:parentActivityName=".ChiTietCuaHang" />
         <activity
             android:name=".ChiTietCuaHang"
             android:label="Chi tiết cửa hàng"

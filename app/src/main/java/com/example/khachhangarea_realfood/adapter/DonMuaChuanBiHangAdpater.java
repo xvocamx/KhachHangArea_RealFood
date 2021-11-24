@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class DonMuaChuanBiHangAdpater extends RecyclerView.Adapter<DonMuaChuanBiHangAdpater.MyViewHolder> {
@@ -53,7 +54,10 @@ public class DonMuaChuanBiHangAdpater extends RecyclerView.Adapter<DonMuaChuanBi
         if (donHang == null) {
             return;
         }
-        holder.tvMaDH.setText(donHang.getIDDonHang());
+        holder.tvMaDH.setText(donHang.getIDDonHang().substring(0,15));
+        String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(donHang.getNgayTao());
+        holder.tvThoiGian.setText(date);
+        holder.tvGhiChu.setText(donHang.getGhiChu_KhachHang());
         firebase_manager.mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -121,7 +125,7 @@ public class DonMuaChuanBiHangAdpater extends RecyclerView.Adapter<DonMuaChuanBi
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvMaDH, tvTenCuaHang, tvRating, tvAddressShop, tvTrangThai,tvXemThongTinChiTiet;
+        TextView tvMaDH, tvTenCuaHang, tvRating, tvAddressShop, tvTrangThai,tvXemThongTinChiTiet,tvThoiGian,tvGhiChu;
         ImageView ivLogo, ivDelete;
         View.OnClickListener onClickListener;
 
@@ -149,6 +153,10 @@ public class DonMuaChuanBiHangAdpater extends RecyclerView.Adapter<DonMuaChuanBi
 
             tvXemThongTinChiTiet = itemView.findViewById(R.id.tvXemThongTinChiTiet);
             tvXemThongTinChiTiet.setOnClickListener(this);
+
+            tvThoiGian = itemView.findViewById(R.id.tvThoiGian);
+
+            tvGhiChu = itemView.findViewById(R.id.tvGhiChu);
         }
 
         @Override

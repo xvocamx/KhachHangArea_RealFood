@@ -53,8 +53,12 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.MyViewHo
         firebase_manager.storageRef.child("DanhMuc").child(danhMuc.getIDDanhMuc()).child("image").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(context)
-                        .load(uri).into(holder.ivDanhMuc);
+                try {
+                    Glide.with(context).load(uri).into(holder.ivDanhMuc);
+                }catch (Exception ex){
+
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import com.example.khachhangarea_realfood.DanhSachLoai;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.GioHang;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.SanPhamGiamGia;
 import com.example.khachhangarea_realfood.SearchViewSanPham;
 import com.example.khachhangarea_realfood.TatCaCuaHang;
 import com.example.khachhangarea_realfood.TatCaSanPham;
@@ -31,6 +33,7 @@ import com.example.khachhangarea_realfood.adapter.CuaHangAdapter;
 import com.example.khachhangarea_realfood.adapter.LoaiSanPhamAdapter;
 import com.example.khachhangarea_realfood.adapter.SanPhamAdapter;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
@@ -50,13 +53,14 @@ import ru.nikartm.support.ImageBadgeView;
  */
 public class HomeFragment extends Fragment {
     private View mView;
-    private SanPhamAdapter sanPhamAdapter;
+    private SanPhamAdapter sanPhamAdapter,sanPhamPopularAdapter;
     private CuaHangAdapter cuaHangAdapter;
     private LoaiSanPhamAdapter loaiSanPhamAdapter;
     private ArrayList<SanPham> sanPhamSaleFoods, sanPhamPopularFoods;
     private ArrayList<CuaHang> cuaHangs;
     private ArrayList<LoaiSanPham> loaiSanPhams;
     private LinearLayoutManager linearLayoutManagerSaleFood, linearLayoutManagerPopularShop, linearLayoutManagerPopularFood, linearLayoutManagerLoai;
+    private GridLayoutManager gridLayoutManager;
     private RecyclerView rcvFoodSale, rcvPopularShop, rcvPopularFood, rcvLoai;
     private Button btnTimKiem;
     private ImageBadgeView ivMyOrder;
@@ -91,6 +95,7 @@ public class HomeFragment extends Fragment {
         sanPhamPopularFoods = new ArrayList<>();
         loaiSanPhams = new ArrayList<>();
         sanPhamAdapter = new SanPhamAdapter(getActivity(), R.layout.list_item_food_1, sanPhamSaleFoods);
+        sanPhamPopularAdapter = new SanPhamAdapter(getActivity(), R.layout.list_item_food_1, sanPhamPopularFoods);
         cuaHangAdapter = new CuaHangAdapter(getActivity(), R.layout.list_item_shop, cuaHangs);
         loaiSanPhamAdapter = new LoaiSanPhamAdapter(getActivity(), R.layout.list_item_loaisanpham, loaiSanPhams);
         setControl();
@@ -113,10 +118,9 @@ public class HomeFragment extends Fragment {
         rcvPopularShop.setAdapter(cuaHangAdapter);
         getPopularShop();
         //Popular Food
-        linearLayoutManagerPopularFood = new LinearLayoutManager(getActivity());
-        linearLayoutManagerPopularFood.setOrientation(RecyclerView.HORIZONTAL);
-        rcvPopularFood.setLayoutManager(linearLayoutManagerPopularFood);
-        rcvPopularFood.setAdapter(sanPhamAdapter);
+        gridLayoutManager = new GridLayoutManager(getActivity(),2);
+        rcvPopularFood.setLayoutManager(gridLayoutManager);
+        rcvPopularFood.setAdapter(sanPhamPopularAdapter);
         getPopularFood();
         //Danh muc
         linearLayoutManagerLoai = new LinearLayoutManager(getActivity());
@@ -192,7 +196,16 @@ public class HomeFragment extends Fragment {
         firebase_manager.mDatabase.child("DonHangInfo").orderByChild("idkhachHang").equalTo(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ivMyOrder.setBadgeValue((int) snapshot.getChildrenCount());
+                int tong =0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
+                    if (donHangInfo.getIDDonHang().isEmpty())
+                    {
+                        tong++;
+                    }
+                }
+                ivMyOrder.setBadgeValue(tong);
             }
 
             @Override
@@ -219,8 +232,19 @@ public class HomeFragment extends Fragment {
         tvTatCaSanPhamGiamGia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),TatCaSanPham.class);
+                Intent intent = new Intent(getActivity(), SanPhamGiamGia.class);
                 startActivity(intent);
+            }
+        });
+
+        sanPhamPopularAdapter.setDelegation(new SanPhamAdapter.ClickItemFoodListener() {
+            @Override
+            public void getInformationFood(SanPham sanPham) {
+                Intent intent = new Intent(getActivity(), ChiTietSanPham.class);
+                Gson gson = new Gson();
+                String data = gson.toJson(sanPham);
+                intent.putExtra("dataSanPham", data);
+                getActivity().startActivity(intent);
             }
         });
 
@@ -232,7 +256,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void getSaleFood() {
-        firebase_manager.GetSaleFood(sanPhamSaleFoods,sanPhamAdapter);
+        firebase_manager.GetSaleFoodLitmit(sanPhamSaleFoods,sanPhamAdapter);
     }
 
     public void getPopularShop() {
@@ -240,7 +264,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void getPopularFood() {
-        firebase_manager.GetPopularFood(sanPhamPopularFoods,sanPhamAdapter);
+        firebase_manager.GetPopularFood(sanPhamPopularFoods,sanPhamPopularAdapter);
     }
 
     private void setControl() {

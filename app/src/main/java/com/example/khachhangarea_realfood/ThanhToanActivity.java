@@ -65,9 +65,7 @@ public class ThanhToanActivity extends AppCompatActivity {
     ThanhToanProAdapter thanhToanProAdapter;
     ArrayList<GioHangDisplay> gioHangDisplays = new ArrayList<>();
     ArrayList<String> idCuaHang = new ArrayList<>();
-    int tong = 0;
-    int giamGia = 0;
-    int giamPhamTram = 0;
+
     Firebase_Manager firebase_manager = new Firebase_Manager();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -115,7 +113,7 @@ public class ThanhToanActivity extends AppCompatActivity {
         TinhTongTien(gioHangDisplays);
     }
 
-    private void TinhTongTien(ArrayList<GioHangDisplay> displays){
+    private void TinhTongTien(ArrayList<GioHangDisplay> displays) {
         int tong = 0;
         for (GioHangDisplay gioHangDisplay : displays) {
             for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()
@@ -206,7 +204,6 @@ public class ThanhToanActivity extends AppCompatActivity {
                 } else {
                     KAlertDialog kAlertDialog = new KAlertDialog(ThanhToanActivity.this, KAlertDialog.PROGRESS_TYPE);
                     kAlertDialog.show();
-
                     for (GioHangDisplay gioHangDisplay : gioHangDisplays) {
                         int tongTien = 0;
                         for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()) {
@@ -214,7 +211,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                         }
                         String IDDonHang = "DH_" + UUID.randomUUID().toString();
                         DonHang donHang = new DonHang(IDDonHang, gioHangDisplay.getIdCuaHang(), firebase_manager.auth.getUid()
-                                , "", diaChi, soDienThoai, "", "", tongTien, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
+                                , "", diaChi, soDienThoai, gioHangDisplay.getGhiChu(), "", tongTien, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
                         );
                         firebase_manager.mDatabase.child("DonHang").child(IDDonHang).setValue(donHang).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

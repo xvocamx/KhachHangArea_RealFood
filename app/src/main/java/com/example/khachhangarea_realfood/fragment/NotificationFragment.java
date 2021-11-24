@@ -1,5 +1,6 @@
 package com.example.khachhangarea_realfood.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +11,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.khachhangarea_realfood.ChiTietThongBao;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.adapter.ThongBaoAdapter;
 import com.example.khachhangarea_realfood.model.DonHang;
 import com.example.khachhangarea_realfood.model.ThongBao;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,6 +71,20 @@ public class NotificationFragment extends Fragment {
         rcvThongBao.setLayoutManager(linearLayoutManager);
         rcvThongBao.setAdapter(thongBaoAdapter);
         LoadItemThongBao();
+
+        //Click item thong tin
+        thongBaoAdapter.setDelegation(new ThongBaoAdapter.ClickItemThongBaoListener() {
+            @Override
+            public void getInformationThongBao(ThongBao thongBao) {
+                Intent intent = new Intent(getActivity(), ChiTietThongBao.class);
+                Gson gson = new Gson();
+                String data = gson.toJson(thongBao);
+                intent.putExtra("dataNotifications", data);
+                getActivity().startActivity(intent);
+                thongBao.setTrangThaiThongBao(TrangThaiThongBao.DaXem);
+                firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(thongBao.getIDThongBao()).setValue(thongBao);
+            }
+        });
     }
 
     private void LoadItemThongBao() {

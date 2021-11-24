@@ -154,12 +154,7 @@ public class SettingFragment extends Fragment {
             }
         });
         firebase_manager.LoadImageKhachHang(getContext(),civAvatar);
-//        firebase_manager.storageRef.child("KhachHang").child(firebase_manager.user.getUid()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//            @Override
-//            public void onSuccess(Uri uri) {
-//                Glide.with(getActivity()).load(uri.toString()).into(civAvatar);
-//            }
-//        });
+
     }
 
 }

@@ -42,6 +42,7 @@ public class GiamGiaAdapter extends RecyclerView.Adapter<GiamGiaAdapter.MyViewHo
         holder.tvMaGiamGia.setText(voucher.getMaGiamGia());
         String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(voucher.getHanSuDung());
         holder.tvHSD.setText(date);
+        holder.tvTenSanPham.setText(voucher.getSanPham().getTenSanPham());
     }
 
     @Override
@@ -55,12 +56,13 @@ public class GiamGiaAdapter extends RecyclerView.Adapter<GiamGiaAdapter.MyViewHo
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tvMaGiamGia, tvHSD;
+        TextView tvMaGiamGia, tvHSD,tvTenSanPham;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvMaGiamGia = itemView.findViewById(R.id.tvMaGiamGia);
             tvHSD = itemView.findViewById(R.id.tvHSD);
+            tvTenSanPham = itemView.findViewById(R.id.tvTenSanPham);
         }
     }
 }

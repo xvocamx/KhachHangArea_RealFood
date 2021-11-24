@@ -70,7 +70,6 @@ public class TatCaSanPham extends AppCompatActivity {
 
     private void LoadItemSanPham() {
         firebase_manager.LoadTatCaSanPham(sanPhams,sanPhamAdapter,pbTatCaSanPham);
-
     }
 
     private void setControl() {

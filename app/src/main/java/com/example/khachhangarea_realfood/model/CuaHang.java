@@ -2,6 +2,8 @@ package com.example.khachhangarea_realfood.model;
 
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiCuaHang;
 
+import java.util.Date;
+
 public class CuaHang {
     String IDCuaHang;
     String TenCuaHang;
@@ -15,6 +17,9 @@ public class CuaHang {
     String Email;
     TrangThaiCuaHang trangThaiCuaHang;
     String DiaChi;
+    Date timeStart, timeEnd;
+    Date createdDate;
+
 
     public String getDiaChi() {
         return DiaChi;
@@ -24,7 +29,31 @@ public class CuaHang {
         DiaChi = diaChi;
     }
 
-    public CuaHang(String IDCuaHang, String tenCuaHang, String chuSoHuu, String thongTinChiTiet, String soCMND, String soDienThoai, String avatar, String wallPaper, Float rating, String email, TrangThaiCuaHang trangThaiCuaHang, String diaChi) {
+    public Date getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(Date timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public Date getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(Date timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CuaHang(String IDCuaHang, String tenCuaHang, String chuSoHuu, String thongTinChiTiet, String soCMND, String soDienThoai, String avatar, String wallPaper, Float rating, String email, TrangThaiCuaHang trangThaiCuaHang, String diaChi, Date timeStart, Date timeEnd, Date createdDate) {
         this.IDCuaHang = IDCuaHang;
         TenCuaHang = tenCuaHang;
         ChuSoHuu = chuSoHuu;
@@ -37,11 +66,13 @@ public class CuaHang {
         Email = email;
         this.trangThaiCuaHang = trangThaiCuaHang;
         DiaChi = diaChi;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.createdDate = createdDate;
     }
 
     public CuaHang() {
     }
-
 
 
     public String getIDCuaHang() {

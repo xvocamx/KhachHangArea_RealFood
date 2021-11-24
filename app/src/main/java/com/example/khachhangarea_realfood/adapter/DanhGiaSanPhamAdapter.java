@@ -66,7 +66,11 @@ public class DanhGiaSanPhamAdapter extends RecyclerView.Adapter<DanhGiaSanPhamAd
                 firebase_manager.storageRef.child("KhachHang").child(khachHang.getIDKhachHang()).child("AvatarKhachHang").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Glide.with(context).load(uri.toString()).into(holder.ivAvatar);
+                        try {
+                            Glide.with(context).load(uri.toString()).into(holder.ivAvatar);
+                        }catch (Exception ex){
+
+                        }
                     }
                 });
             }

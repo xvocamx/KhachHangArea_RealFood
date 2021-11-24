@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class GioHangDisplay implements Parcelable {
-    String idCuaHang;
+    String idCuaHang,ghiChu;
     int giaGiam,giamPhanTram;
     ArrayList <DonHangInfo>donHangInfos = new ArrayList<>();
 
@@ -17,6 +17,14 @@ public class GioHangDisplay implements Parcelable {
 
     public GioHangDisplay() {
 
+    }
+
+    public String getGhiChu() {
+        return ghiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
     }
 
     public int getGiamPhanTram() {
