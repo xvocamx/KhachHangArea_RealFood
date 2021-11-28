@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,10 +29,11 @@ import com.google.gson.Gson;
 import java.text.DateFormat;
 import java.util.ArrayList;
 
-public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHangAdpater.MyViewHolder> {
+public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHangAdpater.MyViewHolder> implements Filterable {
     Activity context;
     int resource;
-    ArrayList<DonHang> donHangs;
+    ArrayList<DonHang> donHangs,donHangsOld;
+    ArrayList<DonHangInfo> donHangInfos = new ArrayList<>();
     Firebase_Manager firebase_manager = new Firebase_Manager();
     ClickItemDonMuaListener delegation;
 
@@ -42,6 +45,7 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
         this.context = context;
         this.resource = resource;
         this.donHangs = donHangs;
+        this.donHangsOld = donHangs;
     }
 
     @NonNull
@@ -57,7 +61,7 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
         if (donHang == null) {
             return;
         }
-        holder.tvMaDH.setText(donHang.getIDDonHang().substring(0,15));
+        holder.tvMaDH.setText(donHang.getIDDonHang().substring(0, 15));
         String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(donHang.getNgayTao());
         holder.tvThoiGian.setText(date);
         holder.tvGhiChu.setText(donHang.getGhiChu_KhachHang());
@@ -81,20 +85,36 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
         });
         holder.tvTrangThai.setText(firebase_manager.GetStringTrangThaiDonHang(donHang.getTrangThai()));
         holder.ivLogo.setImageResource(R.drawable.logo_shipper);
+        firebase_manager.SetColorOfStatus(donHang.getTrangThai(),holder.cvIDDonHang,holder.tvMaDH);
+        firebase_manager.mDatabase.child("DonHangInfo").orderByChild("iddonHang").equalTo(donHang.getIDDonHang()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
+                    if (donHangInfo.getIDDonHang().equals(donHang.getIDDonHang())) {
+                        holder.tvSanPham.setText(holder.tvSanPham.getText() + donHangInfo.getSanPham().getTenSanPham() + "(" + donHangInfo.getSoLuong() + ")" + ", ");
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         //Xu ly an nhan button khi da nhan xet
         firebase_manager.mDatabase.child("DonHangInfo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
-                    if(donHangInfo.getIDDonHang().equals(donHang.getIDDonHang())){
+                    if (donHangInfo.getIDDonHang().equals(donHang.getIDDonHang())) {
                         firebase_manager.mDatabase.child("DanhGia").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot dataSnapshot1 : snapshot.getChildren()){
+                                for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
                                     DanhGia danhGia = dataSnapshot1.getValue(DanhGia.class);
-                                    if(danhGia.getIDInfo().equals(donHangInfo.getIDInfo())){
+                                    if (danhGia.getIDInfo().equals(donHangInfo.getIDInfo())) {
                                         holder.btnNhanXet.setVisibility(View.GONE);
                                     }
                                 }
@@ -106,6 +126,8 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
                             }
                         });
                     }
+
+
                 }
             }
 
@@ -115,6 +137,7 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
             }
         });
 
+
         //Nhan xet cua khach hang
         holder.btnNhanXet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +145,7 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
                 Intent intent = new Intent(context, DanhGiaKhachHang.class);
                 Gson gson = new Gson();
                 String data = gson.toJson(donHang);
-                intent.putExtra("dataDonHang",data);
+                intent.putExtra("dataDonHang", data);
                 context.startActivity(intent);
             }
         });
@@ -130,7 +153,7 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(delegation != null){
+                if (delegation != null) {
                     delegation.getInfomationDonMua(donHang);
                 }
             }
@@ -147,40 +170,31 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
         return donHangs.size();
     }
 
+
+
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvMaDH, tvTenCuaHang, tvRating, tvAddressShop, tvTrangThai,tvXemThongTinChiTiet,tvThoiGian,tvGhiChu;
+        TextView tvMaDH, tvTenCuaHang, tvRating, tvAddressShop, tvTrangThai, tvXemThongTinChiTiet, tvThoiGian, tvGhiChu,tvSanPham;
         ImageView ivLogo;
         Button btnNhanXet;
+        CardView cvIDDonHang;
         View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            cvIDDonHang = itemView.findViewById(R.id.cvIDDonHang);
             tvMaDH = itemView.findViewById(R.id.tvMaDH);
-            //tvMaDH.setOnClickListener(this);
-
             tvTenCuaHang = itemView.findViewById(R.id.tvTenCuaHang);
-            //tvTenCuaHang.setOnClickListener(this);
-
             tvRating = itemView.findViewById(R.id.tvRating);
-            //tvRating.setOnClickListener(this);
-
             tvAddressShop = itemView.findViewById(R.id.tvAddressShop);
-            //tvAddressShop.setOnClickListener(this);
-
             tvTrangThai = itemView.findViewById(R.id.tvTrangThai);
-            //tvTrangThai.setOnClickListener(this);
-
             ivLogo = itemView.findViewById(R.id.ivLogo);
-            //ivLogo.setOnClickListener(this);
-
             btnNhanXet = itemView.findViewById(R.id.btnNhanXet);
-
             tvXemThongTinChiTiet = itemView.findViewById(R.id.tvXemThongTinChiTiet);
             tvXemThongTinChiTiet.setOnClickListener(this);
-
             tvThoiGian = itemView.findViewById(R.id.tvThoiGian);
-
             tvGhiChu = itemView.findViewById(R.id.tvGhiChu);
+            tvSanPham = itemView.findViewById(R.id.tvSanPham);
+            this.setIsRecyclable(false);
         }
 
         @Override
@@ -191,8 +205,38 @@ public class DonMuaDaNhanHangAdpater extends RecyclerView.Adapter<DonMuaDaNhanHa
         }
     }
 
-    public interface ClickItemDonMuaListener{
+    public interface ClickItemDonMuaListener {
         void getInfomationDonMua(DonHang donHang);
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                if (strSearch.isEmpty()) {
+                    donHangs = donHangsOld;
+                } else {
+                    ArrayList<DonHang> donHangsNew = new ArrayList<>();
+                    for (DonHang donHang : donHangsOld) {
+                        if (donHang.getIDDonHang().toLowerCase().contains(strSearch.toLowerCase())) {
+                            donHangsNew.add(donHang);
+                        }
+                    }
+                    donHangs = donHangsNew;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = donHangs;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                donHangs = (ArrayList<DonHang>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }
 

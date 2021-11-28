@@ -15,53 +15,42 @@
         android:src="@drawable/pizza" />
 
     <LinearLayout
-        android:layout_marginLeft="5dp"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="112dp"
+        android:layout_marginLeft="5dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvNameFood"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:text="Pizza hải sản tôm"
             android:textColor="@color/black"
             android:textSize="20dp" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvTenLoai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:text="Pizza"
+            android:textSize="11dp" />
 
-            <TextView
-                android:id="@+id/tvTenLoai"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Pizza"
-                android:textSize="11dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end">
-
-                <ImageView
-                    android:id="@+id/ivDelete"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_delete" />
-            </LinearLayout>
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tvGia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black" />
 
         <LinearLayout
             android:id="@+id/lnRating"
-            android:layout_marginLeft="-3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="-3dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -74,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:text="4.9"
+                android:text="0.0"
                 android:textColor="@color/orange"
                 android:textSize="11dp" />
 
@@ -89,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:text="1032"
+                android:text="0"
                 android:textSize="11dp" />
 
             <TextView
@@ -101,4 +90,12 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivDelete"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_weight="2"
+        android:src="@drawable/ic_delete" />
 </LinearLayout>

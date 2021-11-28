@@ -76,6 +76,10 @@ public class ThanhToanAdapter extends RecyclerView.Adapter<ThanhToanAdapter.MyVi
         }
         holder.tvTenSanPham.setText(donHangInfo.getSanPham().getTenSanPham());
         String gia = String.valueOf(Double.valueOf(donHangInfo.getSanPham().getGia()));
+        if(donHangInfo.getSanPham().getGiaOld() != null){
+            holder.lnGiaOld.setVisibility(View.VISIBLE);
+            holder.tvGiaOld.setText(String.valueOf(donHangInfo.getSanPham().getGiaOld()));
+        }
         holder.tvGia.setText(gia);
         holder.tvSoLuong.setText("X "+ donHangInfo.getSoLuong());
         firebase_manager.storageRef.child("SanPham").child(donHangInfo.getSanPham().getIDCuaHang()).child(donHangInfo.getSanPham().getIDSanPham()).child(donHangInfo.getSanPham().getImages().get(0)).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -106,9 +110,10 @@ public class ThanhToanAdapter extends RecyclerView.Adapter<ThanhToanAdapter.MyVi
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView  tvTenSanPham, tvGia,tvSoLuong;
+        TextView  tvTenSanPham, tvGia,tvGiaOld,tvSoLuong;
         ImageView  ivSanPham;
         ProgressBar pbLoadItemGioHang;
+        LinearLayout lnGiaOld;
         View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -116,8 +121,10 @@ public class ThanhToanAdapter extends RecyclerView.Adapter<ThanhToanAdapter.MyVi
             ivSanPham = itemView.findViewById(R.id.ivSanPham);
             tvTenSanPham = itemView.findViewById(R.id.tvTenSanPham);
             tvGia = itemView.findViewById(R.id.tvGia);
+            tvGiaOld = itemView.findViewById(R.id.tvGiaOld);
             pbLoadItemGioHang = itemView.findViewById(R.id.pbLoadItemGioHang);
             tvSoLuong = itemView.findViewById(R.id.tvSoLuong);
+            lnGiaOld = itemView.findViewById(R.id.lnGiaOld);
         }
     }
 

@@ -42,8 +42,8 @@ public class ChiTietCuaHang extends AppCompatActivity {
     private ViewPager2 mViewPager;
     private ViewPaperAdapter viewPaperAdapter;
     private TextView tvTenCuaHang, tvEmail, tvDiaChi, tvPhone, tvMota, tvTongSanPham, tvRating, tvTBRating,tvThoiGianMoCua,tvThoiGianDongCua;
-    private Button btnYeuThich;
-    private ImageView ivWallPaper;
+
+    private ImageView ivWallPaper,ivFavorite;
     private CircleImageView civAvatar;
     private CuaHang cuaHang;
     private ProgressBar pbLoadChiTietCuaHang;
@@ -137,7 +137,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         CuaHang cuaHangAll = dataSnapshot.getValue(CuaHang.class);
                         if (cuaHangAll.getIDCuaHang().equals(cuaHang.getIDCuaHang())) {
-                            btnYeuThich.setSelected(true);
+                            ivFavorite.setSelected(true);
                         }
                     }
                 }
@@ -168,18 +168,18 @@ public class ChiTietCuaHang extends AppCompatActivity {
                 }
             }
         }).attach();
-        btnYeuThich.setOnClickListener(new View.OnClickListener() {
+        ivFavorite.setOnClickListener(new View.OnClickListener() {
             int check = 1;
 
             @Override
             public void onClick(View v) {
-                if (check == 1 && !btnYeuThich.isSelected()) {
-                    btnYeuThich.setSelected(true);
+                if (check == 1 && !ivFavorite.isSelected()) {
+                    ivFavorite.setSelected(true);
                     check = 0;
                     firebase_manager.ThemYeuThichCuaHang(cuaHang);
 
                 } else {
-                    btnYeuThich.setSelected(false);
+                    ivFavorite.setSelected(false);
                     check = 1;
                     firebase_manager.XoaYeuThichCuaHang(cuaHang);
                 }
@@ -246,7 +246,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
         tvTongSanPham = findViewById(R.id.tvTotalSanPham);
         civAvatar = findViewById(R.id.civAvatar);
         ivWallPaper = findViewById(R.id.ivWallpaper);
-        btnYeuThich = findViewById(R.id.btnYeuThich);
+        ivFavorite = findViewById(R.id.ivFavorite);
         pbLoadChiTietCuaHang = findViewById(R.id.pbLoadChiTietCuaHang);
         rcvGiamGia = findViewById(R.id.rcvMaGiamGia);
         tvRating = findViewById(R.id.tvRating);

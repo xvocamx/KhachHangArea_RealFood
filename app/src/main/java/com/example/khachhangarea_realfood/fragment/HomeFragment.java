@@ -42,7 +42,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import ru.nikartm.support.ImageBadgeView;
 
@@ -53,7 +55,7 @@ import ru.nikartm.support.ImageBadgeView;
  */
 public class HomeFragment extends Fragment {
     private View mView;
-    private SanPhamAdapter sanPhamAdapter,sanPhamPopularAdapter;
+    private SanPhamAdapter sanPhamAdapter, sanPhamPopularAdapter;
     private CuaHangAdapter cuaHangAdapter;
     private LoaiSanPhamAdapter loaiSanPhamAdapter;
     private ArrayList<SanPham> sanPhamSaleFoods, sanPhamPopularFoods;
@@ -65,7 +67,7 @@ public class HomeFragment extends Fragment {
     private Button btnTimKiem;
     private ImageBadgeView ivMyOrder;
     private ProgressBar pbLoad;
-    private TextView tvGood,tvTatCaCuaHang,tvTatCaSanPhamGiamGia,tvTatCaSanPhamPhoBien;
+    private TextView tvGood, tvTatCaCuaHang, tvTatCaSanPhamGiamGia, tvTatCaSanPhamPhoBien;
     private SearchView searchView;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
 
@@ -118,7 +120,7 @@ public class HomeFragment extends Fragment {
         rcvPopularShop.setAdapter(cuaHangAdapter);
         getPopularShop();
         //Popular Food
-        gridLayoutManager = new GridLayoutManager(getActivity(),2);
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         rcvPopularFood.setLayoutManager(gridLayoutManager);
         rcvPopularFood.setAdapter(sanPhamPopularAdapter);
         getPopularFood();
@@ -185,7 +187,24 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 KhachHang khachHang = snapshot.getValue(KhachHang.class);
-                tvGood.setText("Chào buổi sáng , "+khachHang.getTenKhachHang()+" !");
+                Date dateNow = new Date();
+                String date = DateFormat.getTimeInstance(DateFormat.MEDIUM).format(dateNow);
+                String sang = "6:00:01";
+                String trua = "11:00:01";
+                String chieu = "13:00:01";
+                String toi = "18:00:01";
+                String end = "23:00:01";
+                if ( date.compareTo(trua) < 1) {
+                    tvGood.setText("Chào buổi sáng , " + khachHang.getTenKhachHang() + " !");
+                } else if (date.compareTo(chieu) < 1) {
+                    tvGood.setText("Chào buổi trưa , " + khachHang.getTenKhachHang() + " !");
+                } else if (date.compareTo(toi) < 1) {
+                    tvGood.setText("Chào buổi chiều , " + khachHang.getTenKhachHang() + " !");
+                } else if (date.compareTo(end) < 1) {
+                    tvGood.setText("Chào buổi tối , " + khachHang.getTenKhachHang() + " !");
+                }else {
+                     tvGood.setText("Đã đóng cửa , " + khachHang.getTenKhachHang() + " !");
+                 }
             }
 
             @Override
@@ -196,12 +215,10 @@ public class HomeFragment extends Fragment {
         firebase_manager.mDatabase.child("DonHangInfo").orderByChild("idkhachHang").equalTo(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int tong =0;
-                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
+                int tong = 0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
-                    if (donHangInfo.getIDDonHang().isEmpty())
-                    {
+                    if (donHangInfo.getIDDonHang().isEmpty()) {
                         tong++;
                     }
                 }
@@ -251,20 +268,20 @@ public class HomeFragment extends Fragment {
     }
 
     public void getLoai() {
-        firebase_manager.GetLoaiSanPham(loaiSanPhams,loaiSanPhamAdapter,pbLoad);
+        firebase_manager.GetLoaiSanPham(loaiSanPhams, loaiSanPhamAdapter, pbLoad);
 
     }
 
     public void getSaleFood() {
-        firebase_manager.GetSaleFoodLitmit(sanPhamSaleFoods,sanPhamAdapter);
+        firebase_manager.GetSaleFoodLitmit(sanPhamSaleFoods, sanPhamAdapter);
     }
 
     public void getPopularShop() {
-        firebase_manager.GetPopularShop(cuaHangs,cuaHangAdapter);
+        firebase_manager.GetPopularShop(cuaHangs, cuaHangAdapter);
     }
 
     public void getPopularFood() {
-        firebase_manager.GetPopularFood(sanPhamPopularFoods,sanPhamPopularAdapter);
+        firebase_manager.GetPopularFood(sanPhamPopularFoods, sanPhamPopularAdapter);
     }
 
     private void setControl() {

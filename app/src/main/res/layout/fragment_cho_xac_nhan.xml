@@ -5,9 +5,26 @@
     android:layout_height="match_parent"
     tools:context=".fragment.ChoXacNhanFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rcvChoXacNhan"/>
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <SearchView
+            android:visibility="gone"
+            android:id="@+id/searchViewDonHang"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/custom_sreachview"
+            android:iconifiedByDefault="false"
+            android:queryBackground="@null"
+            android:queryHint="Search Food" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvChoXacNhan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
 </FrameLayout>

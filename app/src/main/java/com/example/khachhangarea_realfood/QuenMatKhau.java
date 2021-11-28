@@ -21,7 +21,6 @@ public class QuenMatKhau extends AppCompatActivity {
     private Button btnGui;
     private EditText edtEmail;
     private FirebaseAuth mAuth;
-    private ProgressDialog progressDialog;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private KAlertDialog kAlertDialog;
     @Override

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.developer.kalert.KAlertDialog;
+import com.example.khachhangarea_realfood.TrangThai.LoaiThongBao;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiDonHang;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.adapter.GioHangAdapter;
@@ -115,6 +116,7 @@ public class ThanhToanActivity extends AppCompatActivity {
 
     private void TinhTongTien(ArrayList<GioHangDisplay> displays) {
         int tong = 0;
+
         for (GioHangDisplay gioHangDisplay : displays) {
             for (DonHangInfo donHangInfo : gioHangDisplay.getSanPhams()
             ) {
@@ -211,7 +213,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                         }
                         String IDDonHang = "DH_" + UUID.randomUUID().toString();
                         DonHang donHang = new DonHang(IDDonHang, gioHangDisplay.getIdCuaHang(), firebase_manager.auth.getUid()
-                                , "", diaChi, soDienThoai, gioHangDisplay.getGhiChu(), "", tongTien, new Date(), TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
+                                , "", diaChi, soDienThoai, gioHangDisplay.getGhiChu(), "", tongTien, new Date(),null, TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
                         );
                         firebase_manager.mDatabase.child("DonHang").child(IDDonHang).setValue(donHang).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -259,6 +261,8 @@ public class ThanhToanActivity extends AppCompatActivity {
                                     String noiDung = "Bạn đã đặt hàng thành công " + donHang.getIDDonHang().substring(0, 10) + " vui lòng chuyển khoản đến số tài khoản "
                                             + taiKhoanNganHang.getSoTaiKhoan() + " " + taiKhoanNganHang.getTenChuTaiKhoan() + " " + taiKhoanNganHang.getTenNganHang() + " với số tiền: " + soTien;
                                     ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", firebase_manager.auth.getUid(), "", TrangThaiThongBao.ChuaXem, new Date());
+                                    thongBao.setLoaiThongBao(LoaiThongBao.DONHANG_MOI);
+                                    thongBao.setDonHang(donHang);
                                     firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(IDThongBao).setValue(thongBao);
                                     //Thong bao don hang cho shop
                                     String noiDungShop = "Đơn hàng mới " + donHang.getIDDonHang().substring(0, 15) + " : " + finalTenSanPham + " " + donHang.getTongTien() + "VND";
@@ -266,6 +270,8 @@ public class ThanhToanActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             ThongBao thongBaoShop = new ThongBao(IDThongBao, noiDungShop, "Thông báo", "", donHang.getIDCuaHang(), "", TrangThaiThongBao.ChuaXem, new Date());
+                                            thongBaoShop.setLoaiThongBao(LoaiThongBao.DONHANG_MOI);
+                                            thongBaoShop.setDonHang(donHang);
                                             firebase_manager.mDatabase.child("ThongBao").child(donHang.getIDCuaHang()).child(IDThongBao).setValue(thongBaoShop);
                                         }
                                     });

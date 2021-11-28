@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.khachhangarea_realfood.ChiTietDonHang;
 import com.example.khachhangarea_realfood.Firebase_Manager;
@@ -28,6 +29,8 @@ public class DaHuyFragment extends Fragment {
     ArrayList<DonHang> donHangs;
     LinearLayoutManager linearLayoutManager;
     DonMuaAdpater donMuaAdpater;
+    SearchView searchView;
+
     public DaHuyFragment() {
     }
 
@@ -59,6 +62,20 @@ public class DaHuyFragment extends Fragment {
         rcvDaHuy.setLayoutManager(linearLayoutManager);
         rcvDaHuy.setAdapter(donMuaAdpater);
         LoadDaHuyDonHang();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                donMuaAdpater.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                donMuaAdpater.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     private void LoadDaHuyDonHang() {
@@ -77,5 +94,6 @@ public class DaHuyFragment extends Fragment {
 
     private void setControl() {
         rcvDaHuy = view.findViewById(R.id.rcvDaHuy);
+        searchView = view.findViewById(R.id.searchViewDonHang);
     }
 }

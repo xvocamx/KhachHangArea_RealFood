@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class SanPham {
     String IDSanPham, TenSanPham, IDLoai, IDDanhMuc, Gia, ChiTietSanPham, IDCuaHang;
+    Double giaOld;
     Float Rating;
     ArrayList<String> images;
     int SoLuongBanDuoc;
@@ -101,6 +102,14 @@ public class SanPham {
 
     public void setSoLuongBanDuoc(int soLuongBanDuoc) {
         SoLuongBanDuoc = soLuongBanDuoc;
+    }
+
+    public Double getGiaOld() {
+        return giaOld;
+    }
+
+    public void setGiaOld(Double giaOld) {
+        this.giaOld = giaOld;
     }
 
     @Override

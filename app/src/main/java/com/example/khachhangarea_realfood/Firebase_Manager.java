@@ -1,6 +1,7 @@
 package com.example.khachhangarea_realfood;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
@@ -63,12 +64,38 @@ public class Firebase_Manager {
         user = auth.getCurrentUser();
     }
 
-    public String GetStringTrangThaiThongBao(TrangThaiThongBao trangThaiThongBao){
+    public void SetColorOfStatus(TrangThaiDonHang trangThaiDonHang, View view, TextView textView) {
         String res = "";
-        if(trangThaiThongBao == TrangThaiThongBao.ChuaXem){
+        textView.setTextColor(Color.WHITE);
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_HuyDonHang || trangThaiDonHang == TrangThaiDonHang.KhachHang_HuyDon ||
+                trangThaiDonHang == TrangThaiDonHang.Shipper_DaTraHang || trangThaiDonHang == TrangThaiDonHang.Shipper_GiaoKhongThanhCong) {
+            res = "Đã hủy";
+            view.setBackgroundColor(Color.parseColor("#F0290E"));
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien || trangThaiDonHang == TrangThaiDonHang.ChoShopXacNhan_Tien ||
+                trangThaiDonHang == TrangThaiDonHang.ChoShopXacNhan_TraHang || trangThaiDonHang == TrangThaiDonHang.Shipper_DaLayHang || trangThaiDonHang == TrangThaiDonHang.Shipper_DangGiaoHang) {
+            res = "Chờ xác nhận chuyển tiền cọc";
+            view.setBackgroundColor(Color.parseColor("#FF5722"));
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.SHOP_DaGiaoChoBep || trangThaiDonHang == TrangThaiDonHang.SHOP_DangChuanBihang ||
+                trangThaiDonHang == TrangThaiDonHang.SHOP_DaChuanBiXong || trangThaiDonHang == TrangThaiDonHang.SHOP_DangGiaoShipper ||
+                trangThaiDonHang == TrangThaiDonHang.SHOP_ChoShipperLayHang || trangThaiDonHang == TrangThaiDonHang.SHOP_ChoXacNhanGiaoHangChoShipper ||
+                trangThaiDonHang == TrangThaiDonHang.Shipper_KhongNhanGiaoHang || trangThaiDonHang == TrangThaiDonHang.Bep_DaHuyDonHang) {
+            view.setBackgroundColor(Color.parseColor("#31BAF0"));
+            res = "Đã giao đơn hàng cho bếp";
+        }
+        if (trangThaiDonHang == TrangThaiDonHang.Shipper_DaChuyenTien || trangThaiDonHang == TrangThaiDonHang.Shipper_GiaoThanhCong) {
+            res = "Chờ xác nhận chuyển tiền cọc";
+            view.setBackgroundColor(Color.parseColor("#05E6C6"));
+        }
+    }
+
+    public String GetStringTrangThaiThongBao(TrangThaiThongBao trangThaiThongBao) {
+        String res = "";
+        if (trangThaiThongBao == TrangThaiThongBao.ChuaXem) {
             res = "Chưa xem";
         }
-        if (trangThaiThongBao == TrangThaiThongBao.DaXem){
+        if (trangThaiThongBao == TrangThaiThongBao.DaXem) {
             res = "Đã xem";
         }
         return res;
@@ -127,7 +154,6 @@ public class Firebase_Manager {
         if (trangThaiDonHang == TrangThaiDonHang.KhachHang_HuyDon) {
             res = "Khách hàng hủy đơn";
         }
-
 
 
         return res;
@@ -600,7 +626,8 @@ public class Firebase_Manager {
             }
         });
     }
-    public void GetSaleFood(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter,ProgressBar pb) {
+
+    public void GetSaleFood(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter, ProgressBar pb) {
         sanPhams.clear();
         mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {
             @Override
@@ -637,6 +664,7 @@ public class Firebase_Manager {
 
 
     }
+
     public void GetSaleFoodLitmit(ArrayList<SanPham> sanPhams, SanPhamAdapter sanPhamAdapter) {
         sanPhams.clear();
         mDatabase.child("SanPham").addValueEventListener(new ValueEventListener() {

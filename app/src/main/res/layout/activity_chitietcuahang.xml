@@ -77,35 +77,37 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:textColor="@color/black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Thời gian hoạt động: "/>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thời gian hoạt động: "
+                        android:textColor="@color/black" />
+
+                    <TextView
                         android:id="@+id/tvThoiGianMoCua"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                         />
+                        android:textColor="@color/black" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=" - "
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black" />
+
                     <TextView
-                        android:textColor="@color/black"
                         android:id="@+id/tvThoiGianDongCua"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -125,7 +127,7 @@
 
                 <TextView
                     android:id="@+id/tvEmail"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="pizzafood@gmail.com"
                     android:textColor="@color/black"
@@ -147,7 +149,7 @@
 
                 <TextView
                     android:id="@+id/tvPhone"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0908495044"
                     android:textColor="@color/black"
@@ -169,26 +171,30 @@
 
                 <TextView
                     android:id="@+id/tvDiaChi"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="23/12 Nguyễn Văn Cừ, Q.8, TP.HCM"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#C1C0C0" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <TextView
@@ -204,7 +210,9 @@
                         android:id="@+id/tvTotalSanPham"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="1dp"
+                        android:text="0"
                         android:textColor="@color/orange"
                         android:textSize="15dp" />
                 </LinearLayout>
@@ -212,33 +220,26 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="3"
                     android:gravity="end"
                     android:orientation="horizontal">
 
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnYeuThich"
-                        android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/ivFavorite"
+                        android:layout_width="80dp"
                         android:layout_height="35dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/button_yeuthich_selected"
-                        android:clickable="true"
-                        android:drawableLeft="@drawable/ic_favorite_pink"
-                        android:drawablePadding="5dp"
-                        android:padding="5dp"
-                        android:text="@string/yeuthich"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black" />
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_yeuthich_selected" />
 
                     <ImageView
                         android:id="@+id/ivComment"
-                        android:layout_width="30dp"
+                        android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="3dp"
+                        android:layout_weight="1"
                         android:src="@drawable/ic_chat" />
                 </LinearLayout>
             </LinearLayout>
@@ -293,10 +294,12 @@
                     android:text="@string/ratings"
                     android:textSize="14dp" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#C1C0C0" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -313,15 +316,17 @@
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Ornare leo non mollis id cursus. Eu euismod faucibus in
 leo malesuada" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#C1C0C0" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="10dp"
                 android:id="@+id/rcvMaGiamGia"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"

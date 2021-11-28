@@ -17,6 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class DangNhap extends AppCompatActivity {
     private EditText edtEmail, edtPassword;
@@ -26,6 +29,7 @@ public class DangNhap extends AppCompatActivity {
     private ProgressDialog progressDialog;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     KAlertDialog kAlertDialog;
+    Firebase_Manager firebase_manager = new Firebase_Manager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +70,9 @@ public class DangNhap extends AppCompatActivity {
     }
 
     private void onClickDangNhap() {
+
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
-
         if (email.isEmpty()) {
             edtEmail.setError("Vui lòng nhập email");
         } else if (!email.matches(emailPattern)) {
@@ -87,23 +91,41 @@ public class DangNhap extends AppCompatActivity {
                     .setTitleText("Đăng nhập")
                     .setContentText("Vui lòng đợi trong khi đăng nhập ...");
             kAlertDialog.show();
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                kAlertDialog.dismiss();
-                                Intent intent = new Intent(DangNhap.this, Home.class);
-                                startActivity(intent);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
-                                kAlertDialog.setTitleText("Đăng nhập");
-                                kAlertDialog.setContentText("Tài khoản hoặc mật khẩu sai");
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        firebase_manager.mDatabase.child("KhachHang").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    kAlertDialog.dismiss();
+                                    Intent intent = new Intent(DangNhap.this, Home.class);
+                                    startActivity(intent);
+                                } else {
+                                    kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
+                                    kAlertDialog.setTitleText("Đăng nhập");
+                                    kAlertDialog.setContentText("Tài khoản không khả dụng");
+                                }
+
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                        // Sign in success, update UI with the signed-in user's information
+
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        kAlertDialog.changeAlertType(KAlertDialog.ERROR_TYPE);
+                        kAlertDialog.setTitleText("Đăng nhập");
+                        kAlertDialog.setContentText("Tài khoản hoặc mật khẩu sai");
+                    }
+                }
+            });
         }
 
 

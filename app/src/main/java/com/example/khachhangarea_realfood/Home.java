@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.fragment.FavoriteFragment;
 import com.example.khachhangarea_realfood.fragment.HomeFragment;
 import com.example.khachhangarea_realfood.fragment.NotificationFragment;
@@ -41,7 +42,7 @@ public class Home extends AppCompatActivity {
         setEvent();
         HomeFragment homeFragment = new HomeFragment();
         loadFragment(homeFragment);
-        firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).addValueEventListener(new ValueEventListener() {
+        firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).orderByChild("trangThaiThongBao").equalTo(TrangThaiThongBao.ChuaXem+"").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 BottomBarTab barTab = bottomBar.getTabWithId(R.id.tab_notification);
@@ -53,7 +54,6 @@ public class Home extends AppCompatActivity {
 
             }
         });
-
 
     }
 

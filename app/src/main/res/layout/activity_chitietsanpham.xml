@@ -31,17 +31,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvTenSanPham"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Pizza Tom Pho Mai"
                         android:textColor="@color/black"
@@ -49,13 +51,13 @@
 
                     <TextView
                         android:id="@+id/tvCategory"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="Pizza" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
@@ -98,7 +100,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <TextView
@@ -144,30 +146,26 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:gravity="end"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnYeuThich"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
+                    <ImageView
                         android:background="@drawable/button_yeuthich_selected"
-                        android:drawableLeft="@drawable/ic_favorite_pink"
-                        android:drawablePadding="5dp"
-                        android:padding="5dp"
-                        android:text="@string/yeuthich"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black" />
+                        android:id="@+id/ivFavorite"
+                        android:layout_width="80dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                         />
 
 
                     <ImageView
                         android:id="@+id/ivComment"
-                        android:layout_width="30dp"
+                        android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
                         android:src="@drawable/ic_chat" />
 
 
@@ -185,6 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -197,13 +196,14 @@
                     android:src="@drawable/logo_pizza" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvTenCuaHang"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
                         android:layout_marginTop="5dp"
@@ -214,7 +214,7 @@
 
                     <TextView
                         android:id="@+id/tvAddressShop"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:drawableLeft="@drawable/ic_location_green"
@@ -228,13 +228,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_weight="3"
                     android:orientation="vertical">
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <Button
                         android:id="@+id/btnXemShop"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="35dp"
-                        android:layout_gravity="end"
                         android:background="@drawable/custom_button_dangxuat"
                         android:drawableLeft="@drawable/ic_store"
                         android:drawablePadding="5dp"
@@ -271,9 +271,9 @@ Ornare leo non mollis id cursus. Eu euismod faucibus in
 leo malesuada" />
 
             <LinearLayout
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <LinearLayout

@@ -30,12 +30,13 @@ public class ChiTietDonHang extends AppCompatActivity {
     ArrayList<DonHangInfo> donHangInfos;
     LinearLayoutManager linearLayoutManager;
     ThanhToanAdapter thanhToanAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_don_hang);
         donHangInfos = new ArrayList<>();
-        thanhToanAdapter = new ThanhToanAdapter(this,R.layout.list_item_thanhtoan_sanpham,donHangInfos);
+        thanhToanAdapter = new ThanhToanAdapter(this, R.layout.list_item_thanhtoan_sanpham, donHangInfos);
         setControl();
         if (getIntent() != null && getIntent().getExtras() != null) {
             Intent intent = getIntent();
@@ -48,7 +49,7 @@ public class ChiTietDonHang extends AppCompatActivity {
     }
 
     private void LoadImformationDonHang() {
-        tvIDDonHang.setText(donHang.getIDDonHang());
+        tvIDDonHang.setText(donHang.getIDDonHang().substring(0, 15));
         String date = DateFormat.getDateInstance(DateFormat.SHORT).format(donHang.getNgayTao());
         tvThoiGian.setText(date);
         tvTrangThai.setText(firebase_manager.GetStringTrangThaiDonHang(donHang.getTrangThai()));
@@ -70,9 +71,9 @@ public class ChiTietDonHang extends AppCompatActivity {
         firebase_manager.mDatabase.child("DonHangInfo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DonHangInfo donHangInfo = dataSnapshot.getValue(DonHangInfo.class);
-                    if(donHang.getIDDonHang().equals(donHangInfo.getIDDonHang())){
+                    if (donHang.getIDDonHang().equals(donHangInfo.getIDDonHang())) {
                         donHangInfos.add(donHangInfo);
                         thanhToanAdapter.notifyDataSetChanged();
                     }
@@ -80,12 +81,11 @@ public class ChiTietDonHang extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
-
 
 
     private void setControl() {

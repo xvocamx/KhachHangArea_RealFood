@@ -74,4 +74,5 @@
         <item>Shop giao hàng quá lâu</item>
         <item>Khác</item>
     </array>
+    <string name="title_activity_map">Map</string>
 </resources>

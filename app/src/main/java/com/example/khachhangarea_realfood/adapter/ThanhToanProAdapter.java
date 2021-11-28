@@ -99,7 +99,7 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
                     Glide.with(context)
                             .load(uri)
                             .into(holder.ivShop);
-                }catch (Exception ex){
+                } catch (Exception ex) {
 
                 }
 
@@ -146,12 +146,7 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
             }
         });
 
-        if (gioHangDisplay.getGiamPhanTram() != 0) {
-            holder.lnMaGiamGia.setVisibility(View.GONE);
-        }
-        if (gioHangDisplay.getGiaGiam() != 0) {
-            holder.lnMaGiamGia.setVisibility(View.GONE);
-        }
+
         holder.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +155,6 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
                 firebase_manager.mDatabase.child("Voucher").orderByChild("maGiamGia").equalTo(maGiamGia).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Voucher voucher = dataSnapshot.getValue(Voucher.class);
                             Date currentDateandTime = new Date();
@@ -168,43 +162,70 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
                                 if (voucher.getPhanTramGiam() != 0) {
                                     for (int i = 0; i < gioHangDisplay.getSanPhams().size(); i++) {
                                         if (gioHangDisplay.getSanPhams().get(i).getSanPham().getIDSanPham().equals(voucher.getSanPham().getIDSanPham())) {
-                                            gioHangDisplay.setGiamPhanTram(voucher.getPhanTramGiam());
-                                            SanPham sanPham = gioHangDisplay.getSanPhams().get(i).getSanPham();
-                                            double giaSanPham = Double.parseDouble(sanPham.getGia());
-                                            double giaSanPhamGiamGia = giaSanPham - (giaSanPham * ((double) voucher.getPhanTramGiam() / 100));
-                                            sanPham.setGia(giaSanPhamGiamGia + "");
-                                            DonHangInfo donHangInfo = gioHangDisplay.getSanPhams().get(i);
-                                            ArrayList<DonHangInfo> arrayList = gioHangDisplay.getSanPhams();
-                                            donHangInfo.setSanPham(sanPham);
-                                            arrayList.set(i, donHangInfo);
-                                            gioHangDisplay.setSanPhams(arrayList);
-                                            GioHangDisplay display = gioHangDisplay;
-                                            gioHangDisplays.set(position, display);
-                                            if (delegation != null) {
-                                                delegation.getGiaGioHang(gioHangDisplays);
+                                            if (gioHangDisplay.getSanPhams().get(i).getSanPham().getGiaOld() == null) {
+                                                gioHangDisplay.setGiamPhanTram(voucher.getPhanTramGiam());
+                                                SanPham sanPham = gioHangDisplay.getSanPhams().get(i).getSanPham();
+                                                double giaSanPham = Double.parseDouble(sanPham.getGia());
+                                                double giaSanPhamGiamGia = giaSanPham - (giaSanPham * ((double) voucher.getPhanTramGiam() / 100));
+                                                sanPham.setGiaOld(giaSanPham);
+                                                sanPham.setGia(giaSanPhamGiamGia + "");
+                                                DonHangInfo donHangInfo = gioHangDisplay.getSanPhams().get(i);
+                                                ArrayList<DonHangInfo> arrayList = gioHangDisplay.getSanPhams();
+                                                donHangInfo.setSanPham(sanPham);
+                                                arrayList.set(i, donHangInfo);
+                                                gioHangDisplay.setSanPhams(arrayList);
+                                                GioHangDisplay display = gioHangDisplay;
+                                                gioHangDisplays.set(position, display);
+                                                if (delegation != null) {
+                                                    delegation.getGiaGioHang(gioHangDisplays);
+                                                }
+                                                notifyDataSetChanged();
+
+                                                if (sanPham.getGiaOld() == null) {
+                                                    kAlertDialog = new KAlertDialog(context, KAlertDialog.ERROR_TYPE).setContentText("Mã không hợp lệ").setConfirmText("OK");
+                                                    kAlertDialog.show();
+
+                                                }
+                                                if (sanPham.getGiaOld() != null) {
+                                                    kAlertDialog = new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE).setContentText("Mã hợp lệ").setConfirmText("OK");
+                                                    kAlertDialog.show();
+
+                                                }
                                             }
-                                            notifyDataSetChanged();
                                         }
                                     }
                                 }
                                 if (voucher.getGiaGiam() != 0) {
                                     for (int i = 0; i < gioHangDisplay.getSanPhams().size(); i++) {
                                         if (gioHangDisplay.getSanPhams().get(i).getSanPham().getIDSanPham().equals(voucher.getSanPham().getIDSanPham())) {
-                                            gioHangDisplay.setGiamPhanTram(voucher.getGiaGiam());
-                                            SanPham sanPham = gioHangDisplay.getSanPhams().get(i).getSanPham();
-                                            double giaSanPham = Double.parseDouble(sanPham.getGia()) - voucher.getGiaGiam();
-                                            sanPham.setGia(giaSanPham + "");
-                                            DonHangInfo donHangInfo = gioHangDisplay.getSanPhams().get(i);
-                                            ArrayList<DonHangInfo> arrayList = gioHangDisplay.getSanPhams();
-                                            donHangInfo.setSanPham(sanPham);
-                                            arrayList.set(i, donHangInfo);
-                                            gioHangDisplay.setSanPhams(arrayList);
-                                            GioHangDisplay display = gioHangDisplay;
-                                            gioHangDisplays.set(position, display);
-                                            if (delegation != null) {
-                                                delegation.getGiaGioHang(gioHangDisplays);
+                                            if (gioHangDisplay.getSanPhams().get(i).getSanPham().getGiaOld() == null) {
+                                                gioHangDisplay.setGiamPhanTram(voucher.getGiaGiam());
+                                                SanPham sanPham = gioHangDisplay.getSanPhams().get(i).getSanPham();
+                                                double giaSanPham = Double.parseDouble(sanPham.getGia()) - voucher.getGiaGiam();
+                                                sanPham.setGiaOld(Double.parseDouble(sanPham.getGia()));
+                                                sanPham.setGia(giaSanPham + "");
+                                                DonHangInfo donHangInfo = gioHangDisplay.getSanPhams().get(i);
+                                                ArrayList<DonHangInfo> arrayList = gioHangDisplay.getSanPhams();
+                                                donHangInfo.setSanPham(sanPham);
+                                                arrayList.set(i, donHangInfo);
+                                                gioHangDisplay.setSanPhams(arrayList);
+                                                GioHangDisplay display = gioHangDisplay;
+                                                gioHangDisplays.set(position, display);
+                                                if (delegation != null) {
+                                                    delegation.getGiaGioHang(gioHangDisplays);
+                                                }
+                                                notifyDataSetChanged();
+                                                if (sanPham.getGiaOld() == null) {
+                                                    kAlertDialog = new KAlertDialog(context, KAlertDialog.ERROR_TYPE).setContentText("Mã không hợp lệ").setConfirmText("OK");
+                                                    kAlertDialog.show();
+
+                                                }
+                                                if (sanPham.getGiaOld() != null) {
+                                                    kAlertDialog = new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE).setContentText("Mã hợp lệ").setConfirmText("OK");
+                                                    kAlertDialog.show();
+
+                                                }
                                             }
-                                            notifyDataSetChanged();
                                         }
                                     }
                                 }
@@ -212,16 +233,7 @@ public class ThanhToanProAdapter extends RecyclerView.Adapter<ThanhToanProAdapte
 
 
                         }
-                        if (gioHangDisplay.getGiamPhanTram() == 0 && gioHangDisplay.getGiaGiam() == 0) {
-                            kAlertDialog = new KAlertDialog(context, KAlertDialog.ERROR_TYPE).setContentText("Mã không hợp lệ").setConfirmText("OK");
-                            kAlertDialog.show();
 
-                        }
-                        if (gioHangDisplay.getGiamPhanTram() != 0 || gioHangDisplay.getGiaGiam() != 0) {
-                            kAlertDialog = new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE).setContentText("Mã hợp lệ").setConfirmText("OK");
-                            kAlertDialog.show();
-
-                        }
 
                     }
 

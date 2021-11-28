@@ -50,11 +50,11 @@ import java.util.UUID;
 
 public class ChiTietSanPham extends AppCompatActivity {
     private TextView tvNameFood, tvGia, tvRating, tvMoTa, tvTenCuaHang, tvAddressShop, tvSoLuongBanDuoc, tvTBRating;
-    private ImageView ivFood, ivShop;
+    private ImageView ivFood, ivShop,ivFavorite;
     private SanPham sanPham;
     private CuaHang cuaHang;
     private ProgressBar pbLoadChiTietSanPham;
-    private Button btnXemShop, btnDatHang, btnYeuThich;
+    private Button btnXemShop, btnDatHang;
     private ElegantNumberButton btnSoLuong;
     private ArrayList<CuaHang> cuaHangs = new ArrayList<>();
     private Firebase_Manager firebase_manager = new Firebase_Manager();
@@ -129,7 +129,7 @@ public class ChiTietSanPham extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         SanPham sanPhamAll = dataSnapshot.getValue(SanPham.class);
                         if (sanPhamAll.getIDSanPham().equals(sanPham.getIDSanPham())) {
-                            btnYeuThich.setSelected(true);
+                            ivFavorite.setSelected(true);
                         }
                     }
                 }
@@ -169,18 +169,18 @@ public class ChiTietSanPham extends AppCompatActivity {
                 addGioHang();
             }
         });
-        btnYeuThich.setOnClickListener(new View.OnClickListener() {
+        ivFavorite.setOnClickListener(new View.OnClickListener() {
             int check = 1;
 
             @Override
             public void onClick(View v) {
-                if (check == 1 && !btnYeuThich.isSelected()) {
-                    btnYeuThich.setSelected(true);
+                if (check == 1 && !ivFavorite.isSelected()) {
+                    ivFavorite.setSelected(true);
                     check = 0;
                     firebase_manager.ThemYeuThichFood(sanPham);
 
                 } else {
-                    btnYeuThich.setSelected(false);
+                    ivFavorite.setSelected(false);
                     check = 1;
                     firebase_manager.XoaYeuThichFood(sanPham);
 
@@ -282,9 +282,10 @@ public class ChiTietSanPham extends AppCompatActivity {
         tvAddressShop = findViewById(R.id.tvAddressShop);
         btnSoLuong = findViewById(R.id.btnSoLuong);
         btnDatHang = findViewById(R.id.btnDatHang);
-        btnYeuThich = findViewById(R.id.btnYeuThich);
+
         rcvComent = findViewById(R.id.rcvComent);
         lnDanhGia = findViewById(R.id.lnDanhGia);
         tvTBRating = findViewById(R.id.tvTBRating);
+        ivFavorite = findViewById(R.id.ivFavorite);
     }
 }

@@ -12,6 +12,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvIDDonHang"
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:id="@+id/tvMaDH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="DH_01"
+                android:textColor="@color/orange" />
+        </androidx.cardview.widget.CardView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,15 +76,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvMaDH"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_weight="1"
-                        android:text="DH_01"
-                        android:textColor="@color/orange" />
 
                     <TextView
                         android:id="@+id/tvThoiGian"
@@ -157,6 +164,27 @@
                     android:drawableTint="@color/orange"
                     android:text="24/12 Nguyen Van Cu"
                     android:textColor="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="Sản phẩm: "
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tvSanPham"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -172,12 +200,12 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:layout_marginTop="1dp"
                         android:id="@+id/tvGhiChu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginTop="1dp"
                         android:text="1"
                         android:textColor="@color/black" />
                 </LinearLayout>

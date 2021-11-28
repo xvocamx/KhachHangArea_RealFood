@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.developer.kalert.KAlertDialog;
+import com.example.khachhangarea_realfood.TrangThai.LoaiThongBao;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiBaoCao;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.model.BaoCao;

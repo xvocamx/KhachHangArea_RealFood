@@ -1,6 +1,7 @@
 package com.example.khachhangarea_realfood.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.khachhangarea_realfood.DonMua;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.DanhGia;
@@ -119,7 +121,12 @@ public class DanhGiaAdapter extends RecyclerView.Adapter<DanhGiaAdapter.MyViewHo
                 String IDCuaHang = donHangInfo.getSanPham().getIDCuaHang();
                 DanhGia danhGia = new DanhGia(IDDanhGia, IDSanPham, IDCuaHang, IDKhachHang, noiDung, "", donHangInfo.getIDInfo(), rating, new Date(), null);
                 firebase_manager.mDatabase.child("DanhGia").child(IDDanhGia).setValue(danhGia);
-                holder.lnDanhGia.setVisibility(View.GONE);
+                donHangInfos.remove(position);
+                notifyDataSetChanged();
+                if(donHangInfos.size() == 0){
+                    Intent intent = new Intent(context,DonMua.class);
+                    context.startActivity(intent);
+                }
             }
         });
 

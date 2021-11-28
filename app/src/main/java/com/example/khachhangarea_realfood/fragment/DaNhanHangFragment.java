@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.khachhangarea_realfood.ChiTietDonHang;
 import com.example.khachhangarea_realfood.Firebase_Manager;
@@ -28,6 +29,7 @@ public class DaNhanHangFragment extends Fragment {
     RecyclerView rcvDaNhanHang;
     ArrayList<DonHang> donHangs;
     DonMuaDaNhanHangAdpater donMuaDaNhanHangAdpater;
+    SearchView searchView;
 
     public DaNhanHangFragment() {
     }
@@ -61,6 +63,20 @@ public class DaNhanHangFragment extends Fragment {
         rcvDaNhanHang.setLayoutManager(linearLayoutManager);
         rcvDaNhanHang.setAdapter(donMuaDaNhanHangAdpater);
         LoadDaNhanDonHang();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                donMuaDaNhanHangAdpater.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                donMuaDaNhanHangAdpater.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     private void LoadDaNhanDonHang() {
@@ -79,5 +95,6 @@ public class DaNhanHangFragment extends Fragment {
 
     private void setControl() {
         rcvDaNhanHang = view.findViewById(R.id.rcvDaNhanHang);
+        searchView = view.findViewById(R.id.searchViewDonHang);
     }
 }

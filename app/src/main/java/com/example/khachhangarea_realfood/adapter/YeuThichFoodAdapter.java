@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.model.DanhGia;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -66,7 +67,27 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
         }
         holder.tvNameFood.setText(sanPham.getTenSanPham());
         firebase_manager.LayTenLoai(sanPham,holder.tvTenLoai);
-        holder.tvRating.setText(String.valueOf(sanPham.getRating()));
+        holder.tvGia.setText(sanPham.getGia()+" VNĐ");
+        firebase_manager.mDatabase.child("DanhGia").orderByChild("idsanPham").equalTo(sanPham.getIDSanPham()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                float tong = 0f;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
+                    tong += danhGia.getRating();
+                }
+                holder.tvRating.setText(snapshot.getChildrenCount() + "");
+                float tbRating = (float) Math.round((tong / snapshot.getChildrenCount()) * 10) / 10;
+                holder.tvTBRating.setText(tbRating + "");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         firebase_manager.storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -126,7 +147,7 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvNameFood, tvTenLoai, tvRating;
+        TextView tvNameFood, tvTenLoai, tvRating,tvTBRating,tvGia;
         ImageView ivFood, ivDelete;
         LinearLayout lnRating;
         View.OnClickListener onClickListener;
@@ -149,6 +170,10 @@ public class YeuThichFoodAdapter extends RecyclerView.Adapter<YeuThichFoodAdapte
 
             ivDelete = itemView.findViewById(R.id.ivDelete);
             ivDelete.setOnClickListener(this);
+
+            tvGia = itemView.findViewById(R.id.tvGia);
+
+            tvTBRating = itemView.findViewById(R.id.tvTBRating);
         }
 
         @Override

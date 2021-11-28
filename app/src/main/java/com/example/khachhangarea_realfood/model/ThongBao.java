@@ -1,18 +1,17 @@
 package com.example.khachhangarea_realfood.model;
 
+import com.example.khachhangarea_realfood.TrangThai.LoaiThongBao;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 
 import java.util.Date;
 
 public class ThongBao {
-    String IDThongBao;
-    String noiDung;
-    String tieuDe;
-    String theme;
-    String IDUSer;
-    String Image;
+    String IDThongBao,noiDung,tieuDe,theme,IDUSer,Image;
     TrangThaiThongBao trangThaiThongBao;
     Date date;
+    LoaiThongBao loaiThongBao;
+    DonHang donHang;
+    SanPham sanPham;
 
     public ThongBao(String IDThongBao, String noiDung, String tieuDe, String theme, String IDUSer, String image, TrangThaiThongBao trangThaiThongBao, Date date) {
         this.IDThongBao = IDThongBao;
@@ -92,17 +91,29 @@ public class ThongBao {
         this.date = date;
     }
 
-    @Override
-    public String toString() {
-        return "ThongBao{" +
-                "IDThongBao='" + IDThongBao + '\'' +
-                ", noiDung='" + noiDung + '\'' +
-                ", tieuDe='" + tieuDe + '\'' +
-                ", theme='" + theme + '\'' +
-                ", IDUSer='" + IDUSer + '\'' +
-                ", Image='" + Image + '\'' +
-                ", trangThaiThongBao=" + trangThaiThongBao +
-                ", date=" + date +
-                '}';
+    public LoaiThongBao getLoaiThongBao() {
+        return loaiThongBao;
     }
+
+    public void setLoaiThongBao(LoaiThongBao loaiThongBao) {
+        this.loaiThongBao = loaiThongBao;
+    }
+
+    public DonHang getDonHang() {
+        return donHang;
+    }
+
+    public void setDonHang(DonHang donHang) {
+        this.donHang = donHang;
+    }
+
+    public SanPham getSanPham() {
+        return sanPham;
+    }
+
+    public void setSanPham(SanPham sanPham) {
+        this.sanPham = sanPham;
+    }
+
+
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.khachhangarea_realfood.ChiTietDonHang;
 import com.example.khachhangarea_realfood.Firebase_Manager;
@@ -27,6 +28,7 @@ public class DangGiaoFragment extends Fragment {
     DonMuaAdpater donMuaAdpater;
     ArrayList<DonHang> donHangs;
     Firebase_Manager firebase_manager = new Firebase_Manager();
+    SearchView searchView;
 
     public DangGiaoFragment() {
         // Required empty public constructor
@@ -61,6 +63,20 @@ public class DangGiaoFragment extends Fragment {
         rcvDangGiao.setLayoutManager(linearLayoutManager);
         rcvDangGiao.setAdapter(donMuaAdpater);
         LoadItemDangGiao();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                donMuaAdpater.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                donMuaAdpater.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     private void LoadItemDangGiao() {
@@ -79,5 +95,6 @@ public class DangGiaoFragment extends Fragment {
 
     private void setControl() {
         rcvDangGiao = view.findViewById(R.id.rcvDangGiao);
+        searchView = view.findViewById(R.id.searchViewDonHang);
     }
 }

@@ -19,12 +19,16 @@ import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
 import com.example.khachhangarea_realfood.model.CuaHang;
+import com.example.khachhangarea_realfood.model.DanhGia;
+import com.example.khachhangarea_realfood.model.SanPham;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -64,7 +68,26 @@ public class YeuThichShopAdapter extends RecyclerView.Adapter<YeuThichShopAdapte
         holder.ivShop.setImageResource(R.drawable.logo_pizza);
         holder.tvTenCuaHang.setText(cuaHang.getTenCuaHang());
         holder.tvDiaChi.setText(cuaHang.getDiaChi());
-        holder.tvRatings.setText(String.valueOf(cuaHang.getRating()));
+        firebase_manager.mDatabase.child("DanhGia").orderByChild("idcuaHang").equalTo(cuaHang.getIDCuaHang()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                float tong = 0f;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
+                    tong += danhGia.getRating();
+                }
+                holder.tvRatings.setText(snapshot.getChildrenCount() + "");
+                float tbRating = (float) Math.round((tong / snapshot.getChildrenCount()) * 10) / 10;
+                holder.tvTBRating.setText(tbRating + "");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         firebase_manager.storageRef.child("CuaHang").child(cuaHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -126,7 +149,7 @@ public class YeuThichShopAdapter extends RecyclerView.Adapter<YeuThichShopAdapte
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvTenCuaHang, tvDiaChi, tvRatings;
+        TextView tvTenCuaHang, tvDiaChi, tvRatings,tvTBRating;
         ImageView ivShop, ivDelete;
         LinearLayout lnRating;
         View.OnClickListener onClickListener;
@@ -148,6 +171,8 @@ public class YeuThichShopAdapter extends RecyclerView.Adapter<YeuThichShopAdapte
             ivShop.setOnClickListener(this);
 
             ivDelete = itemView.findViewById(R.id.ivDelete);
+
+            tvTBRating = itemView.findViewById(R.id.tvTBRating);
         }
 
         @Override

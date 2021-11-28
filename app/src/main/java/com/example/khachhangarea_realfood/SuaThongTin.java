@@ -3,6 +3,7 @@ package com.example.khachhangarea_realfood;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,9 +13,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.developer.kalert.KAlertDialog;
+import com.example.khachhangarea_realfood.Map.MapsActivity;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,6 +52,8 @@ public class SuaThongTin extends AppCompatActivity {
     private Uri avatarKhachHang;
     private KAlertDialog kAlertDialog;
     private ProgressBar pbLoadThongTinCaNhan;
+    private TextView tvGoToMap;
+    int LAUNCH_SECOND_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +92,22 @@ public class SuaThongTin extends AppCompatActivity {
             }
         });
         pbLoadThongTinCaNhan.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("result");
+                edtDiaChi.setText(result);
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                // Write your code if there's no result
+            }
+        }
     }
 
     private void setEvent() {
@@ -151,6 +173,13 @@ public class SuaThongTin extends AppCompatActivity {
                 });
             }
         });
+        tvGoToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SuaThongTin.this, MapsActivity.class);
+                startActivityForResult(intent,LAUNCH_SECOND_ACTIVITY);
+            }
+        });
 
     }
 
@@ -163,5 +192,6 @@ public class SuaThongTin extends AppCompatActivity {
         civAvatar = findViewById(R.id.civAvatar);
         btnLuu = findViewById(R.id.btnSave);
         pbLoadThongTinCaNhan = findViewById(R.id.pbLoadThongTinCaNhan);
+        tvGoToMap = findViewById(R.id.tvGoToMap);
     }
 }

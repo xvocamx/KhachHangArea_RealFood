@@ -5,15 +5,15 @@ import com.example.khachhangarea_realfood.TrangThai.TrangThaiDonHang;
 import java.util.Date;
 
 public class DonHang {
-    String IDDonHang, IDCuaHang, IDKhachHang, IDShipper, diaChi, soDienThoai, ghiChu_KhachHang, ghiChu_Shipper;
+    String IDDonHang, IDCuaHang, IDKhachHang, IDShipper, diaChi, soDienThoai, ghiChu_KhachHang, ghiChu_Shipper,ghiChuCuaHang;
     double tongTien;
-    Date ngayTao;
+    Date ngayTao, ngayGiaoHang;
     TrangThaiDonHang trangThai;
 
     public DonHang() {
     }
 
-    public DonHang(String IDDonHang, String IDCuaHang, String IDKhachHang, String IDShipper, String diaChi, String soDienThoai, String ghiChu_KhachHang, String ghiChu_Shipper, double tongTien, Date ngayTao, TrangThaiDonHang trangThai) {
+    public DonHang(String IDDonHang, String IDCuaHang, String IDKhachHang, String IDShipper, String diaChi, String soDienThoai, String ghiChu_KhachHang, String ghiChu_Shipper, double tongTien, Date ngayTao, Date ngayGiaoHang, TrangThaiDonHang trangThai) {
         this.IDDonHang = IDDonHang;
         this.IDCuaHang = IDCuaHang;
         this.IDKhachHang = IDKhachHang;
@@ -24,7 +24,24 @@ public class DonHang {
         this.ghiChu_Shipper = ghiChu_Shipper;
         this.tongTien = tongTien;
         this.ngayTao = ngayTao;
+        this.ngayGiaoHang = ngayGiaoHang;
         this.trangThai = trangThai;
+    }
+
+    public String getGhiChuCuaHang() {
+        return ghiChuCuaHang;
+    }
+
+    public void setGhiChuCuaHang(String ghiChuCuaHang) {
+        this.ghiChuCuaHang = ghiChuCuaHang;
+    }
+
+    public Date getNgayGiaoHang() {
+        return ngayGiaoHang;
+    }
+
+    public void setNgayGiaoHang(Date ngayGiaoHang) {
+        this.ngayGiaoHang = ngayGiaoHang;
     }
 
     public String getIDCuaHang() {

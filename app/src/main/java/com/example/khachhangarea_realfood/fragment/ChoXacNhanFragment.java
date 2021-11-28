@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
@@ -32,6 +33,7 @@ public class ChoXacNhanFragment extends Fragment {
     DonMuaAdpater donMuaAdpater;
     LinearLayoutManager linearLayoutManager;
     ArrayList<DonHang> donHangs;
+    SearchView searchView;
 
     public ChoXacNhanFragment() {
 
@@ -81,9 +83,25 @@ public class ChoXacNhanFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                donMuaAdpater.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                donMuaAdpater.getFilter().filter(newText);
+                return false;
+            }
+        });
+
     }
 
     private void setControl() {
         rcvChoXacNhan = view.findViewById(R.id.rcvChoXacNhan);
+        searchView = view.findViewById(R.id.searchViewDonHang);
     }
 }

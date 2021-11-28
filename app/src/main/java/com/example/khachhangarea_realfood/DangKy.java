@@ -3,6 +3,7 @@ package com.example.khachhangarea_realfood;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.developer.kalert.KAlertDialog;
+import com.example.khachhangarea_realfood.Map.MapsActivity;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +37,8 @@ public class DangKy extends AppCompatActivity {
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     KAlertDialog kAlertDialog;
+    private TextView tvGoToMap;
+    int LAUNCH_SECOND_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +82,29 @@ public class DangKy extends AppCompatActivity {
                 onClickDangKy();
             }
         });
+        tvGoToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DangKy.this, MapsActivity.class);
+                startActivityForResult(intent,LAUNCH_SECOND_ACTIVITY);
+            }
+        });
     }
 
-    private void showDatePickerDiaLog() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("result");
+                edtAddress.setText(result);
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                // Write your code if there's no result
+            }
+        }
     }
 
     private void onClickDangKy() {
@@ -158,5 +181,6 @@ public class DangKy extends AppCompatActivity {
         tvDangNhap = findViewById(R.id.tvDangNhap);
         btnDangKy = findViewById(R.id.btnDangKy);
         edtBirthDay = findViewById(R.id.edtBirthDay);
+        tvGoToMap = findViewById(R.id.tvGoToMap);
     }
 }

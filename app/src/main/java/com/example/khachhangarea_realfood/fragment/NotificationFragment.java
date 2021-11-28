@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.khachhangarea_realfood.ChiTietDonHang;
 import com.example.khachhangarea_realfood.ChiTietThongBao;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
@@ -76,10 +77,10 @@ public class NotificationFragment extends Fragment {
         thongBaoAdapter.setDelegation(new ThongBaoAdapter.ClickItemThongBaoListener() {
             @Override
             public void getInformationThongBao(ThongBao thongBao) {
-                Intent intent = new Intent(getActivity(), ChiTietThongBao.class);
+                Intent intent = new Intent(getActivity(), ChiTietDonHang.class);
                 Gson gson = new Gson();
-                String data = gson.toJson(thongBao);
-                intent.putExtra("dataNotifications", data);
+                String data = gson.toJson(thongBao.getDonHang());
+                intent.putExtra("dataDonHang", data);
                 getActivity().startActivity(intent);
                 thongBao.setTrangThaiThongBao(TrangThaiThongBao.DaXem);
                 firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(thongBao.getIDThongBao()).setValue(thongBao);

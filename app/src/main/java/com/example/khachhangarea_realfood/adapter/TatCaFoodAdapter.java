@@ -55,7 +55,7 @@ public class TatCaFoodAdapter extends RecyclerView.Adapter<TatCaFoodAdapter.MyVi
         firebase_manager.LayTenLoai(sanPham,holder.tvTenLoai);
         holder.tvRating.setText(String.valueOf(sanPham.getRating()));
         firebase_manager.LoadImageFood(sanPham,context,holder.ivFood);
-
+        holder.tvGia.setText(sanPham.getGia()+" VNĐ");
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +77,7 @@ public class TatCaFoodAdapter extends RecyclerView.Adapter<TatCaFoodAdapter.MyVi
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvNameFood, tvTenLoai, tvRating;
+        TextView tvNameFood, tvTenLoai, tvRating,tvGia;
         ImageView ivFood;
         LinearLayout lnRating,lnSanPham;
         View.OnClickListener onClickListener;
@@ -93,6 +93,8 @@ public class TatCaFoodAdapter extends RecyclerView.Adapter<TatCaFoodAdapter.MyVi
             ivFood = itemView.findViewById(R.id.ivFood);
 
             lnRating = itemView.findViewById(R.id.lnRating);
+
+            tvGia = itemView.findViewById(R.id.tvGia);
 
             lnSanPham = itemView.findViewById(R.id.lnSanPham);
             lnSanPham.setOnClickListener(this);
