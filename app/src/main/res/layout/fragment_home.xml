@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <ScrollView
@@ -13,89 +13,115 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <androidx.cardview.widget.CardView
-                android:layout_marginTop="-20dp"
-                app:cardCornerRadius="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
-              <LinearLayout
+                android:layout_marginTop="-20dp"
+                app:cardCornerRadius="20dp">
 
-                  android:background="#93242A"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-                  <LinearLayout
-                      android:paddingTop="20dp"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="horizontal">
-                      <TextView
+                <LinearLayout
 
-                          android:id="@+id/tvGood"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_margin="20dp"
-                          android:text="Let's ea"
-                          android:layout_marginRight="20dp"
-                          android:textColor="@color/white"
-                          android:textSize="20dp" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#93242A"
+                    android:orientation="vertical">
 
-                      <FrameLayout
-                          android:layout_marginRight="10dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp">
 
-                          android:layout_gravity="center"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content">
+                        <TextView
 
-                          <ru.nikartm.support.ImageBadgeView
-                              android:id="@+id/ivMyOrder"
-                              android:layout_width="60dp"
-                              android:layout_height="wrap_content"
-                              android:layout_gravity="right"
-                              app:ibv_badgePadding="7dp"
-                              app:ibv_badgeTextSize="10dp"
-                              app:ibv_badgeTextColor="#ffffff"
-                              app:ibv_visibleBadge="false"
-                              app:ibv_badgeLimitValue="true"
-                              android:src="@drawable/ic_shopping_cart" />
-                      </FrameLayout>
+                            android:id="@+id/tvGood"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            android:layout_marginRight="20dp"
+                            android:text="Let's ea"
+                            android:textColor="@color/white"
+                            android:textSize="20dp" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="10dp">
+
+                            <ru.nikartm.support.ImageBadgeView
+                                android:id="@+id/ivMyOrder"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:src="@drawable/ic_shopping_cart"
+                                app:ibv_badgeLimitValue="true"
+                                app:ibv_badgePadding="7dp"
+                                app:ibv_badgeTextColor="#ffffff"
+                                app:ibv_badgeTextSize="10dp"
+                                app:ibv_visibleBadge="false" />
+                        </FrameLayout>
 
 
+                    </LinearLayout>
 
-                  </LinearLayout>
 
+                    <SearchView
+                        android:id="@+id/searchViewFood"
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/custom_sreachview"
+                        android:iconifiedByDefault="false"
+                        android:queryBackground="@null"
+                        android:queryHint="Search Food" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                  <SearchView
-                      android:id="@+id/searchViewFood"
-                      android:layout_width="match_parent"
-                      android:layout_height="57dp"
-                      android:layout_margin="10dp"
-                      android:background="@drawable/custom_sreachview"
-                      android:iconifiedByDefault="false"
-                      android:queryBackground="@null"
-                      android:queryHint="Search Food" />
-              </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="6dp">
+
+                <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                    android:id="@+id/carousel"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:autoPlay="true"
+                    app:showTopShadow="false"
+                    app:showBottomShadow="false"
+                    app:autoPlayDelay="5000"
+                    app:autoWidthFixing="true"
+                    app:imageScaleType="centerCrop"
+                    app:infiniteCarousel="true"
+                    app:scaleOnScroll="true"
+                    app:showNavigationButtons="false"/>
             </androidx.cardview.widget.CardView>
 
 
             <TextView
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="17dp"
+                android:layout_marginTop="20dp"
                 android:text="Danh mục "
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ProgressBar
                     android:id="@+id/pbLoad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcvLoai"
                     android:layout_width="match_parent"
@@ -103,23 +129,23 @@
             </FrameLayout>
 
 
-
             <LinearLayout
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="17dp"
                     android:text="Giảm giá"
                     android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tvTatCaSanPhamGiamGia"
                     android:layout_width="match_parent"
@@ -137,31 +163,33 @@
                 android:layout_height="wrap_content" />
 
 
-
             <androidx.cardview.widget.CardView
-                app:cardCornerRadius="15dp"
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="15dp">
+
                 <LinearLayout
-                    android:background="#B1363C"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="#B1363C"
+                    android:orientation="vertical">
+
                     <LinearLayout
-                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
+
                         <TextView
-                            android:textStyle="bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="17dp"
                             android:text="Cửa hàng phổ biến"
                             android:textColor="@color/white"
-                            android:textSize="20dp" />
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvTatCaCuaHang"
@@ -173,32 +201,33 @@
                             android:textColor="@color/orange"
                             android:textSize="15dp" />
                     </LinearLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcvPopularShop"
-                        android:layout_marginBottom="15dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
 
             <LinearLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <TextView
 
-                    android:textStyle="bold"
-
                     android:layout_width="wrap_content"
+
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="17dp"
                     android:text="Món ăn phổ biến"
                     android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvTatCaSanPhamPhoBien"

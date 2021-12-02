@@ -1,6 +1,7 @@
 package com.example.khachhangarea_realfood.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,14 +39,21 @@ import com.example.khachhangarea_realfood.model.DonHangInfo;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.LoaiSanPham;
 import com.example.khachhangarea_realfood.model.SanPham;
+import com.example.khachhangarea_realfood.model.SuKien;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import org.imaginativeworld.whynotimagecarousel.ImageCarousel;
+import org.imaginativeworld.whynotimagecarousel.model.CarouselItem;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import ru.nikartm.support.ImageBadgeView;
 
@@ -61,6 +70,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<SanPham> sanPhamSaleFoods, sanPhamPopularFoods;
     private ArrayList<CuaHang> cuaHangs;
     private ArrayList<LoaiSanPham> loaiSanPhams;
+    private ArrayList<SuKien> suKiens;
     private LinearLayoutManager linearLayoutManagerSaleFood, linearLayoutManagerPopularShop, linearLayoutManagerPopularFood, linearLayoutManagerLoai;
     private GridLayoutManager gridLayoutManager;
     private RecyclerView rcvFoodSale, rcvPopularShop, rcvPopularFood, rcvLoai;
@@ -70,6 +80,7 @@ public class HomeFragment extends Fragment {
     private TextView tvGood, tvTatCaCuaHang, tvTatCaSanPhamGiamGia, tvTatCaSanPhamPhoBien;
     private SearchView searchView;
     private Firebase_Manager firebase_manager = new Firebase_Manager();
+    private ImageCarousel carousel;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -96,6 +107,7 @@ public class HomeFragment extends Fragment {
         sanPhamSaleFoods = new ArrayList<>();
         sanPhamPopularFoods = new ArrayList<>();
         loaiSanPhams = new ArrayList<>();
+        suKiens = new ArrayList<>();
         sanPhamAdapter = new SanPhamAdapter(getActivity(), R.layout.list_item_food_1, sanPhamSaleFoods);
         sanPhamPopularAdapter = new SanPhamAdapter(getActivity(), R.layout.list_item_food_1, sanPhamPopularFoods);
         cuaHangAdapter = new CuaHangAdapter(getActivity(), R.layout.list_item_shop, cuaHangs);
@@ -194,7 +206,7 @@ public class HomeFragment extends Fragment {
                 String chieu = "13:00:01";
                 String toi = "18:00:01";
                 String end = "23:00:01";
-                if ( date.compareTo(trua) < 1) {
+                if (date.compareTo(trua) < 1) {
                     tvGood.setText("Chào buổi sáng , " + khachHang.getTenKhachHang() + " !");
                 } else if (date.compareTo(chieu) < 1) {
                     tvGood.setText("Chào buổi trưa , " + khachHang.getTenKhachHang() + " !");
@@ -202,9 +214,9 @@ public class HomeFragment extends Fragment {
                     tvGood.setText("Chào buổi chiều , " + khachHang.getTenKhachHang() + " !");
                 } else if (date.compareTo(end) < 1) {
                     tvGood.setText("Chào buổi tối , " + khachHang.getTenKhachHang() + " !");
-                }else {
-                     tvGood.setText("Đã đóng cửa , " + khachHang.getTenKhachHang() + " !");
-                 }
+                } else {
+                    tvGood.setText("Đã đóng cửa , " + khachHang.getTenKhachHang() + " !");
+                }
             }
 
             @Override
@@ -253,7 +265,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         sanPhamPopularAdapter.setDelegation(new SanPhamAdapter.ClickItemFoodListener() {
             @Override
             public void getInformationFood(SanPham sanPham) {
@@ -262,6 +273,35 @@ public class HomeFragment extends Fragment {
                 String data = gson.toJson(sanPham);
                 intent.putExtra("dataSanPham", data);
                 getActivity().startActivity(intent);
+            }
+        });
+
+        carousel.registerLifecycle(getLifecycle());
+        List<CarouselItem> list = new ArrayList<>();
+
+// Just image URL
+        firebase_manager.mDatabase.child("SuKien").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    SuKien suKien = dataSnapshot.getValue(SuKien.class);
+                    firebase_manager.storageRef.child("SuKien").child(suKien.getIdSuKien()).child("ImageSuKien").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            list.add(new CarouselItem(uri.toString()));
+                            carousel.setData(list);
+                        }
+                    });
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -296,5 +336,6 @@ public class HomeFragment extends Fragment {
         searchView = mView.findViewById(R.id.searchViewFood);
         tvTatCaSanPhamGiamGia = mView.findViewById(R.id.tvTatCaSanPhamGiamGia);
         tvTatCaSanPhamPhoBien = mView.findViewById(R.id.tvTatCaSanPhamPhoBien);
+        carousel = mView.findViewById(R.id.carousel);
     }
 }

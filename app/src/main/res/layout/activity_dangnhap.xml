@@ -1,57 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".DangNhap">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <androidx.cardview.widget.CardView
-                android:layout_marginTop="-35dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-35dp"
 
                 app:cardCornerRadius="40dp">
+
                 <FrameLayout
-                    android:backgroundTint="#93242A"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#93242A">
+
                     <ImageView
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/logo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="33dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/logo"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/logo"
-                        android:layout_marginTop="33dp"/>
+                        android:src="@drawable/logo" />
                 </FrameLayout>
             </androidx.cardview.widget.CardView>
 
-            <EditText
-                android:id="@+id/edtEmail"
-                style="@style/edittext"
-                android:drawableLeft="@drawable/ic_email"
-                android:hint="@string/email" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:startIconDrawable="@drawable/ic_email">
 
-            <EditText
-                android:id="@+id/edtPassword"
-                style="@style/edittext"
-                android:inputType="textPassword"
-                android:drawableLeft="@drawable/ic_lock"
-                android:hint="@string/password" />
+                <EditText
+                    android:id="@+id/edtEmail"
+                    style="@style/edittext"
+                    android:drawableLeft="@drawable/ic_email"
+                    android:hint="@string/email" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:passwordToggleEnabled="true"
+                app:startIconDrawable="@drawable/ic_lock">
+
+                <EditText
+                    android:id="@+id/edtPassword"
+                    style="@style/edittext"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDangNhap"
                 style="@style/button"
                 android:text="@string/dangnhap" />
-
 
 
             <LinearLayout
@@ -78,6 +100,7 @@
                     android:textColor="#93242A"
                     android:textSize="14dp" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/tvQuenMatKhau"
                 android:layout_width="wrap_content"
