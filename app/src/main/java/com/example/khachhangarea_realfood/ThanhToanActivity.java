@@ -44,6 +44,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -213,7 +215,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                         }
                         String IDDonHang = "DH_" + UUID.randomUUID().toString();
                         DonHang donHang = new DonHang(IDDonHang, gioHangDisplay.getIdCuaHang(), firebase_manager.auth.getUid()
-                                , "", diaChi, soDienThoai, gioHangDisplay.getGhiChu(), "", tongTien, new Date(),null, TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
+                                , "", diaChi, soDienThoai, gioHangDisplay.getGhiChu(), "", tongTien, new Date(), null, TrangThaiDonHang.SHOP_ChoXacNhanChuyenTien
                         );
                         firebase_manager.mDatabase.child("DonHang").child(IDDonHang).setValue(donHang).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -257,7 +259,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                     //Thong bao don hang cho khach hang
                                     TaiKhoanNganHang taiKhoanNganHang = dataSnapshot.getValue(TaiKhoanNganHang.class);
-                                    double soTien = donHang.getTongTien() * 0.1;
+                                    double soTien = Math.round(donHang.getTongTien() * 0.1 * 10) / 10;
                                     String noiDung = "Bạn đã đặt hàng thành công " + donHang.getIDDonHang().substring(0, 10) + " vui lòng chuyển khoản đến số tài khoản "
                                             + taiKhoanNganHang.getSoTaiKhoan() + " " + taiKhoanNganHang.getTenChuTaiKhoan() + " " + taiKhoanNganHang.getTenNganHang() + " với số tiền: " + soTien;
                                     ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", firebase_manager.auth.getUid(), "", TrangThaiThongBao.ChuaXem, new Date());

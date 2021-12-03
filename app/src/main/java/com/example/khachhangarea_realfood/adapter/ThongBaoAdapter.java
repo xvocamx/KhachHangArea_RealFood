@@ -1,8 +1,17 @@
 package com.example.khachhangarea_realfood.adapter;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -10,17 +19,25 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
+import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.Firebase_Manager;
 import com.example.khachhangarea_realfood.R;
+import com.example.khachhangarea_realfood.TrangThai.LoaiThongBao;
+import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.KhachHang;
+import com.example.khachhangarea_realfood.model.TaiKhoanNganHang;
 import com.example.khachhangarea_realfood.model.ThongBao;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyViewHolder> {
     Activity context;
@@ -28,6 +45,8 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
     ArrayList<ThongBao> thongBaos;
     Firebase_Manager firebase_manager = new Firebase_Manager();
     ClickItemThongBaoListener delegation;
+    ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+    KAlertDialog kAlertDialog;
 
     public void setDelegation(ClickItemThongBaoListener delegation) {
         this.delegation = delegation;
@@ -42,7 +61,7 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        CardView linearLayout = (CardView) context.getLayoutInflater().inflate(viewType, parent, false);
+        View linearLayout = context.getLayoutInflater().inflate(viewType, parent, false);
         return new MyViewHolder(linearLayout);
     }
 
@@ -52,12 +71,12 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
         if (thongBao == null) {
             return;
         }
+        viewBinderHelper.bind(holder.swipeRevealLayout, thongBao.getIDThongBao());
         firebase_manager.LoadTenKhachHang(holder.tvTenKhachHang);
         holder.tvNoiDungThongBao.setText(thongBao.getNoiDung());
         String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(thongBao.getDate());
         holder.tvThoiGianThongBao.setText(date);
-        holder.tvTrangThai.setText(firebase_manager.GetStringTrangThaiThongBao(thongBao.getTrangThaiThongBao()));
-
+        holder.tvIDDonHang.setText(thongBao.getDonHang().getIDDonHang());
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +85,62 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
                 }
             }
         };
+        if (thongBao.getTrangThaiThongBao().equals(TrangThaiThongBao.DaXem)) {
+            holder.ivThongBao.setImageResource(R.drawable.ic_baseline_brightness_green_24);
+        }
+        holder.lnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebase_manager.mDatabase.child("TaiKhoanNganHang").orderByChild("idTaiKhoan").equalTo(thongBao.getDonHang().getIDCuaHang()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            //Thong bao don hang cho khach hang
+                            TaiKhoanNganHang taiKhoanNganHang = dataSnapshot.getValue(TaiKhoanNganHang.class);
+                            double soTien = Math.round(thongBao.getDonHang().getTongTien() * 0.1 * 10) / 10;
+                            double tongTien = Math.round(thongBao.getDonHang().getTongTien() * 100) / 100;
+                            String noiDung = "Bạn đã đặt hàng thành công " + thongBao.getDonHang().getIDDonHang().substring(0, 10)
+                                    + "\n Vui lòng chuyển khoản đến số tài khoản " + taiKhoanNganHang.getSoTaiKhoan() + " ,"
+                                    + taiKhoanNganHang.getTenChuTaiKhoan() + " ," + taiKhoanNganHang.getTenNganHang() + " với số tiền: " + soTien
+                                    + "\n" + "Cú pháp: " + thongBao.getDonHang().getIDDonHang().substring(0, 10) + " " + tongTien;
+                            openDiaLog(Gravity.CENTER, noiDung);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
+    }
+
+    private void openDiaLog(int gravity, String noiDung) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_thanhtoan);
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = gravity;
+        window.setAttributes(windowAttributes);
+
+        if (Gravity.CENTER == gravity) {
+            dialog.setCancelable(true);
+        }
+
+        TextView tvNoiDung = dialog.findViewById(R.id.tvNoiDung);
+        tvNoiDung.setText(noiDung);
+
+        dialog.show();
     }
 
     @Override
@@ -80,7 +155,10 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         View.OnClickListener onClickListener;
-        TextView tvTenKhachHang, tvThoiGianThongBao, tvNoiDungThongBao, tvTrangThai;
+        SwipeRevealLayout swipeRevealLayout;
+        LinearLayout lnInfo;
+        ImageView ivThongBao;
+        TextView tvTenKhachHang, tvThoiGianThongBao, tvNoiDungThongBao, tvIDDonHang;
         LinearLayout lnThongBao;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -88,8 +166,11 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
             tvTenKhachHang = itemView.findViewById(R.id.tvTenKhachHang);
             tvThoiGianThongBao = itemView.findViewById(R.id.tvThoiGian);
             tvNoiDungThongBao = itemView.findViewById(R.id.tvNoiDung);
-            tvTrangThai = itemView.findViewById(R.id.tvTrangThai);
+            lnInfo = itemView.findViewById(R.id.lnInfo);
             lnThongBao = itemView.findViewById(R.id.lnThongBao);
+            tvIDDonHang = itemView.findViewById(R.id.tvIDDonHang);
+            swipeRevealLayout = itemView.findViewById(R.id.swipeRevealLayout);
+            ivThongBao = itemView.findViewById(R.id.ivThongBao);
             lnThongBao.setOnClickListener(this);
         }
 

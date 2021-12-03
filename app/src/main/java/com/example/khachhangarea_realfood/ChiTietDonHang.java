@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class ChiTietDonHang extends AppCompatActivity {
@@ -30,6 +34,7 @@ public class ChiTietDonHang extends AppCompatActivity {
     ArrayList<DonHangInfo> donHangInfos;
     LinearLayoutManager linearLayoutManager;
     ThanhToanAdapter thanhToanAdapter;
+    LinearLayout lnIDDonHang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +54,27 @@ public class ChiTietDonHang extends AppCompatActivity {
     }
 
     private void LoadImformationDonHang() {
-        tvIDDonHang.setText(donHang.getIDDonHang().substring(0, 15));
-        String date = DateFormat.getDateInstance(DateFormat.SHORT).format(donHang.getNgayTao());
-        tvThoiGian.setText(date);
-        tvTrangThai.setText(firebase_manager.GetStringTrangThaiDonHang(donHang.getTrangThai()));
-        tvSDT.setText(donHang.getSoDienThoai());
-        tvDiaChi.setText(donHang.getDiaChi());
-        firebase_manager.LoadTenKhachHang(tvHoTen);
-        tvTongTien.setText(String.valueOf(donHang.getTongTien()));
+        firebase_manager.mDatabase.child("DonHang").child(donHang.getIDDonHang()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DonHang donHang = snapshot.getValue(DonHang.class);
+                firebase_manager.SetColorOfStatus(donHang.getTrangThai(), lnIDDonHang, tvIDDonHang);
+                tvIDDonHang.setText(donHang.getIDDonHang());
+                String date = DateFormat.getDateInstance(DateFormat.SHORT).format(donHang.getNgayTao());
+                tvThoiGian.setText(date);
+                tvTrangThai.setText(firebase_manager.GetStringTrangThaiDonHang(donHang.getTrangThai()));
+                tvSDT.setText(donHang.getSoDienThoai());
+                tvDiaChi.setText(donHang.getDiaChi());
+                firebase_manager.LoadTenKhachHang(tvHoTen);
+                tvTongTien.setText((double) Math.ceil(donHang.getTongTien() * 100) / 100 + "");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     private void setEvent() {
@@ -87,7 +105,6 @@ public class ChiTietDonHang extends AppCompatActivity {
         });
     }
 
-
     private void setControl() {
         tvIDDonHang = findViewById(R.id.tvIDDonHang);
         tvTrangThai = findViewById(R.id.tvTrangThai);
@@ -97,5 +114,6 @@ public class ChiTietDonHang extends AppCompatActivity {
         tvTongTien = findViewById(R.id.tvTongTien);
         tvThoiGian = findViewById(R.id.tvThoiGian);
         rcvDonHangInfo = findViewById(R.id.rcvDonHangInfo);
+        lnIDDonHang = findViewById(R.id.lnIDDonHang);
     }
 }

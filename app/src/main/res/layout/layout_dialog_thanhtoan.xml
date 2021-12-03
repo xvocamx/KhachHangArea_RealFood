@@ -14,86 +14,25 @@
         android:padding="12dp"
         android:text="Thông báo"
         android:textColor="@color/white"
-        android:textSize="17dp" />
+        android:textSize="17dp"
+        android:textStyle="bold" />
 
     <TextView
-        android:textSize="15dp"
         android:id="@+id/tvNoiDung"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Chuyển tiền đến số tài khoản\n
-4551002489377\n
-NGUYEN VAN A\n
-Ngân hàng: Vietcombank"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="17dp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="right"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Số tiền: "
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvTien"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="10000"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="VNĐ"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_marginBottom="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnHuy"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="30dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_red_corner"
-            android:text="Hủy"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnXacNhan"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_green_corner"
-            android:text="Xác nhận"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
     </LinearLayout>
 
 </LinearLayout>
