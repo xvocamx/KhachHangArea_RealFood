@@ -12,14 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.developer.kalert.KAlertDialog;
 import com.example.khachhangarea_realfood.TrangThai.LoaiThongBao;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiBaoCao;
 import com.example.khachhangarea_realfood.TrangThai.TrangThaiThongBao;
-import com.example.khachhangarea_realfood.model.BaoCao;
+import com.example.khachhangarea_realfood.model.BaoCaoShop;
 import com.example.khachhangarea_realfood.model.CuaHang;
 import com.example.khachhangarea_realfood.model.KhachHang;
 import com.example.khachhangarea_realfood.model.ThongBao;
@@ -37,7 +35,7 @@ import com.vansuita.pickimage.listeners.IPickResult;
 import java.util.Date;
 import java.util.UUID;
 
-public class BaoCaoShop extends AppCompatActivity {
+public class BaoCaoShopActivity extends AppCompatActivity {
     Spinner spLyDo;
     EditText edtLyDo;
     Button btnBaoCao;
@@ -52,6 +50,7 @@ public class BaoCaoShop extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bao_cao_shop);
         setControl();
+        // Lay du lieu cua hang
         if (getIntent() != null && getIntent().getExtras() != null) {
             Intent intent = getIntent();
             String dataCuaHang = intent.getStringExtra("dataShop");
@@ -61,7 +60,9 @@ public class BaoCaoShop extends AppCompatActivity {
         setEvent();
     }
 
+    // Set su kien
     private void setEvent() {
+        //Chon hinh anh de bao cao
         ivBaoCao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,11 +77,10 @@ public class BaoCaoShop extends AppCompatActivity {
                     public void onCancelClick() {
 
                     }
-                }).show(BaoCaoShop.this);
+                }).show(BaoCaoShopActivity.this);
             }
         });
-
-
+        //Chon ly do bao cao
         spLyDo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -96,11 +96,12 @@ public class BaoCaoShop extends AppCompatActivity {
 
             }
         });
+        // Xu ly button bao cao
         btnBaoCao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (spLyDo.getSelectedItem().equals("Chọn lý do")) {
-                    kAlertDialog = new KAlertDialog(BaoCaoShop.this,KAlertDialog.SUCCESS_TYPE).setContentText("Vui lòng chọn lý do");
+                    kAlertDialog = new KAlertDialog(BaoCaoShopActivity.this, KAlertDialog.SUCCESS_TYPE).setContentText("Vui lòng chọn lý do");
                     kAlertDialog.show();
                 } else {
                     String IDBaoCao = "BC_" + UUID.randomUUID().toString();
@@ -114,26 +115,39 @@ public class BaoCaoShop extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     try {
+                                        // Dung Edit text Ly do
                                         if (spLyDo.getSelectedItem().equals("Khác")) {
+                                            //Gui thong bao va bao cao cho admin
                                             String noiDung = "Người dùng " + tenKhachHang + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + edtLyDo.getText().toString();
                                             ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Báo cáo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
-                                            BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Báo cáo", null, new Date(), TrangThaiBaoCao.ChuaXem);
-                                            firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
+                                            BaoCaoShop baoCaoShop = new BaoCaoShop(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Báo cáo", null, new Date(), TrangThaiBaoCao.ChuaXem);
+                                            thongBao.setLoaiThongBao(LoaiThongBao.BaoCaoCuaHang);
+                                            thongBao.setBaoCaoShop(baoCaoShop);
+                                            //Up len firebase
+                                            firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCaoShop);
                                             firebase_manager.mDatabase.child("ThongBao").child("admin").child(IDThongBao).setValue(thongBao);
-                                            if (hinhAnhBaoCao != null) {
-                                                firebase_manager.UpImageBaoCao(hinhAnhBaoCao, IDBaoCao);
-                                            }
-                                        } else {
-                                            String noiDung = "Người dùng " + tenKhachHang + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + spLyDo.getSelectedItem().toString();
-                                            ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Báo cáo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
-                                            BaoCao baoCao = new BaoCao(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Báo cáo", null, new Date(),TrangThaiBaoCao.ChuaXem);
-                                            firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCao);
-                                            firebase_manager.mDatabase.child("ThongBao").child("admin").child(IDThongBao).setValue(thongBao);
+                                            //kiem tra hinh anh bao cao
                                             if (hinhAnhBaoCao != null) {
                                                 firebase_manager.UpImageBaoCao(hinhAnhBaoCao, IDBaoCao);
                                             }
                                         }
-                                    }catch (Exception ex){
+                                        //Dung Spinner ly do
+                                        else {
+                                            //Gui thong bao va bao cao cho admin
+                                            String noiDung = "Người dùng " + tenKhachHang + " gửi lý do báo cáo về cửa hàng " + cuaHang.getTenCuaHang() + " vì " + spLyDo.getSelectedItem().toString();
+                                            ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Báo cáo", "", "admin", uri.toString(), TrangThaiThongBao.ChuaXem, new Date());
+                                            BaoCaoShop baoCaoShop = new BaoCaoShop(IDBaoCao, firebase_manager.auth.getUid(), cuaHang.getIDCuaHang(), noiDung, "Báo cáo", null, new Date(), TrangThaiBaoCao.ChuaXem);
+                                            thongBao.setLoaiThongBao(LoaiThongBao.BaoCaoCuaHang);
+                                            thongBao.setBaoCaoShop(baoCaoShop);
+                                            //Up len firebase
+                                            firebase_manager.mDatabase.child("BaoCao").child(IDBaoCao).setValue(baoCaoShop);
+                                            firebase_manager.mDatabase.child("ThongBao").child("admin").child(IDThongBao).setValue(thongBao);
+                                            //Kiem tra hinh anh bao cao
+                                            if (hinhAnhBaoCao != null) {
+                                                firebase_manager.UpImageBaoCao(hinhAnhBaoCao, IDBaoCao);
+                                            }
+                                        }
+                                    } catch (Exception ex) {
 
                                     }
                                 }
@@ -146,7 +160,7 @@ public class BaoCaoShop extends AppCompatActivity {
                         }
                     });
 
-                    Intent intent = new Intent(BaoCaoShop.this, ChiTietCuaHang.class);
+                    Intent intent = new Intent(BaoCaoShopActivity.this, ChiTietCuaHang.class);
                     Gson gson = new Gson();
                     String data = gson.toJson(cuaHang);
                     intent.putExtra("dataCuaHang", data);
@@ -157,6 +171,7 @@ public class BaoCaoShop extends AppCompatActivity {
 
     }
 
+    //Anh xa
     private void setControl() {
         spLyDo = findViewById(R.id.spLyDo);
         edtLyDo = findViewById(R.id.edtLyDo);

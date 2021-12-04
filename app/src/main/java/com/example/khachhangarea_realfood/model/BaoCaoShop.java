@@ -6,16 +6,16 @@ import com.example.khachhangarea_realfood.TrangThai.TrangThaiBaoCao;
 
 import java.util.Date;
 
-public class BaoCao {
+public class BaoCaoShop {
     String IDBaoCao,IDKhachHang,IDCuaHang,lyDo,tieuDe;
     ImageView ivBaoCao;
     Date ngayBaoCao;
     TrangThaiBaoCao trangThaiBaoCao;
 
-    public BaoCao() {
+    public BaoCaoShop() {
     }
 
-    public BaoCao(String IDBaoCao, String IDKhachHang, String IDCuaHang, String lyDo, String tieuDe, ImageView ivBaoCao, Date ngayBaoCao, TrangThaiBaoCao trangThaiBaoCao) {
+    public BaoCaoShop(String IDBaoCao, String IDKhachHang, String IDCuaHang, String lyDo, String tieuDe, ImageView ivBaoCao, Date ngayBaoCao, TrangThaiBaoCao trangThaiBaoCao) {
         this.IDBaoCao = IDBaoCao;
         this.IDKhachHang = IDKhachHang;
         this.IDCuaHang = IDCuaHang;

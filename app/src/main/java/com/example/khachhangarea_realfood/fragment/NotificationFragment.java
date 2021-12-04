@@ -1,4 +1,4 @@
-package com.example.khachhangarea_realfood.fragment;
+    package com.example.khachhangarea_realfood.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,13 +77,29 @@ public class NotificationFragment extends Fragment {
         thongBaoAdapter.setDelegation(new ThongBaoAdapter.ClickItemThongBaoListener() {
             @Override
             public void getInformationThongBao(ThongBao thongBao) {
-                Intent intent = new Intent(getActivity(), ChiTietDonHang.class);
-                Gson gson = new Gson();
-                String data = gson.toJson(thongBao.getDonHang());
-                intent.putExtra("dataDonHang", data);
-                getActivity().startActivity(intent);
-                thongBao.setTrangThaiThongBao(TrangThaiThongBao.DaXem);
-                firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(thongBao.getIDThongBao()).setValue(thongBao);
+                if(thongBao.getLoaiThongBao() != null){
+                    switch (thongBao.getLoaiThongBao()){
+                        case DONHANG_MOI:
+                            Intent intent = new Intent(getActivity(), ChiTietDonHang.class);
+                            Gson gson = new Gson();
+                            String dataDonHang = gson.toJson(thongBao.getDonHang());
+                            intent.putExtra("dataDonHang", dataDonHang);
+                            getActivity().startActivity(intent);
+                            thongBao.setTrangThaiThongBao(TrangThaiThongBao.DaXem);
+                            firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(thongBao.getIDThongBao()).setValue(thongBao);
+                            break;
+                        case BaoCaoCuaHang:
+                            Intent intent1 = new Intent(getActivity(),ChiTietThongBao.class);
+                            Gson gson1 = new Gson();
+                            String dataCuaHang = gson1.toJson(thongBao.getCuaHang());
+                            intent1.putExtra("dataCuaHang",dataCuaHang);
+                            getActivity().startActivity(intent1);
+                            thongBao.setTrangThaiThongBao(TrangThaiThongBao.DaXem);
+                            firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(thongBao.getIDThongBao()).setValue(thongBao);
+                            break;
+                    }
+                }
+
             }
         });
     }
@@ -117,6 +133,5 @@ public class NotificationFragment extends Fragment {
 
     private void setControl() {
         rcvThongBao = view.findViewById(R.id.rcvThongBao);
-
     }
 }

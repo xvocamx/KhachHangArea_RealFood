@@ -60,7 +60,7 @@
             android:label="Chi Tiết đơn hàng"
             android:parentActivityName=".DonMua" />
         <activity
-            android:name=".BaoCaoShop"
+            android:name=".BaoCaoShopActivity"
             android:label="Báo cáo shop này"
             android:parentActivityName=".Home" />
         <activity

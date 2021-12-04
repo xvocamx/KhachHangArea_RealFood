@@ -260,8 +260,10 @@ public class ThanhToanActivity extends AppCompatActivity {
                                     //Thong bao don hang cho khach hang
                                     TaiKhoanNganHang taiKhoanNganHang = dataSnapshot.getValue(TaiKhoanNganHang.class);
                                     double soTien = Math.round(donHang.getTongTien() * 0.1 * 10) / 10;
-                                    String noiDung = "Bạn đã đặt hàng thành công " + donHang.getIDDonHang().substring(0, 10) + " vui lòng chuyển khoản đến số tài khoản "
-                                            + taiKhoanNganHang.getSoTaiKhoan() + " " + taiKhoanNganHang.getTenChuTaiKhoan() + " " + taiKhoanNganHang.getTenNganHang() + " với số tiền: " + soTien;
+                                    String noiDung = "Bạn đã đặt hàng thành công " + donHang.getIDDonHang().substring(0, 10)
+                                            + "\nVui lòng chuyển khoản với cú pháp: \n" + donHang.getIDDonHang().substring(0, 10) + " " + soTien
+                                            + "   đến số tài khoản " + taiKhoanNganHang.getSoTaiKhoan() + " ,"
+                                            + taiKhoanNganHang.getTenChuTaiKhoan() + " ," + taiKhoanNganHang.getTenNganHang();
                                     ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", firebase_manager.auth.getUid(), "", TrangThaiThongBao.ChuaXem, new Date());
                                     thongBao.setLoaiThongBao(LoaiThongBao.DONHANG_MOI);
                                     thongBao.setDonHang(donHang);

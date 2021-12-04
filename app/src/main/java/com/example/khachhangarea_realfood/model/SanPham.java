@@ -1,27 +1,47 @@
 package com.example.khachhangarea_realfood.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SanPham {
-    String IDSanPham, TenSanPham, IDLoai, IDDanhMuc, Gia, ChiTietSanPham, IDCuaHang;
+    String IDSanPham, TenSanPham, IDLoai, IDDanhMuc, Gia, ChiTietSanPham, IDCuaHang,size;
     Double giaOld;
     Float Rating;
     ArrayList<String> images;
     int SoLuongBanDuoc;
+    Date ngayTao;
 
     public SanPham() {
     }
 
-    public SanPham(String IDSanPham, String tenSanPham, String IDLoai, String IDDanhMuc, String gia, String chiTietSanPham, String IDCuaHang, Float rating, ArrayList<String> images) {
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public Date getNgayTao() {
+        return ngayTao;
+    }
+
+    public void setNgayTao(Date ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+
+    public SanPham(String IDSanPham, String tenSanPham, String IDLoai, String IDDanhMuc, String gia, String chiTietSanPham, String IDCuaHang, String size, Float rating, ArrayList<String> images, Date ngayTao) {
         this.IDSanPham = IDSanPham;
         TenSanPham = tenSanPham;
         this.IDLoai = IDLoai;
         this.IDDanhMuc = IDDanhMuc;
-        this.Gia = gia;
-        this.ChiTietSanPham = chiTietSanPham;
+        Gia = gia;
+        ChiTietSanPham = chiTietSanPham;
         this.IDCuaHang = IDCuaHang;
-        this.Rating = rating;
+        this.size = size;
+        Rating = rating;
         this.images = images;
+        this.ngayTao = ngayTao;
     }
 
     public String getIDSanPham() {

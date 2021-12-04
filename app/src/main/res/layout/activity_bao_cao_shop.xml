@@ -6,7 +6,7 @@
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:orientation="vertical"
-    tools:context=".BaoCaoShop">
+    tools:context=".BaoCaoShopActivity">
 
     <Spinner
         android:id="@+id/spLyDo"

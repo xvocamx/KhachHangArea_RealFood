@@ -43,6 +43,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
+import org.imaginativeworld.whynotimagecarousel.ImageCarousel;
+import org.imaginativeworld.whynotimagecarousel.model.CarouselItem;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,7 +53,7 @@ import java.util.UUID;
 
 public class ChiTietSanPham extends AppCompatActivity {
     private TextView tvNameFood, tvGia, tvRating, tvMoTa, tvTenCuaHang, tvAddressShop, tvSoLuongBanDuoc, tvTBRating;
-    private ImageView ivFood, ivShop,ivFavorite;
+    private ImageView ivFood, ivShop, ivFavorite;
     private SanPham sanPham;
     private CuaHang cuaHang;
     private ProgressBar pbLoadChiTietSanPham;
@@ -66,6 +69,9 @@ public class ChiTietSanPham extends AppCompatActivity {
     private List<Float> allRatings = new ArrayList<Float>();
     private float ratingSum = 0f;
     private KAlertDialog kAlertDialog;
+    private ImageCarousel carousel;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +97,20 @@ public class ChiTietSanPham extends AppCompatActivity {
             if (sanPham.getSoLuongBanDuoc() + "" != null) {
                 tvSoLuongBanDuoc.setText(sanPham.getSoLuongBanDuoc() + "");
             }
-            firebase_manager.LoadImageFood(sanPham, getApplicationContext(), ivFood);
+            carousel.registerLifecycle(getLifecycle());
+            List<CarouselItem> list = new ArrayList<>();
+            for (int i = 0; i < sanPham.getImages().size(); i++) {
+                firebase_manager.storageRef.child("SanPham").child(sanPham.getIDCuaHang()).child(sanPham.getIDSanPham()).child(sanPham.getImages().get(i)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        list.add(new CarouselItem(uri.toString()));
+                        carousel.setData(list);
+
+                    }
+                });
+            }
+
+
             firebase_manager.mDatabase.child("CuaHang").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -158,7 +177,7 @@ public class ChiTietSanPham extends AppCompatActivity {
 
                 }
             });
-            tvSoLuongBanDuoc.setText(sanPham.getSoLuongBanDuoc()+"");
+            tvSoLuongBanDuoc.setText(sanPham.getSoLuongBanDuoc() + "");
         }
     }
 
@@ -276,13 +295,13 @@ public class ChiTietSanPham extends AppCompatActivity {
         tvMoTa = findViewById(R.id.tvMoTa);
         tvTenCuaHang = findViewById(R.id.tvTenCuaHang);
         tvSoLuongBanDuoc = findViewById(R.id.tvSoLuongBanDuoc);
-        ivFood = findViewById(R.id.ivFood);
+        //ivFood = findViewById(R.id.ivFood);
         ivShop = findViewById(R.id.ivShop);
         btnXemShop = findViewById(R.id.btnXemShop);
         tvAddressShop = findViewById(R.id.tvAddressShop);
         btnSoLuong = findViewById(R.id.btnSoLuong);
         btnDatHang = findViewById(R.id.btnDatHang);
-
+        carousel = findViewById(R.id.carousel);
         rcvComent = findViewById(R.id.rcvComent);
         lnDanhGia = findViewById(R.id.lnDanhGia);
         tvTBRating = findViewById(R.id.tvTBRating);

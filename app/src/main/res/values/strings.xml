@@ -75,4 +75,10 @@
         <item>Khác</item>
     </array>
     <string name="title_activity_map">Map</string>
+    <string name="loc">Lọc</string>
+    <array name="LocGia">
+        <item>Giá</item>
+        <item>Giá: Thấp đến cao</item>
+        <item>Giá: Cao đến thấp</item>
+    </array>
 </resources>

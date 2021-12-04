@@ -12,6 +12,16 @@ public class ThongBao {
     LoaiThongBao loaiThongBao;
     DonHang donHang;
     SanPham sanPham;
+    CuaHang cuaHang;
+    BaoCaoShop baoCaoShop;
+
+    public BaoCaoShop getBaoCaoShop() {
+        return baoCaoShop;
+    }
+
+    public void setBaoCaoShop(BaoCaoShop baoCaoShop) {
+        this.baoCaoShop = baoCaoShop;
+    }
 
     public ThongBao(String IDThongBao, String noiDung, String tieuDe, String theme, String IDUSer, String image, TrangThaiThongBao trangThaiThongBao, Date date) {
         this.IDThongBao = IDThongBao;
@@ -115,5 +125,11 @@ public class ThongBao {
         this.sanPham = sanPham;
     }
 
+    public CuaHang getCuaHang() {
+        return cuaHang;
+    }
 
+    public void setCuaHang(CuaHang cuaHang) {
+        this.cuaHang = cuaHang;
+    }
 }

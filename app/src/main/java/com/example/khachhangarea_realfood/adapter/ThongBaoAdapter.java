@@ -77,6 +77,12 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
         String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(thongBao.getDate());
         holder.tvThoiGianThongBao.setText(date);
         holder.tvIDDonHang.setText(thongBao.getDonHang().getIDDonHang());
+        holder.lnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDiaLog(Gravity.CENTER, thongBao.getNoiDung());
+            }
+        });
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,33 +94,7 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
         if (thongBao.getTrangThaiThongBao().equals(TrangThaiThongBao.DaXem)) {
             holder.ivThongBao.setImageResource(R.drawable.ic_baseline_brightness_green_24);
         }
-        holder.lnInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebase_manager.mDatabase.child("TaiKhoanNganHang").orderByChild("idTaiKhoan").equalTo(thongBao.getDonHang().getIDCuaHang()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            //Thong bao don hang cho khach hang
-                            TaiKhoanNganHang taiKhoanNganHang = dataSnapshot.getValue(TaiKhoanNganHang.class);
-                            double soTien = Math.round(thongBao.getDonHang().getTongTien() * 0.1 * 10) / 10;
-                            double tongTien = Math.round(thongBao.getDonHang().getTongTien() * 100) / 100;
-                            String noiDung = "Bạn đã đặt hàng thành công " + thongBao.getDonHang().getIDDonHang().substring(0, 10)
-                                    + "\n Vui lòng chuyển khoản đến số tài khoản " + taiKhoanNganHang.getSoTaiKhoan() + " ,"
-                                    + taiKhoanNganHang.getTenChuTaiKhoan() + " ," + taiKhoanNganHang.getTenNganHang() + " với số tiền: " + soTien
-                                    + "\n" + "Cú pháp: " + thongBao.getDonHang().getIDDonHang().substring(0, 10) + " " + tongTien;
-                            openDiaLog(Gravity.CENTER, noiDung);
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-            }
-        });
     }
 
     private void openDiaLog(int gravity, String noiDung) {
@@ -128,7 +108,6 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
 
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = gravity;
         window.setAttributes(windowAttributes);

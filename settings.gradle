@@ -1,2 +1,3 @@
 rootProject.name = "KhachHangArea_RealFood"
 include ':app'
+include ':library'

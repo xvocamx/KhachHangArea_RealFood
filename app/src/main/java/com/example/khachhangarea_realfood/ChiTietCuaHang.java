@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -92,7 +91,7 @@ public class ChiTietCuaHang extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_baocao:
-                Intent intentBaoCao = new Intent(ChiTietCuaHang.this, BaoCaoShop.class);
+                Intent intentBaoCao = new Intent(ChiTietCuaHang.this, BaoCaoShopActivity.class);
                 Gson gson = new Gson();
                 String data = gson.toJson(cuaHang);
                 intentBaoCao.putExtra("dataShop", data);
