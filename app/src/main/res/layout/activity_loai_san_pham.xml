@@ -10,7 +10,7 @@
         android:id="@+id/searchViewLoai"
         android:layout_width="match_parent"
         android:layout_height="57dp"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:background="@drawable/custom_sreachview"
         android:iconifiedByDefault="false"
         android:queryBackground="@null"

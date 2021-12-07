@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -268,18 +269,13 @@ public class ThanhToanActivity extends AppCompatActivity {
                                     thongBao.setLoaiThongBao(LoaiThongBao.DONHANG_MOI);
                                     thongBao.setDonHang(donHang);
                                     firebase_manager.mDatabase.child("ThongBao").child(firebase_manager.auth.getUid()).child(IDThongBao).setValue(thongBao);
+
                                     //Thong bao don hang cho shop
                                     String noiDungShop = "Đơn hàng mới " + donHang.getIDDonHang().substring(0, 15) + " : " + finalTenSanPham + " " + donHang.getTongTien() + "VND";
-                                    firebase_manager.storageRef.child("CuaHang").child(donHang.getIDCuaHang()).child("Avatar").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            ThongBao thongBaoShop = new ThongBao(IDThongBao, noiDungShop, "Thông báo", "", donHang.getIDCuaHang(), "", TrangThaiThongBao.ChuaXem, new Date());
-                                            thongBaoShop.setLoaiThongBao(LoaiThongBao.DONHANG_MOI);
-                                            thongBaoShop.setDonHang(donHang);
-                                            firebase_manager.mDatabase.child("ThongBao").child(donHang.getIDCuaHang()).child(IDThongBao).setValue(thongBaoShop);
-                                        }
-                                    });
-
+                                    ThongBao thongBaoShop = new ThongBao(IDThongBao, noiDungShop, "Thông báo", "", donHang.getIDCuaHang(), "", TrangThaiThongBao.ChuaXem, new Date());
+                                    thongBaoShop.setLoaiThongBao(LoaiThongBao.DONHANG_MOI);
+                                    thongBaoShop.setDonHang(donHang);
+                                    firebase_manager.mDatabase.child("ThongBao").child(donHang.getIDCuaHang()).child(IDThongBao).setValue(thongBaoShop);
                                 }
                             }
 

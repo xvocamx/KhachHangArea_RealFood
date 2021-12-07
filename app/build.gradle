@@ -54,7 +54,7 @@ dependencies {
     implementation 'com.github.jrvansuita:PickImage:+'
     implementation 'io.github.nikartm:image-support:2.0.0'
     implementation "io.github.zagori:bottomnavbar:1.0.3"
-
+    implementation 'com.github.tapadoo:alerter:7.2.4'
     // Libs map
     implementation 'com.github.tapadoo:alerter:7.2.4'
     implementation 'com.google.android.gms:play-services-maps:17.0.1'

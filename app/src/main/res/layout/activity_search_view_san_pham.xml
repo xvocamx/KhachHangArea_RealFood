@@ -11,69 +11,132 @@
         android:id="@+id/searchViewFood"
         android:layout_width="match_parent"
         android:layout_height="57dp"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:background="@drawable/custom_sreachview"
         android:iconifiedByDefault="false"
         android:queryBackground="@null"
         android:queryHint="Search Food" />
 
+    <TextView
+        android:id="@+id/tvLoc"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginRight="10dp"
+        android:text="Bộ lọc"
+        android:textColor="@color/red"
+        android:textSize="16dp" />
+
     <LinearLayout
-        android:layout_marginBottom="5dp"
+        android:id="@+id/lnLoc"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#ededed"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/lnLoc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1">
+            android:layout_marginBottom="5dp"
+            android:background="#ededed"
+            android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnMoiNhat"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/orange"
-                android:text="Mới Nhất"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="15dp" />
+            <LinearLayout
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnBanChay"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/white"
-                android:text="Bán Chạy"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="15dp" />
-
-            <Spinner
-                android:id="@+id/spLocGia"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:entries="@array/LocGia" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <android.widget.Button
+                        android:id="@+id/btnMoiNhat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/white"
+                        android:text="Mới Nhất"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                         />
+
+                    <android.widget.Button
+                        android:id="@+id/btnBanChay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/white"
+                        android:text="Bán Chạy"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
+
+                    <Spinner
+                        android:id="@+id/spLocGia"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/white"
+                        android:entries="@array/LocGia" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvLoc"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtGiaTu"
+
+                style="@style/edittext_v1"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:hint="Từ" />
+
+            <EditText
+                android:id="@+id/edtGiaDen"
+                style="@style/edittext_v1"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:hint="Đến" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
+
+            <android.widget.Button
+                android:id="@+id/btnHuyApDung"
+                style="@style/button_red"
+                android:layout_weight="1.1"
+                android:text="Hủy" />
+        </LinearLayout>
+
+        <android.widget.Button
+            android:id="@+id/btnApDung"
+            style="@style/button_orange"
             android:layout_gravity="center"
-            android:gravity="end"
-            android:layout_marginRight="10dp"
-            android:layout_weight="9"
-            android:text="@string/loc"
-            android:textColor="@color/red"
-            android:textSize="16dp" />
+            android:layout_marginBottom="5dp"
+            android:text="Áp dụng" />
+
     </LinearLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"

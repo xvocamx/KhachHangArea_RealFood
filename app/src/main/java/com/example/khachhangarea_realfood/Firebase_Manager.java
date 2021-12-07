@@ -584,7 +584,7 @@ public class Firebase_Manager {
     }
 
     public void GetPopularShop(ArrayList<CuaHang> cuaHangs, CuaHangAdapter cuaHangAdapter) {
-        mDatabase.child("CuaHang").orderByChild("rating").limitToFirst(4).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("CuaHang").orderByChild("rating").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cuaHangs.clear();
@@ -594,7 +594,17 @@ public class Firebase_Manager {
                         cuaHangs.add(cuaHang);
                     }
                 }
-                Collections.reverse(cuaHangs);
+                Collections.sort(cuaHangs, new Comparator<CuaHang>() {
+                    @Override
+                    public int compare(CuaHang o1, CuaHang o2) {
+                        if (o1.getRating() != null && o2.getRating() != null) {
+                            return o2.getRating().compareTo(o1.getRating());
+                        }
+                        return 0;
+                    }
+                });
+                ArrayList<CuaHang> hangs = new ArrayList<>(cuaHangs.subList(0,4));
+                cuaHangAdapter.setCuaHangs(hangs);
                 cuaHangAdapter.notifyDataSetChanged();
             }
 
@@ -734,6 +744,15 @@ public class Firebase_Manager {
                         cuaHangAdapter.notifyDataSetChanged();
                     }
                 }
+                Collections.sort(cuaHangs, new Comparator<CuaHang>() {
+                    @Override
+                    public int compare(CuaHang o1, CuaHang o2) {
+                        if (o1.getRating() != null && o2.getRating() != null) {
+                            return o2.getRating().compareTo(o1.getRating());
+                        }
+                        return 0;
+                    }
+                });
                 pb.setVisibility(View.GONE);
             }
 

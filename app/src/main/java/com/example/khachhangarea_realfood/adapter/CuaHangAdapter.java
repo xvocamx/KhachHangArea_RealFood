@@ -40,6 +40,15 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
     private int resource;
     private ArrayList<CuaHang> cuaHangs,cuaHangsOld;
     private ClickItemShopListener delegation;
+
+    public ArrayList<CuaHang> getCuaHangs() {
+        return cuaHangs;
+    }
+
+    public void setCuaHangs(ArrayList<CuaHang> cuaHangs) {
+        this.cuaHangs = cuaHangs;
+    }
+
     private Firebase_Manager firebase_manager = new Firebase_Manager();
 
     public void setDelegation(ClickItemShopListener delegation) {
@@ -152,6 +161,8 @@ public class CuaHangAdapter extends RecyclerView.Adapter<CuaHangAdapter.MyViewHo
     public interface ClickItemShopListener {
         void getInformationShop(CuaHang cuaHang);
     }
+
+
 
     @Override
     public Filter getFilter() {

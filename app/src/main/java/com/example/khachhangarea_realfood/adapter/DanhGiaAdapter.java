@@ -120,7 +120,28 @@ public class DanhGiaAdapter extends RecyclerView.Adapter<DanhGiaAdapter.MyViewHo
                 String IDKhachHang = firebase_manager.auth.getUid();
                 String IDCuaHang = donHangInfo.getSanPham().getIDCuaHang();
                 DanhGia danhGia = new DanhGia(IDDanhGia, IDSanPham, IDCuaHang, IDKhachHang, noiDung, "", donHangInfo.getIDInfo(), rating, new Date(), null);
-                firebase_manager.mDatabase.child("DanhGia").child(IDDanhGia).setValue(danhGia);
+                firebase_manager.mDatabase.child("DanhGia").child(IDDanhGia).setValue(danhGia).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        firebase_manager.mDatabase.child("DanhGia").orderByChild("idcuaHang").equalTo(donHangInfo.getSanPham().getIDCuaHang()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                float tong = 0f;
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                    DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
+                                    tong += danhGia.getRating();
+                                }
+                                float tbRating = (float) Math.round((tong / snapshot.getChildrenCount()) * 10) / 10;
+                                firebase_manager.mDatabase.child("CuaHang").child(donHangInfo.getSanPham().getIDCuaHang()).child("rating").setValue(tbRating);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                });
                 donHangInfos.remove(position);
                 notifyDataSetChanged();
                 if(donHangInfos.size() == 0){

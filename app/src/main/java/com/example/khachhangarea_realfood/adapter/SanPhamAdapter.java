@@ -219,6 +219,35 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
         void getInformationFood(SanPham sanPham);
     }
 
+    public Filter getGiaFilter(){
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                if (strSearch.isEmpty()) {
+                    arrayList = arrayListOld;
+                } else {
+                    ArrayList<SanPham> sanPhams = new ArrayList<>();
+                    for (SanPham sanPham : arrayListOld) {
+                        if (sanPham.getGia().toLowerCase().contains(strSearch.toLowerCase())) {
+                            sanPhams.add(sanPham);
+                        }
+                    }
+                    arrayList = sanPhams;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = arrayList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                arrayList = (ArrayList<SanPham>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
