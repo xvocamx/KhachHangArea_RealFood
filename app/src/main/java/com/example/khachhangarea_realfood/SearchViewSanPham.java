@@ -52,7 +52,7 @@ public class SearchViewSanPham extends AppCompatActivity {
     private ProgressBar pbLoadTimKiemSanPham;
     private TextView tvLoc;
     private LinearLayout lnLoc;
-    private Button btnMoiNhat, btnBanChay, btnApDung, btnHuyApDung;
+    private Button btnMoiNhat, btnBanChay, btnApDung, btnHuyApDung,btnXepHang;
     private Spinner spLocGia;
     private EditText edtGiaTu, edtGiaDen;
     private ArrayList<SanPham> source = new ArrayList<>();
@@ -144,29 +144,45 @@ public class SearchViewSanPham extends AppCompatActivity {
                 LoadSanPhamMoiNhat();
             }
         });
+        btnXepHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadSanXepHang();
+            }
+        });
         btnApDung.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
 
                 if (!edtGiaTu.getText().toString().isEmpty() && !edtGiaDen.getText().toString().isEmpty()) {
-                    int min = Integer.parseInt(edtGiaTu.getText().toString());
-                    int max = Integer.parseInt(edtGiaDen.getText().toString());
-                    if (min < max) {
-                        sanPhams = (ArrayList<SanPham>) sanPhams.stream().filter(sanPham -> Integer.parseInt(sanPham.getGia()) >= min).collect(Collectors.toList());
-                        sanPhams = (ArrayList<SanPham>) sanPhams.stream().filter(sanPham -> Integer.parseInt(sanPham.getGia()) <= max).collect(Collectors.toList());
-                        sanPhamAdapter = new SanPhamAdapter(SearchViewSanPham.this, R.layout.list_item_food_1, sanPhams);
-                        rcvSanPham.setAdapter(sanPhamAdapter);
-                        Collections.sort(sanPhams, new Comparator<SanPham>() {
-                            @Override
-                            public int compare(SanPham o1, SanPham o2) {
-                                return Integer.parseInt(o1.getGia()) < Integer.parseInt(o2.getGia()) ? -1 : 1;
-                            }
-                        });
-                    } else {
+                    if (isNumeric(edtGiaDen.getText().toString())&&isNumeric(edtGiaTu.getText().toString()))
+                    {
+                        int min = Integer.parseInt(edtGiaTu.getText().toString());
+                        int max = Integer.parseInt(edtGiaDen.getText().toString());
+                        if (min < max) {
+                            sanPhams = (ArrayList<SanPham>) sanPhams.stream().filter(sanPham -> Integer.parseInt(sanPham.getGia()) >= min).collect(Collectors.toList());
+                            sanPhams = (ArrayList<SanPham>) sanPhams.stream().filter(sanPham -> Integer.parseInt(sanPham.getGia()) <= max).collect(Collectors.toList());
+                            sanPhamAdapter = new SanPhamAdapter(SearchViewSanPham.this, R.layout.list_item_food_1, sanPhams);
+                            rcvSanPham.setAdapter(sanPhamAdapter);
+                            Collections.sort(sanPhams, new Comparator<SanPham>() {
+                                @Override
+                                public int compare(SanPham o1, SanPham o2) {
+                                    return Integer.parseInt(o1.getGia()) < Integer.parseInt(o2.getGia()) ? -1 : 1;
+                                }
+                            });
+                        } else {
+                            Alerter.create(SearchViewSanPham.this)
+                                    .setTitle("Thông báo")
+                                    .setText("Số tiền không hợp lệ")
+                                    .setBackgroundColorRes(R.color.error_stroke_color)
+                                    .show();
+                        }
+                    }
+                    else {
                         Alerter.create(SearchViewSanPham.this)
                                 .setTitle("Thông báo")
-                                .setText("Số tiền không hợp lệ")
+                                .setText("Vui lòng nhập số")
                                 .setBackgroundColorRes(R.color.error_stroke_color)
                                 .show();
                     }
@@ -212,7 +228,14 @@ public class SearchViewSanPham extends AppCompatActivity {
         });
         sanPhamAdapter.notifyDataSetChanged();
     }
-
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
     private void LoadSanPhamBanChay() {
         Collections.sort(sanPhams, new Comparator<SanPham>() {
             @Override
@@ -231,17 +254,37 @@ public class SearchViewSanPham extends AppCompatActivity {
     }
 
     private void LoadSanPhamMoiNhat() {
+        try {
+            Collections.sort(sanPhams, new Comparator<SanPham>() {
+                @Override
+                public int compare(SanPham o1, SanPham o2) {
+                    if(o1.getNgayTao() !=null && o2.getNgayTao() != null){
+                        return o1.getNgayTao().compareTo(o2.getNgayTao());
+                    }
+                    return 0;
+                }
+            });
+            Collections.reverse(sanPhams);
+            sanPhamAdapter.notifyDataSetChanged();
+        }catch (Exception e)
+        {
+
+        }
+
+    }
+    private void LoadSanXepHang() {
         Collections.sort(sanPhams, new Comparator<SanPham>() {
             @Override
             public int compare(SanPham o1, SanPham o2) {
-                if(o1.getNgayTao() !=null && o2.getNgayTao() != null){
-                    return o1.getNgayTao().compareTo(o2.getNgayTao());
-                }
-                return 0;
+                    return o2.getRating().compareTo(o1.getRating());
+
             }
         });
-        Collections.reverse(sanPhams);
-        sanPhamAdapter.notifyDataSetChanged();
+        sanPhamAdapter = new SanPhamAdapter(SearchViewSanPham.this, R.layout.list_item_food_1, sanPhams);
+        rcvSanPham.setAdapter(sanPhamAdapter);
+
+
+
     }
 
     private void LoadSanPham() {
@@ -285,6 +328,7 @@ public class SearchViewSanPham extends AppCompatActivity {
         edtGiaTu = findViewById(R.id.edtGiaTu);
         btnApDung = findViewById(R.id.btnApDung);
         btnHuyApDung = findViewById(R.id.btnHuyApDung);
+        btnXepHang = findViewById(R.id.btnXepHang);
     }
 
     @Override

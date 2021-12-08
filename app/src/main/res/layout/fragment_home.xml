@@ -40,7 +40,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="20dp"
                             android:layout_marginRight="20dp"
-                            android:text="Let's ea"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="20dp" />
 

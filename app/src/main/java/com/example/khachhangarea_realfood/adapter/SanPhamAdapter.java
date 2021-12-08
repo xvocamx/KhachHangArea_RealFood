@@ -91,7 +91,6 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.MyViewHo
                 holder.tvTBRating.setText(tbRating + "");
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

@@ -29,7 +29,7 @@
         android:layout_gravity="bottom"
         android:background="#93242A"
         app:bb_activeTabColor="@color/white"
-        app:bb_inActiveTabColor="@color/black"
+        app:bb_inActiveTabColor="#B1AFAF"
         app:bb_tabXmlResource="@xml/bottombar_tabs" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

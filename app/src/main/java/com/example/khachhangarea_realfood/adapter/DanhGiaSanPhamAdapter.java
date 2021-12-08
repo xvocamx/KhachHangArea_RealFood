@@ -73,6 +73,7 @@ public class DanhGiaSanPhamAdapter extends RecyclerView.Adapter<DanhGiaSanPhamAd
                         }
                     }
                 });
+
             }
 
             @Override

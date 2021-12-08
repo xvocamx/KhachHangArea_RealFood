@@ -133,6 +133,24 @@ public class DanhGiaAdapter extends RecyclerView.Adapter<DanhGiaAdapter.MyViewHo
                                 }
                                 float tbRating = (float) Math.round((tong / snapshot.getChildrenCount()) * 10) / 10;
                                 firebase_manager.mDatabase.child("CuaHang").child(donHangInfo.getSanPham().getIDCuaHang()).child("rating").setValue(tbRating);
+                                firebase_manager.mDatabase.child("DanhGia").orderByChild("idsanPham").equalTo(danhGia.getIDSanPham()).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        float tong = 0f;
+                                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                            DanhGia danhGia = dataSnapshot.getValue(DanhGia.class);
+                                            tong += danhGia.getRating();
+                                        }
+
+                                        float tbRating = (float) Math.round((tong / snapshot.getChildrenCount()) * 10) / 10;
+                                        firebase_manager.mDatabase.child("SanPham").child(donHangInfo.getSanPham().getIDSanPham()).child("rating").setValue(tbRating);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                             }
 
                             @Override
@@ -140,12 +158,13 @@ public class DanhGiaAdapter extends RecyclerView.Adapter<DanhGiaAdapter.MyViewHo
 
                             }
                         });
+
                     }
                 });
                 donHangInfos.remove(position);
                 notifyDataSetChanged();
-                if(donHangInfos.size() == 0){
-                    Intent intent = new Intent(context,DonMua.class);
+                if (donHangInfos.size() == 0) {
+                    Intent intent = new Intent(context, DonMua.class);
                     context.startActivity(intent);
                 }
             }

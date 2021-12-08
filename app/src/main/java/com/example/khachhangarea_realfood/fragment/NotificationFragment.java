@@ -109,18 +109,23 @@ public class NotificationFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 thongBaos.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    ThongBao thongBao = dataSnapshot.getValue(ThongBao.class);
-                    thongBaos.add(thongBao);
+                if (snapshot.exists())
+                {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        ThongBao thongBao = dataSnapshot.getValue(ThongBao.class);
+                        thongBaos.add(thongBao);
+
+                    }
+                    //Sap sep theo thoi
+                    Collections.sort(thongBaos, new Comparator<ThongBao>() {
+                        @Override
+                        public int compare(ThongBao o1, ThongBao o2) {
+                            return o2.getDate().compareTo(o1.getDate());
+                        }
+                    });
                     thongBaoAdapter.notifyDataSetChanged();
                 }
-                //Sap sep theo thoi
-                Collections.sort(thongBaos, new Comparator<ThongBao>() {
-                    @Override
-                    public int compare(ThongBao o1, ThongBao o2) {
-                        return o2.getDate().compareTo(o1.getDate());
-                    }
-                });
+
 
             }
 

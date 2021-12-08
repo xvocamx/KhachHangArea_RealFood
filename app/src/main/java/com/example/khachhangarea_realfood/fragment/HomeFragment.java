@@ -215,7 +215,7 @@ public class HomeFragment extends Fragment {
                 } else if (date.compareTo(end) < 1) {
                     tvGood.setText("Chào buổi tối , " + khachHang.getTenKhachHang() + " !");
                 } else {
-                    tvGood.setText("Đã đóng cửa , " + khachHang.getTenKhachHang() + " !");
+                    tvGood.setText("Chào buổi tối , " + khachHang.getTenKhachHang() + " !");
                 }
             }
 
