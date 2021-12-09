@@ -44,6 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tapadoo.alerter.Alerter;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -228,7 +229,12 @@ public class ThanhToanActivity extends AppCompatActivity {
                                         public void onSuccess(Void unused) {
                                             kAlertDialog.changeAlertType(KAlertDialog.SUCCESS_TYPE);
                                             kAlertDialog.setContentText("Đặt hàng thành công!");
-                                            finish();
+                                            kAlertDialog.setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
+                                                @Override
+                                                public void onClick(KAlertDialog kAlertDialog) {
+                                                    finish();
+                                                }
+                                            });
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -265,6 +271,11 @@ public class ThanhToanActivity extends AppCompatActivity {
                                             + "\nVui lòng chuyển khoản với cú pháp: \n" + donHang.getIDDonHang().substring(0, 10) + " " + soTien
                                             + "   đến số tài khoản " + taiKhoanNganHang.getSoTaiKhoan() + " ,"
                                             + taiKhoanNganHang.getTenChuTaiKhoan() + " ," + taiKhoanNganHang.getTenNganHang();
+                                    Alerter.create(ThanhToanActivity.this)
+                                            .setTitle("Thông báo")
+                                            .setText(noiDung)
+                                            .setBackgroundColorRes(R.color.success_stroke_color) // or setBackgroundColorInt(Color.CYAN)
+                                            .show();
                                     ThongBao thongBao = new ThongBao(IDThongBao, noiDung, "Thông báo", "", firebase_manager.auth.getUid(), "", TrangThaiThongBao.ChuaXem, new Date());
                                     thongBao.setLoaiThongBao(LoaiThongBao.DONHANG_MOI);
                                     thongBao.setDonHang(donHang);
